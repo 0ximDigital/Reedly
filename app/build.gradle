@@ -1,0 +1,113 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+    }
+}
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+def getEnviromentVariable(String variableName, int defaultValue) {
+    String environmentVariable = System.getenv(variableName)
+    if (environmentVariable != null) {
+        return Integer.parseInt(environmentVariable)
+    } else {
+        return defaultValue
+    }
+}
+
+def getVersionMajor() {
+    return getEnviromentVariable('VERSION_MAJOR', 1)
+}
+
+def getVersionMinor() {
+    return getEnviromentVariable('VERSION_MINOR', 0)
+}
+
+def getVersionPatch() {
+    return getEnviromentVariable('VERSION_PATCH', 0)
+}
+
+// bump for dogfood builds, public betas, etc.
+def getVersionBuild() {
+    return getEnviromentVariable('BUILD_NUMBER', 0)
+}
+
+def buildVersionCode() {
+    return getVersionMajor() * 10000000 + getVersionMinor() * 100000 + getVersionPatch() * 1000 + getVersionBuild()
+}
+
+def buildVersionName() {
+    return "${getVersionMajor()}.${getVersionMinor()}.${getVersionPatch()}"
+}
+
+task version {
+    doLast {
+        println "Current version:"
+        println "Version code: ${buildVersionCode()}"
+        println "Version name: ${buildVersionName()}"
+    }
+}
+
+retrolambda {
+    jvmArgs '-noverify'
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
+
+    defaultConfig {
+        applicationId "oxim.digital.reedly"
+        minSdkVersion 21
+        targetSdkVersion 25
+        versionCode buildVersionCode()
+        versionName buildVersionName()
+
+        vectorDrawables.useSupportLibrary = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    compile project(':data')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:25.1.1'
+
+    testCompile 'junit:junit:4.12'
+
+    apt 'com.google.dagger:dagger-compiler:2.2'
+    compile 'com.google.dagger:dagger:2.2'
+    compile 'com.annimon:stream:1.0.8'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.google.code.gson:gson:2.5'
+    compile 'com.android.support:design:25.1.1'
+    compile 'com.android.support:recyclerview-v7:25.1.1'
+
+    // TODO - ovo mozda ne treba
+    compile 'com.afollestad.material-dialogs:core:0.8.6.0'
+}
