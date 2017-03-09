@@ -88,6 +88,9 @@ android {
         }
     }
 
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
 }
 
 dependencies {
@@ -107,6 +110,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.5'
     compile 'com.android.support:design:25.1.1'
     compile 'com.android.support:recyclerview-v7:25.1.1'
+
+    compile 'com.facebook.stetho:stetho:1.4.2'
 
     // TODO - ovo mozda ne treba
     compile 'com.afollestad.material-dialogs:core:0.8.6.0'

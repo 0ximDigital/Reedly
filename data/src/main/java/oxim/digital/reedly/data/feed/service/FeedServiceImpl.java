@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import oxim.digital.reedly.data.feed.converter.FeedModelConverter;
-import oxim.digital.reedly.data.feed.parser.FeedParser;
+import oxim.digital.reedly.data.feed.service.parser.FeedParser;
 import oxim.digital.reedly.domain.model.Feed;
 import oxim.digital.reedly.domain.service.FeedService;
 import rx.Single;

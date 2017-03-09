@@ -5,8 +5,8 @@ import com.annimon.stream.Stream;
 
 import java.util.List;
 
-import oxim.digital.reedly.data.feed.model.ApiFeed;
-import oxim.digital.reedly.data.feed.model.ApiFeedItem;
+import oxim.digital.reedly.data.feed.service.model.ApiFeed;
+import oxim.digital.reedly.data.feed.service.model.ApiFeedItem;
 import oxim.digital.reedly.domain.model.Feed;
 import oxim.digital.reedly.domain.model.FeedItem;
 

@@ -1,4 +1,4 @@
-package oxim.digital.reedly.data.feed.parser;
+package oxim.digital.reedly.data.feed.service.parser;
 
 import android.support.annotation.Nullable;
 
@@ -11,8 +11,8 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
-import oxim.digital.reedly.data.feed.model.ApiFeed;
-import oxim.digital.reedly.data.feed.model.ApiFeedItem;
+import oxim.digital.reedly.data.feed.service.model.ApiFeed;
+import oxim.digital.reedly.data.feed.service.model.ApiFeedItem;
 import oxim.digital.reedly.data.util.CurrentTimeProvider;
 import rx.Single;
 

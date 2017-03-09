@@ -1,4 +1,4 @@
-package oxim.digital.reedly.data.feed.model;
+package oxim.digital.reedly.data.feed.service.model;
 
 import java.util.List;
 
