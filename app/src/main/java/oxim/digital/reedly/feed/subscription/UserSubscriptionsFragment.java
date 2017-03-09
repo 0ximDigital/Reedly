@@ -17,6 +17,7 @@ import oxim.digital.reedly.R;
 import oxim.digital.reedly.base.BaseFragment;
 import oxim.digital.reedly.base.ScopedPresenter;
 import oxim.digital.reedly.dagger.fragment.FragmentComponent;
+import oxim.digital.reedly.feed.model.FeedViewModel;
 
 public final class UserSubscriptionsFragment extends BaseFragment implements UserSubscriptionsContract.View {
 
@@ -43,14 +44,14 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
     }
 
     @Override
-    public void showFeedSubscriptions(final List<String> subscriptions) {
-        Log.i(TAG, String.valueOf(subscriptions));
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void showFeedSubscriptions(final List<FeedViewModel> feedSubscriptions) {
+        Log.i(TAG, String.valueOf(feedSubscriptions));
     }
 
     @Override

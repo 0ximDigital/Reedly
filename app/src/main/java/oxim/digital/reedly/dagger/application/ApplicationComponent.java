@@ -4,6 +4,9 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import oxim.digital.reedly.dagger.application.module.ApplicationModule;
+import oxim.digital.reedly.dagger.application.module.DataModule;
+import oxim.digital.reedly.dagger.application.module.MappersModule;
+import oxim.digital.reedly.dagger.application.module.ServiceModule;
 import oxim.digital.reedly.dagger.application.module.ThreadingModule;
 import oxim.digital.reedly.dagger.application.module.UseCaseModule;
 import oxim.digital.reedly.dagger.application.module.UtilsModule;
@@ -14,7 +17,10 @@ import oxim.digital.reedly.dagger.application.module.UtilsModule;
                 ApplicationModule.class,
                 ThreadingModule.class,
                 UtilsModule.class,
-                UseCaseModule.class
+                UseCaseModule.class,
+                DataModule.class,
+                MappersModule.class,
+                ServiceModule.class
         }
 )
 
@@ -28,6 +34,9 @@ public interface ApplicationComponent extends ApplicationComponentInjects, Appli
                                              .threadingModule(new ThreadingModule())
                                              .utilsModule(new UtilsModule())
                                              .useCaseModule(new UseCaseModule())
+                                             .dataModule(new DataModule())
+                                             .mappersModule(new MappersModule())
+                                             .serviceModule(new ServiceModule())
                                              .build();
         }
 
