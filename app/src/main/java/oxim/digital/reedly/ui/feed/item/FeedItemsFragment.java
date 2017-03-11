@@ -35,8 +35,6 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
     private RecyclerView.LayoutManager feedItemsLayoutManager;
     private FeedItemsAdapter feedItemsAdapter;
 
-    private int feedId;
-
     public static FeedItemsFragment newInstance(final int feedId) {
         final FeedItemsFragment fragment = new FeedItemsFragment();
         final Bundle arguments = new Bundle();
@@ -65,7 +63,6 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
     }
 
     public void updateFeedId(final int feedId) {
-        this.feedId = feedId;
         presenter.fetchFeedItems(feedId);
     }
 

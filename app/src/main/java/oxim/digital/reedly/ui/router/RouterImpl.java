@@ -6,8 +6,11 @@ import android.support.v4.app.FragmentManager;
 
 import oxim.digital.reedly.R;
 import oxim.digital.reedly.dagger.activity.ActivityScope;
+import oxim.digital.reedly.ui.feed.article.FeedItemContentFragment;
 import oxim.digital.reedly.ui.feed.item.FeedItemsFragment;
 import oxim.digital.reedly.ui.feed.subscription.UserSubscriptionsFragment;
+import rx.functions.Action1;
+import rx.functions.Func0;
 
 @ActivityScope
 public final class RouterImpl implements Router {
@@ -38,34 +41,43 @@ public final class RouterImpl implements Router {
 
     @Override
     public void showFeedItemsScreen(final int feedId) {
-        FeedItemsFragment feedItemsFragment = (FeedItemsFragment) fragmentManager.findFragmentByTag(FeedItemsFragment.TAG);
-        final Fragment feedSubscriptionsFragment = fragmentManager.findFragmentByTag(UserSubscriptionsFragment.TAG);
+        advanceToFragment(FeedItemsFragment.TAG, UserSubscriptionsFragment.TAG,
+                          () -> FeedItemsFragment.newInstance(feedId),
+                          feedItemsFragment -> feedItemsFragment.updateFeedId(feedId));
+    }
 
-        if (feedItemsFragment == null) {
-            feedItemsFragment = FeedItemsFragment.newInstance(feedId);
+    @Override
+    public void showFeedItemContentScreen(final String contentUrl) {
+        advanceToFragment(FeedItemContentFragment.TAG, FeedItemsFragment.TAG,
+                          () -> FeedItemContentFragment.newInstance(contentUrl),
+                          feedItemContentFragment -> feedItemContentFragment.setContentUrl(contentUrl));
+    }
+
+    private <T extends Fragment> void advanceToFragment(final String destinationFragmentTag, final String sourceFragmentTag, final Func0<T> destinationFragmentFactory,
+                                                        final Action1<T> destinationFragmentExistsAction) {
+        T destinationFragment = (T) fragmentManager.findFragmentByTag(destinationFragmentTag);
+        final Fragment sourceFragment = fragmentManager.findFragmentByTag(sourceFragmentTag);
+
+        if (destinationFragment == null) {
+            destinationFragment = destinationFragmentFactory.call();
             fragmentManager.beginTransaction()
                            .setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out, R.anim.fragment_fade_in, R.anim.fragment_fade_out)
                            .addToBackStack(null)
-                           .hide(feedSubscriptionsFragment)
-                           .add(R.id.activity_container, feedItemsFragment, FeedItemsFragment.TAG)
+                           .hide(sourceFragment)
+                           .add(R.id.activity_container, destinationFragment, FeedItemsFragment.TAG)
                            .commit();
-        } else if (feedItemsFragment.isHidden()) {
-            feedItemsFragment.updateFeedId(feedId);
+        } else {
+            destinationFragmentExistsAction.call(destinationFragment);
             fragmentManager.beginTransaction()
                            .addToBackStack(null)
-                           .hide(feedSubscriptionsFragment)
-                           .show(feedItemsFragment)
+                           .hide(sourceFragment)
+                           .show(destinationFragment)
                            .commit();
         }
     }
 
     @Override
-    public void showFeedItemContentScreen(final String contentUrl) {
-
-    }
-
-    @Override
     public void showAddNewFeedScreen() {
-
+        // TODO
     }
 }

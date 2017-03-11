@@ -1,7 +1,5 @@
 package oxim.digital.reedly.ui.feed.item;
 
-import android.util.Log;
-
 import javax.inject.Inject;
 
 import oxim.digital.reedly.base.BasePresenter;
@@ -36,7 +34,6 @@ public final class FeedItemsPresenter extends BasePresenter<FeedItemsContract.Vi
 
     @Override
     public void showItemContent(final FeedItemViewModel feedItemViewModel) {
-        // TODO
-        Log.w("PRES", "Should show content for " + feedItemViewModel);
+        router.showFeedItemContentScreen(feedItemViewModel.link);
     }
 }
