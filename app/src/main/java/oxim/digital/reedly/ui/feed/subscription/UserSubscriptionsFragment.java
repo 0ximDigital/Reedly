@@ -1,7 +1,10 @@
 package oxim.digital.reedly.ui.feed.subscription;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.lang.annotation.Retention;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,9 +26,18 @@ import oxim.digital.reedly.base.ScopedPresenter;
 import oxim.digital.reedly.dagger.fragment.FragmentComponent;
 import oxim.digital.reedly.ui.feed.model.FeedViewModel;
 
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
 public final class UserSubscriptionsFragment extends BaseFragment implements UserSubscriptionsContract.View {
 
     public static final String TAG = UserSubscriptionsFragment.class.getSimpleName();
+
+    private static final int ADD_FEED = 100;
+    private static final int DELETE_FEED = 200;
+
+    @Retention(SOURCE)
+    @IntDef({ADD_FEED, DELETE_FEED})
+    private @interface ViewState { }
 
     @Inject
     UserSubscriptionsContract.Presenter presenter;
@@ -35,8 +48,16 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
     @Bind(R.id.empty_state_view)
     TextView emptyStateView;
 
+    @Bind(R.id.add_new_feed_button)
+    FloatingActionButton actionButton;
+
     private RecyclerView.LayoutManager feedsLayoutManager;
     private FeedAdapter feedAdapter;
+
+    private FeedViewModel selectedFeedModel = FeedViewModel.EMPTY;
+
+    @ViewState
+    private int viewState = ADD_FEED;
 
     public static UserSubscriptionsFragment newInstance() {
         return new UserSubscriptionsFragment();
@@ -64,13 +85,42 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
             feedAdapter = (FeedAdapter) userFeedsRecyclerView.getAdapter();
         }
         feedAdapter.onItemClick()
+                   .subscribe(this::onFeedClicked);
+        feedAdapter.onItemLongClick()
                    .subscribe(this::onFeedSelected);
         feedsLayoutManager = new LinearLayoutManager(null);             // TODO - inject this
         userFeedsRecyclerView.setLayoutManager(feedsLayoutManager);
     }
 
+    private void onFeedClicked(final FeedViewModel feedViewModel) {
+        if (viewState == DELETE_FEED) {
+            selectedFeedModel = FeedViewModel.EMPTY;
+            setViewState(ADD_FEED);
+        } else {
+            presenter.showFeedItems(feedViewModel);
+        }
+    }
+
     private void onFeedSelected(final FeedViewModel feedViewModel) {
-        presenter.showFeedItems(feedViewModel);
+        selectedFeedModel = feedViewModel;
+        setViewState(DELETE_FEED);
+    }
+
+    private void setViewState(@ViewState final int viewState) {
+        this.viewState = viewState;
+        if (viewState == ADD_FEED) {
+            setupAddFeedViewState();
+        } else {
+            setupDeleteFeedViewState();
+        }
+    }
+
+    private void setupAddFeedViewState() {
+        actionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+    }
+
+    private void setupDeleteFeedViewState() {
+        actionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
     }
 
     public void refreshUserSubscriptions() {
@@ -90,6 +140,7 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
 
     @Override
     public void showFeedSubscriptions(final List<FeedViewModel> feedSubscriptions) {
+        setViewState(ADD_FEED);
         feedAdapter.onFeedsUpdate(feedSubscriptions);
     }
 
@@ -98,8 +149,22 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
         fragmentComponent.inject(this);
     }
 
+    @Override
+    public boolean onBack() {
+        if (viewState == ADD_FEED) {
+            return super.onBack();
+        }
+        selectedFeedModel = FeedViewModel.EMPTY;
+        setViewState(ADD_FEED);
+        return true;
+    }
+
     @OnClick(R.id.add_new_feed_button)
     public void onSubscriptionsButtonClick() {
-        presenter.showAddNewFeed();
+        if (viewState == ADD_FEED) {
+            presenter.showAddNewFeed();
+        } else {
+            presenter.unsubscribeFromFeed(selectedFeedModel);
+        }
     }
 }

@@ -20,5 +20,7 @@ public interface UserSubscriptionsContract {
         void showAddNewFeed();
 
         void updateUserSubscriptions();
+
+        void unsubscribeFromFeed(FeedViewModel selectedFeedModel);
     }
 }

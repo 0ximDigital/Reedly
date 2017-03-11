@@ -21,5 +21,5 @@ public interface FeedDao {
 
     Single<Boolean> doesFeedExist(String feedUrl);
 
-    Completable deleteFeed(Feed feed);
+    Completable deleteFeed(int feedId);
 }

@@ -2,6 +2,8 @@ package oxim.digital.reedly.ui.feed.model;
 
 public final class FeedViewModel {
 
+    public static final FeedViewModel EMPTY = new FeedViewModel(0, "", "", "", "");
+
     public final int id;
     public final String title;
     public final String imageUrl;

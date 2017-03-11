@@ -50,8 +50,8 @@ public final class FeedRepositoryImpl implements FeedRepository {
     }
 
     @Override
-    public Completable deleteFeed(final Feed feed) {
-        return Completable.defer(() -> feedDao.deleteFeed(feed))
+    public Completable deleteFeed(final int feedId) {
+        return Completable.defer(() -> feedDao.deleteFeed(feedId))
                           .subscribeOn(Schedulers.io());
     }
 

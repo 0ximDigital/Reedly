@@ -17,7 +17,7 @@ public interface FeedRepository {
 
     Completable createNewFeed(String feedUrl);
 
-    Completable deleteFeed(Feed feed);
+    Completable deleteFeed(int feedId);
 
     Completable updateFeedItems(Feed feed);
 }

@@ -71,6 +71,16 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
         fetchUserFeeds();
     }
 
+    @Override
+    public void unsubscribeFromFeed(final FeedViewModel selectedFeedModel) {
+        viewActionQueue.subscribeTo(deleteFeedUseCase.execute(selectedFeedModel.id)
+                                                     .toSingleDefault(true)
+                                                     .flatMap(b -> getUserFeedsUseCase.execute())
+                                                     .map(feedViewModeMapper::mapFeedsToViewModels)
+                                                     .map(feeds -> (Action1<UserSubscriptionsContract.View>) view -> view.showFeedSubscriptions(feeds)),
+                                    Throwable::printStackTrace);
+    }
+
     private void fetchUserFeeds() {
         viewActionQueue.subscribeTo(getUserFeedsUseCase.execute()
                                                        .doOnSuccess(this::updateUserFeeds)
@@ -82,7 +92,8 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
     private void updateUserFeeds(final List<Feed> feeds) {
         Stream.of(feeds)
               .map(feed -> updateFeedUseCase.execute(feed))
-              .forEach(completable -> addSubscription(completable.subscribe(this::onFeedUpdateError, () -> {})));
+              .forEach(completable -> addSubscription(completable.subscribe(this::onFeedUpdateError, () -> {
+              })));
     }
 
     private void onFeedUpdateError(final Throwable throwable) {
@@ -97,7 +108,7 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
     }
 
     private void deleteFeed() {
-        viewActionQueue.subscribeTo(deleteFeedUseCase.execute(new Feed(3, "", "", "", "", "")),
+        viewActionQueue.subscribeTo(deleteFeedUseCase.execute(3),
                                     view -> Log.w("VIEW", "Feed deleted"),
                                     Throwable::printStackTrace);
     }

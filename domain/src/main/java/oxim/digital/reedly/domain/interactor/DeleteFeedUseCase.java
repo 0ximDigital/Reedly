@@ -1,11 +1,10 @@
 package oxim.digital.reedly.domain.interactor;
 
 import oxim.digital.reedly.domain.interactor.type.CompletableUseCaseWithParameter;
-import oxim.digital.reedly.domain.model.Feed;
 import oxim.digital.reedly.domain.repository.FeedRepository;
 import rx.Completable;
 
-public final class DeleteFeedUseCase implements CompletableUseCaseWithParameter<Feed>{
+public final class DeleteFeedUseCase implements CompletableUseCaseWithParameter<Integer> {
 
     private final FeedRepository feedRepository;
 
@@ -14,7 +13,7 @@ public final class DeleteFeedUseCase implements CompletableUseCaseWithParameter<
     }
 
     @Override
-    public Completable execute(final Feed feed) {
-        return feedRepository.deleteFeed(feed);
+    public Completable execute(final Integer feedId) {
+        return feedRepository.deleteFeed(feedId);
     }
 }
