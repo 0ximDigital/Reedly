@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import oxim.digital.reedly.dagger.activity.ActivityComponent;
 import oxim.digital.reedly.dagger.activity.DaggerActivity;
-import oxim.digital.reedly.feed.subscription.UserSubscriptionsFragment;
+import oxim.digital.reedly.ui.feed.subscription.UserSubscriptionsFragment;
 import oxim.digital.reedly.util.ActivityUtils;
 
 public class MainActivity extends DaggerActivity {

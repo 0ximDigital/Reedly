@@ -1,10 +1,10 @@
-package oxim.digital.reedly.feed.subscription;
+package oxim.digital.reedly.ui.feed.subscription;
 
 import java.util.List;
 
 import oxim.digital.reedly.base.BaseView;
 import oxim.digital.reedly.base.ScopedPresenter;
-import oxim.digital.reedly.feed.model.FeedViewModel;
+import oxim.digital.reedly.ui.feed.model.FeedViewModel;
 
 public interface UserSubscriptionsContract {
 
@@ -17,5 +17,6 @@ public interface UserSubscriptionsContract {
 
         void fetchUserSubscriptions();
 
+        void showFeedItems(FeedViewModel feedViewModel);
     }
 }
