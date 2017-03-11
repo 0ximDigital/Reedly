@@ -47,13 +47,24 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
     }
 
     @Override
-    public void fetchUserSubscriptions() {
-        fetchUserFeeds();
+    public void activate() {
+        super.activate();
+        updateUserSubscriptions();
     }
 
     @Override
     public void showFeedItems(final FeedViewModel feedViewModel) {
         router.showFeedItemsScreen(feedViewModel.id);
+    }
+
+    @Override
+    public void showAddNewFeed() {
+        router.showAddNewFeedScreen();
+    }
+
+    @Override
+    public void updateUserSubscriptions() {
+        fetchUserFeeds();
     }
 
     private void fetchUserFeeds() {

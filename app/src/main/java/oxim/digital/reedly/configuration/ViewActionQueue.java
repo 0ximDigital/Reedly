@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
@@ -21,15 +22,15 @@ public final class ViewActionQueue<View> {
     private boolean isPaused;
 
     public void subscribeTo(final Observable<Action1<View>> observable, final Action1<View> onCompleteAction, final Action1<Throwable> errorAction) {
-        subscriptions.add(observable.subscribe(this::onResult, errorAction::call, () -> onResult(onCompleteAction)));
+        subscriptions.add(observable.observeOn(AndroidSchedulers.mainThread()).subscribe(this::onResult, errorAction::call, () -> onResult(onCompleteAction)));
     }
 
     public void subscribeTo(final Single<Action1<View>> single, final Action1<Throwable> errorAction) {
-        subscriptions.add(single.subscribe(this::onResult, errorAction::call));
+        subscriptions.add(single.observeOn(AndroidSchedulers.mainThread()).subscribe(this::onResult, errorAction::call));
     }
 
     public void subscribeTo(final Completable completable, final Action1<View> onCompleteAction, final Action1<Throwable> errorAction) {
-        subscriptions.add(completable.subscribe(errorAction::call, () -> onResult(onCompleteAction)));
+        subscriptions.add(completable.observeOn(AndroidSchedulers.mainThread()).subscribe(errorAction::call, () -> onResult(onCompleteAction)));
     }
 
     private void onResult(final Action1<View> resultAction) {

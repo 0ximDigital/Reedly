@@ -6,9 +6,12 @@ public interface Router {
 
     void goBack();
 
+    void showUserSubscriptionsScreen();
+
     void showFeedItemsScreen(int feedId);
 
     void showFeedItemContentScreen(String contentUrl);
 
     void showAddNewFeedScreen();
+
 }

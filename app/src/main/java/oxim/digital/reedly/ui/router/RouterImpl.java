@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import oxim.digital.reedly.R;
 import oxim.digital.reedly.dagger.activity.ActivityScope;
 import oxim.digital.reedly.ui.feed.article.FeedItemContentFragment;
+import oxim.digital.reedly.ui.feed.create.NewFeedSubscriptionFragment;
 import oxim.digital.reedly.ui.feed.item.FeedItemsFragment;
 import oxim.digital.reedly.ui.feed.subscription.UserSubscriptionsFragment;
 import rx.functions.Action1;
@@ -37,6 +38,15 @@ public final class RouterImpl implements Router {
         } else {
             fragmentManager.popBackStack();
         }
+    }
+
+    @Override
+    public void showUserSubscriptionsScreen() {
+        final UserSubscriptionsFragment fragment = (UserSubscriptionsFragment) fragmentManager.findFragmentByTag(UserSubscriptionsFragment.TAG);
+        if (fragment != null) {
+            fragment.refreshUserSubscriptions();
+        }
+        // TODO - fragment should always be != null, handle this just in case
     }
 
     @Override
@@ -78,6 +88,10 @@ public final class RouterImpl implements Router {
 
     @Override
     public void showAddNewFeedScreen() {
-        // TODO
+        final Fragment fragment = NewFeedSubscriptionFragment.newInstance();
+        fragmentManager.beginTransaction()
+                       .addToBackStack(null)    // TODO - we wil handle this ourselves
+                       .add(R.id.activity_container, fragment, FeedItemsFragment.TAG)
+                       .commit();
     }
 }

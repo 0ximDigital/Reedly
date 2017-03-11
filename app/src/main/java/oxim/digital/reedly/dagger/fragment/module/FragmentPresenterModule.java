@@ -7,6 +7,8 @@ import oxim.digital.reedly.dagger.fragment.FragmentComponent;
 import oxim.digital.reedly.dagger.fragment.FragmentScope;
 import oxim.digital.reedly.ui.feed.article.FeedItemContentContract;
 import oxim.digital.reedly.ui.feed.article.FeedItemContentPresenter;
+import oxim.digital.reedly.ui.feed.create.NewFeedSubscriptionContract;
+import oxim.digital.reedly.ui.feed.create.NewFeedSubscriptionPresenter;
 import oxim.digital.reedly.ui.feed.item.FeedItemsContract;
 import oxim.digital.reedly.ui.feed.item.FeedItemsPresenter;
 import oxim.digital.reedly.ui.feed.subscription.UserSubscriptionsContract;
@@ -47,5 +49,13 @@ public final class FragmentPresenterModule {
         final FeedItemContentPresenter feedItemContentPresenter = new FeedItemContentPresenter((FeedItemContentContract.View) daggerFragment);
         getFragmentComponent().inject(feedItemContentPresenter);
         return feedItemContentPresenter;
+    }
+
+    @Provides
+    @FragmentScope
+    public NewFeedSubscriptionContract.Presenter provideNewFeedSubscriptionPresenter() {
+        final NewFeedSubscriptionPresenter newFeedSubscriptionPresenter = new NewFeedSubscriptionPresenter((NewFeedSubscriptionContract.View) daggerFragment);
+        getFragmentComponent().inject(newFeedSubscriptionPresenter);
+        return newFeedSubscriptionPresenter;
     }
 }

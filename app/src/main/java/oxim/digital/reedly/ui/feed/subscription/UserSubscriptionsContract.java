@@ -15,8 +15,10 @@ public interface UserSubscriptionsContract {
 
     interface Presenter extends ScopedPresenter {
 
-        void fetchUserSubscriptions();
-
         void showFeedItems(FeedViewModel feedViewModel);
+
+        void showAddNewFeed();
+
+        void updateUserSubscriptions();
     }
 }

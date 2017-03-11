@@ -73,6 +73,10 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
         presenter.showFeedItems(feedViewModel);
     }
 
+    public void refreshUserSubscriptions() {
+        presenter.updateUserSubscriptions();
+    }
+
     @Override
     public ScopedPresenter getPresenter() {
         return presenter;
@@ -96,7 +100,6 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
 
     @OnClick(R.id.add_new_feed_button)
     public void onSubscriptionsButtonClick() {
-        presenter.fetchUserSubscriptions();
-//        Toast.makeText(getContext(), "TODO", Toast.LENGTH_SHORT).show();
+        presenter.showAddNewFeed();
     }
 }

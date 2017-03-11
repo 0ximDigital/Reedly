@@ -9,6 +9,8 @@ import dagger.Provides;
 import oxim.digital.reedly.dagger.activity.ActivityScope;
 import oxim.digital.reedly.dagger.activity.DaggerActivity;
 import oxim.digital.reedly.dagger.activity.ForActivity;
+import oxim.digital.reedly.domain.util.ActionRouter;
+import oxim.digital.reedly.domain.util.ActionRouterImpl;
 import oxim.digital.reedly.ui.router.Router;
 import oxim.digital.reedly.ui.router.RouterImpl;
 
@@ -46,6 +48,12 @@ public class ActivityModule {
         return new RouterImpl(daggerActivity, fragmentManager);
     }
 
+    @Provides
+    @ActivityScope
+    ActionRouter provideActionRouter() {
+        return new ActionRouterImpl();
+    }
+
     public interface Exposes {
 
         Activity activity();
@@ -56,5 +64,7 @@ public class ActivityModule {
         FragmentManager fragmentManager();
 
         Router router();
+
+        ActionRouter actionRouter();
     }
 }

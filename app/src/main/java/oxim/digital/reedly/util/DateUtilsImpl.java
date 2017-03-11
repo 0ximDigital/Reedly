@@ -6,7 +6,7 @@ import java.util.Locale;
 
 public final class DateUtilsImpl implements DateUtils {
 
-    private static final String UNDEFINED = "-";
+    private static final String EMPTY_TIME = "";
 
     @Override
     public String format(final long time) {
@@ -30,7 +30,7 @@ public final class DateUtilsImpl implements DateUtils {
 
     private String getStringFormat(final Date time, final @DateFormat String format) {
         if (time == null) {
-            return UNDEFINED;
+            return EMPTY_TIME;
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
         return dateFormat.format(time);
