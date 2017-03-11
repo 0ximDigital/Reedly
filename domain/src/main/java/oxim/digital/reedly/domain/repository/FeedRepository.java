@@ -19,4 +19,5 @@ public interface FeedRepository {
 
     Completable deleteFeed(Feed feed);
 
+    Completable updateFeedItems(Feed feed);
 }

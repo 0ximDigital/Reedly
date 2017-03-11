@@ -9,6 +9,7 @@ import oxim.digital.reedly.domain.interactor.DeleteFeedUseCase;
 import oxim.digital.reedly.domain.interactor.GetFeedItemsUseCase;
 import oxim.digital.reedly.domain.interactor.GetUserFeedsUseCase;
 import oxim.digital.reedly.domain.interactor.IsUserSubscribedToFeedUseCase;
+import oxim.digital.reedly.domain.interactor.UpdateFeedUseCase;
 import oxim.digital.reedly.domain.repository.FeedRepository;
 
 @Module
@@ -40,8 +41,14 @@ public final class UseCaseModule {
 
     @Provides
     @Singleton
-    IsUserSubscribedToFeedUseCase isUserSubscribedToFeedUseCase(final FeedRepository feedRepository) {
+    IsUserSubscribedToFeedUseCase provideIsUserSubscribedToFeedUseCase(final FeedRepository feedRepository) {
         return new IsUserSubscribedToFeedUseCase(feedRepository);
+    }
+
+    @Provides
+    @Singleton
+    UpdateFeedUseCase provideUpdateFeedUseCase(final FeedRepository feedRepository) {
+        return new UpdateFeedUseCase(feedRepository);
     }
 
     public interface Exposes {
@@ -55,5 +62,7 @@ public final class UseCaseModule {
         DeleteFeedUseCase deleteFeedUseCase();
 
         IsUserSubscribedToFeedUseCase isUserSubscribedToFeedUseCase();
+
+        UpdateFeedUseCase updateFeedUseCase();
     }
 }

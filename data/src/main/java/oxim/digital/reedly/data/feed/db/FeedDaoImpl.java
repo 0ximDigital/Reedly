@@ -66,7 +66,6 @@ public class FeedDaoImpl implements FeedDao {
 
     @Override
     public Single<List<FeedItem>> getFeedItemsForFeed(final int feedId) {
-        // TODO - ordering
         return Single.defer(() -> Single.just(innerGetFeedItemsForFeed(feedId)));
     }
 

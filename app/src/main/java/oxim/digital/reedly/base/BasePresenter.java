@@ -107,7 +107,7 @@ public abstract class BasePresenter<View extends BaseView> implements ScopedPres
         router.goBack();
     }
 
-    private void addSubscription(final Subscription subscription) {
+    protected void addSubscription(final Subscription subscription) {
         if (subscriptions == null || subscriptions.isUnsubscribed()) {
             subscriptions = new CompositeSubscription();
         }

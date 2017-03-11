@@ -1,6 +1,7 @@
 package oxim.digital.reedly.data.feed.db.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ConflictAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.annotation.Unique;
@@ -10,7 +11,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import oxim.digital.reedly.data.feed.db.definition.FeedDatabase;
 
 @Table(database = FeedDatabase.class,
-        uniqueColumnGroups = @UniqueGroup(groupNumber = FeedItemModel.UNIQUE_GROUP_ID))
+        uniqueColumnGroups = @UniqueGroup(groupNumber = FeedItemModel.UNIQUE_GROUP_ID, uniqueConflict = ConflictAction.IGNORE))
 public final class FeedItemModel extends BaseModel {
 
     static final int UNIQUE_GROUP_ID = 100;
@@ -24,10 +25,10 @@ public final class FeedItemModel extends BaseModel {
     int feedId;
 
     @Column
-    @Unique(unique = false, uniqueGroups = UNIQUE_GROUP_ID)
     String title;
 
     @Column
+    @Unique(unique = false, uniqueGroups = UNIQUE_GROUP_ID)
     String link;
 
     @Column

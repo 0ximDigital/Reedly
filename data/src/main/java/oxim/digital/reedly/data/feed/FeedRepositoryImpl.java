@@ -54,4 +54,13 @@ public final class FeedRepositoryImpl implements FeedRepository {
         return Completable.defer(() -> feedDao.deleteFeed(feed))
                           .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Completable updateFeedItems(final Feed feed) {
+        return Completable.defer(() -> feedService.fetchFeed(feed.url)
+                                                  .flatMap(apiFeed -> feedDao.updateFeed(feed.id, apiFeed.items).toSingleDefault(true))
+                                                  .toObservable()
+                                                  .toCompletable())
+                          .subscribeOn(Schedulers.io());
+    }
 }

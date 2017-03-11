@@ -2,6 +2,10 @@ package oxim.digital.reedly.ui.feed.subscription;
 
 import android.util.Log;
 
+import com.annimon.stream.Stream;
+
+import java.util.List;
+
 import javax.inject.Inject;
 
 import oxim.digital.reedly.base.BasePresenter;
@@ -10,6 +14,7 @@ import oxim.digital.reedly.domain.interactor.DeleteFeedUseCase;
 import oxim.digital.reedly.domain.interactor.GetFeedItemsUseCase;
 import oxim.digital.reedly.domain.interactor.GetUserFeedsUseCase;
 import oxim.digital.reedly.domain.interactor.IsUserSubscribedToFeedUseCase;
+import oxim.digital.reedly.domain.interactor.UpdateFeedUseCase;
 import oxim.digital.reedly.domain.model.Feed;
 import oxim.digital.reedly.ui.feed.mapper.FeedViewModeMapper;
 import oxim.digital.reedly.ui.feed.model.FeedViewModel;
@@ -31,6 +36,9 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
 
     @Inject
     IsUserSubscribedToFeedUseCase isUserSubscribedToFeedUseCase;
+
+    @Inject
+    UpdateFeedUseCase updateFeedUseCase;
 
     @Inject
     FeedViewModeMapper feedViewModeMapper;
@@ -65,15 +73,20 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
 
     private void fetchUserFeeds() {
         viewActionQueue.subscribeTo(getUserFeedsUseCase.execute()
+                                                       .doOnSuccess(this::updateUserFeeds)
                                                        .map(feedViewModeMapper::mapFeedsToViewModels)
                                                        .map(feeds -> (Action1<UserSubscriptionsContract.View>) view -> view.showFeedSubscriptions(feeds)),
                                     Throwable::printStackTrace);
     }
 
-    private void addNewFeed(final String feedUrl) {
-        viewActionQueue.subscribeTo(addNewFeedUseCase.execute(feedUrl),
-                                    view -> Log.w("VIEW", "Add new feed"),
-                                    Throwable::printStackTrace);
+    private void updateUserFeeds(final List<Feed> feeds) {
+        Stream.of(feeds)
+              .map(feed -> updateFeedUseCase.execute(feed))
+              .forEach(completable -> addSubscription(completable.subscribe(this::onFeedUpdateError, () -> {})));
+    }
+
+    private void onFeedUpdateError(final Throwable throwable) {
+        logError(throwable);
     }
 
     private void fetchFeedItems() {
