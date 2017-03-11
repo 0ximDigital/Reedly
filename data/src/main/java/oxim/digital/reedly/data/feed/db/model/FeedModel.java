@@ -1,13 +1,11 @@
 package oxim.digital.reedly.data.feed.db.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
+import com.raizlabs.android.dbflow.annotation.ConflictAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-
-import java.util.List;
 
 import oxim.digital.reedly.data.feed.db.definition.FeedDatabase;
 
@@ -25,35 +23,52 @@ public final class FeedModel extends BaseModel {
     String imageUrl;
 
     @Column
-    String link;
+    String pageLink;
 
     @Column
     String description;
 
-    List<FeedItemModel> feedItemModels;
+    @Column
+    @Unique(onUniqueConflict = ConflictAction.FAIL)
+    String url;
 
     public FeedModel() {
     }
 
-    public FeedModel(final String title, final String imageUrl, final String link, final String description) {
+    public FeedModel(final String title, final String imageUrl, final String pageLink, final String description, final String url) {
+        this(0, title, imageUrl, pageLink, description, url);
+    }
+
+    public FeedModel(final int id, final String title, final String imageUrl, final String pageLink, final String description, final String url) {
+        this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
-        this.link = link;
+        this.pageLink = pageLink;
         this.description = description;
+        this.url = url;
     }
 
-    @OneToMany(methods = {OneToMany.Method.ALL}, variableName = "feedItemModels")
-    public List<FeedItemModel> getFeedItemModels() {
-        if (feedItemModels == null) {
-            feedItemModels = SQLite.select()
-                                   .from(FeedItemModel.class)
-                                   .where(FeedItemModel_Table.feed_id.eq(id))
-                                   .queryList();
-        }
-        return feedItemModels;
+    public int getId() {
+        return id;
     }
 
-    public void setFeedItemModels(final List<FeedItemModel> feedItemModels) {
-        this.feedItemModels = feedItemModels;
+    public String getTitle() {
+        return title;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public String getPageLink() {
+        return pageLink;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

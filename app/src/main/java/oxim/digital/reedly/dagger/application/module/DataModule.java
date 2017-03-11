@@ -7,19 +7,20 @@ import dagger.Provides;
 import oxim.digital.reedly.data.feed.FeedRepositoryImpl;
 import oxim.digital.reedly.data.feed.converter.FeedModelConverter;
 import oxim.digital.reedly.data.feed.converter.FeedModelConverterImpl;
+import oxim.digital.reedly.data.feed.db.FeedDao;
+import oxim.digital.reedly.data.feed.db.FeedDaoImpl;
+import oxim.digital.reedly.data.feed.service.FeedService;
 import oxim.digital.reedly.data.feed.service.parser.FeedParser;
 import oxim.digital.reedly.data.feed.service.parser.FeedParserImpl;
-import oxim.digital.reedly.data.util.CurrentTimeProvider;
 import oxim.digital.reedly.domain.repository.FeedRepository;
-import oxim.digital.reedly.domain.service.FeedService;
 
 @Module
 public final class DataModule {
 
     @Provides
     @Singleton
-    FeedRepository provideFeedRepository(final FeedService feedService) {
-        return new FeedRepositoryImpl(feedService);
+    FeedRepository provideFeedRepository(final FeedService feedService, final FeedDao feedDao) {
+        return new FeedRepositoryImpl(feedService, feedDao);
     }
 
     @Provides
@@ -30,8 +31,14 @@ public final class DataModule {
 
     @Provides
     @Singleton
-    FeedParser provideFeedParser(final CurrentTimeProvider currentTimeProvider) {
-        return new FeedParserImpl(currentTimeProvider);
+    FeedParser provideFeedParser() {
+        return new FeedParserImpl();
+    }
+
+    @Provides
+    @Singleton
+    FeedDao provideFeedDao(final FeedModelConverter feedModelConverter) {
+        return new FeedDaoImpl(feedModelConverter);
     }
 
     public interface Exposes {

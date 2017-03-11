@@ -1,15 +1,22 @@
 package oxim.digital.reedly.domain.repository;
 
+import java.util.List;
+
 import oxim.digital.reedly.domain.model.Feed;
+import oxim.digital.reedly.domain.model.FeedItem;
+import rx.Completable;
 import rx.Single;
 
 public interface FeedRepository {
 
-    Single<Feed> getFeed(String url);
+    Single<List<Feed>> getUserFeeds();
 
-    // Get user feeds
-    // Add feed
-    // remove feed
-    // getItemsForFeed
+    Single<List<FeedItem>> getFeedItems(int feedId);
+
+    Single<Boolean> feedExists(String feedUrl);
+
+    Completable createNewFeed(String feedUrl);
+
+    Completable deleteFeed(Feed feed);
 
 }

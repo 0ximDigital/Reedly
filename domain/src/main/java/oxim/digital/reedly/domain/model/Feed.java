@@ -1,32 +1,32 @@
 package oxim.digital.reedly.domain.model;
 
-import java.util.List;
-
 public final class Feed {
 
+    public final int id;
     public final String title;
     public final String imageUrl;
-    public final String link;
+    public final String pageLink;
     public final String description;
+    public final String url;
 
-    public final List<FeedItem> items;
-
-    public Feed(final String title, final String imageUrl, final String link, final String description, final List<FeedItem> items) {
+    public Feed(final int id, final String title, final String imageUrl, final String pageLink, final String description, final String url) {
+        this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
-        this.link = link;
+        this.pageLink = pageLink;
         this.description = description;
-        this.items = items;
+        this.url = url;
     }
 
     @Override
     public String toString() {
         return "Feed{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
-                ", link='" + link + '\'' +
+                ", pageLink='" + pageLink + '\'' +
                 ", description='" + description + '\'' +
-                ", items=" + items +
+                ", url='" + url + '\'' +
                 '}';
     }
 }

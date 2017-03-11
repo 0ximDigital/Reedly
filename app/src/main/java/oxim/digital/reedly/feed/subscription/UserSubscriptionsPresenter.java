@@ -2,36 +2,36 @@ package oxim.digital.reedly.feed.subscription;
 
 import android.util.Log;
 
-import com.raizlabs.android.dbflow.sql.language.SQLite;
-
-import java.util.Arrays;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import oxim.digital.reedly.base.BasePresenter;
-import oxim.digital.reedly.data.feed.db.model.FeedItemModel;
-import oxim.digital.reedly.data.feed.db.model.FeedModel;
-import oxim.digital.reedly.data.util.CurrentTimeProvider;
-import oxim.digital.reedly.domain.interactor.GetFeedUseCase;
-import oxim.digital.reedly.domain.interactor.GetUserSubscribedFeedsUseCase;
-import oxim.digital.reedly.feed.mapper.FeedViewModeMapper;
+import oxim.digital.reedly.domain.interactor.AddNewFeedUseCase;
+import oxim.digital.reedly.domain.interactor.DeleteFeedUseCase;
+import oxim.digital.reedly.domain.interactor.GetFeedItemsUseCase;
+import oxim.digital.reedly.domain.interactor.GetUserFeedsUseCase;
+import oxim.digital.reedly.domain.interactor.IsUserSubscribedToFeedUseCase;
+import oxim.digital.reedly.domain.model.Feed;
+import rx.functions.Action1;
 
 public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscriptionsContract.View> implements UserSubscriptionsContract.Presenter {
 
     @Inject
-    GetUserSubscribedFeedsUseCase getUserSubscribedFeedsUseCase;
+    GetUserFeedsUseCase getUserFeedsUseCase;
 
     @Inject
-    GetFeedUseCase getFeedUseCase;
+    AddNewFeedUseCase addNewFeedUseCase;
 
     @Inject
-    FeedViewModeMapper feedViewModeMapper;
+    GetFeedItemsUseCase getFeedItemsUseCase;
 
     @Inject
-    CurrentTimeProvider currentTimeProvider;
+    DeleteFeedUseCase deleteFeedUseCase;
+
+    @Inject
+    IsUserSubscribedToFeedUseCase isUserSubscribedToFeedUseCase;
 
     private static final String TEST_FEED_URL = "https://xkcd.com/rss.xml";
+    private static final String ANOTHER_TEST_FEED_URL = "https://feeds.feedburner.com/Android_Arsenal";
 
     public UserSubscriptionsPresenter(final UserSubscriptionsContract.View view) {
         super(view);
@@ -39,29 +39,36 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
 
     @Override
     public void fetchUserSubscriptions() {
-//        viewActionQueue.subscribeTo(getFeedUseCase.execute(TEST_FEED_URL)
-//                                                  .map(feedViewModeMapper::mapFeedToViewModel)
-//                                                  .map(feedViewModel -> (Action1<UserSubscriptionsContract.View>) view -> view
-//                                                          .showFeedSubscriptions(Arrays.asList(feedViewModel))),
-//                                    Throwable::printStackTrace);
+        checkUserSubscription(TEST_FEED_URL);
+    }
 
-        final FeedItemModel feedItemModelOne = new FeedItemModel("TitleOne", "LinkOne", "DescriptionOne", currentTimeProvider.getCurrentTime());
-        final FeedItemModel feedItemModelTwo = new FeedItemModel("TitleTwo", "LinkTwo", "DescriptionTwo", currentTimeProvider.getCurrentTime());
+    private void fetchUserFeeds() {
+        viewActionQueue.subscribeTo(getUserFeedsUseCase.execute()
+                                                       .map(feeds -> (Action1<UserSubscriptionsContract.View>) view -> Log.w("VIEW", "Got feeds -> " + String.valueOf(feeds))),
+                                    Throwable::printStackTrace);
+    }
 
-        final FeedModel feedModel = new FeedModel("FeedTitle", "ImageUrl", "FeedLink", "Feed decription");
+    private void addNewFeed(final String feedUrl) {
+        viewActionQueue.subscribeTo(addNewFeedUseCase.execute(feedUrl),
+                                    view -> Log.w("VIEW", "Add new feed"),
+                                    Throwable::printStackTrace);
+    }
 
-        feedModel.save();
+    private void fetchFeedItems() {
+        viewActionQueue.subscribeTo(getFeedItemsUseCase.execute(1)
+                                                       .map(feedItems -> (Action1<UserSubscriptionsContract.View>) view -> Log.w("VIEW", "Got feed items -> " + String.valueOf(feedItems))),
+                                    Throwable::printStackTrace);
+    }
 
-        feedModel.setFeedItemModels(Arrays.asList(feedItemModelOne, feedItemModelTwo));
+    private void deleteFeed() {
+        viewActionQueue.subscribeTo(deleteFeedUseCase.execute(new Feed(3, "", "", "", "", "")),
+                                    view -> Log.w("VIEW", "Feed deleted"),
+                                    Throwable::printStackTrace);
+    }
 
-        Log.i("TAG", "Set items");
-
-        feedModel.save();
-
-        final List<FeedModel> feedModels = SQLite.select()
-                                                 .from(FeedModel.class)
-                                                 .queryList();
-
-        Log.i("MODELS", String.valueOf(feedModels));
+    private void checkUserSubscription(final String feedUrl) {
+        viewActionQueue.subscribeTo(isUserSubscribedToFeedUseCase.execute(feedUrl)
+                                                                 .map(isSubscribed -> (Action1<UserSubscriptionsContract.View>) view -> Log.w("VIEW", "Is user subscribed -> " + String.valueOf(isSubscribed))),
+                                    Throwable::printStackTrace);
     }
 }

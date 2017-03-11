@@ -11,15 +11,15 @@ import rx.Single;
 
 public interface FeedDao {
 
-    // insertOrUpdate ?
+    Single<List<Feed>> getAllFeeds();
+
     Completable insertFeed(ApiFeed apiFeed);
 
-    Completable insertFeedTopicForFeed(ApiFeedItem apiFeedItem, ApiFeed apiFeed);
+    Completable updateFeed(int feedId, List<ApiFeedItem> apiFeedItems);
 
-    Single<Feed> getFeedForUrl(String url);
+    Single<List<FeedItem>> getFeedItemsForFeed(int feedId);
 
-    Single<List<FeedItem>> getFeedItemsForFeed(Feed feed);
+    Single<Boolean> doesFeedExist(String feedUrl);
 
     Completable deleteFeed(Feed feed);
-
 }

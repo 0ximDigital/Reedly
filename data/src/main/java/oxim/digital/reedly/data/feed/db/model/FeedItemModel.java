@@ -1,32 +1,34 @@
 package oxim.digital.reedly.data.feed.db.model;
 
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.annotation.Unique;
+import com.raizlabs.android.dbflow.annotation.UniqueGroup;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import oxim.digital.reedly.data.feed.db.definition.FeedDatabase;
 
-@Table(database = FeedDatabase.class)
+@Table(database = FeedDatabase.class,
+        uniqueColumnGroups = @UniqueGroup(groupNumber = FeedItemModel.UNIQUE_GROUP_ID))
 public final class FeedItemModel extends BaseModel {
+
+    static final int UNIQUE_GROUP_ID = 100;
 
     @Column
     @PrimaryKey(autoincrement = true)
     int id;
 
-    @ForeignKey(onDelete = ForeignKeyAction.CASCADE)
-    FeedModel feed;
+    @Column
+    @Unique(unique = false, uniqueGroups = UNIQUE_GROUP_ID)
+    int feedId;
 
     @Column
+    @Unique(unique = false, uniqueGroups = UNIQUE_GROUP_ID)
     String title;
 
     @Column
     String link;
-
-    @Column
-    String description;
 
     @Column
     long publicationDate;
@@ -34,10 +36,30 @@ public final class FeedItemModel extends BaseModel {
     public FeedItemModel() {
     }
 
-    public FeedItemModel(final String title, final String link, final String description, final long publicationDate) {
+    public FeedItemModel(final int feedId, final String title, final String link, final long publicationDate) {
+        this.feedId = feedId;
         this.title = title;
         this.link = link;
-        this.description = description;
         this.publicationDate = publicationDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getFeedId() {
+        return feedId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public long getPublicationDate() {
+        return publicationDate;
     }
 }
