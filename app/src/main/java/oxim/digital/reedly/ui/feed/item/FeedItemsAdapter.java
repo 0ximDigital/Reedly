@@ -78,8 +78,8 @@ public final class FeedItemsAdapter extends RecyclerView.Adapter<FeedItemsAdapte
             feedItemPublicationDate.setText(feedItemViewModel.publicationDate);
         }
 
-        @OnClick(R.id.feed_content_container)
-        void onFeedClick() {
+        @OnClick(R.id.feed_item_content_container)
+        void onFeedItemClick() {
             clickSubject.onNext(feedItemViewModel);
         }
     }

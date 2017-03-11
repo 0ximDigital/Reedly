@@ -13,6 +13,7 @@ import oxim.digital.reedly.domain.interactor.IsUserSubscribedToFeedUseCase;
 import oxim.digital.reedly.domain.model.Feed;
 import oxim.digital.reedly.ui.feed.mapper.FeedViewModeMapper;
 import oxim.digital.reedly.ui.feed.model.FeedViewModel;
+import oxim.digital.reedly.ui.router.Router;
 import rx.functions.Action1;
 
 public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscriptionsContract.View> implements UserSubscriptionsContract.Presenter {
@@ -35,6 +36,9 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
     @Inject
     FeedViewModeMapper feedViewModeMapper;
 
+    @Inject
+    Router router;
+
     private static final String TEST_FEED_URL = "https://xkcd.com/rss.xml";
     private static final String ANOTHER_TEST_FEED_URL = "https://feeds.feedburner.com/Android_Arsenal";
 
@@ -49,8 +53,7 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
 
     @Override
     public void showFeedItems(final FeedViewModel feedViewModel) {
-        // TODO
-        Log.w("PRES", "Should show feed items for " + feedViewModel);
+        router.showFeedItemsScreen(feedViewModel.id);
     }
 
     private void fetchUserFeeds() {

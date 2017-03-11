@@ -2,12 +2,14 @@ package oxim.digital.reedly.ui.feed.model;
 
 public final class FeedViewModel {
 
+    public final int id;
     public final String title;
     public final String imageUrl;
     public final String link;
     public final String description;
 
-    public FeedViewModel(final String title, final String imageUrl, final String link, final String description) {
+    public FeedViewModel(final int id, final String title, final String imageUrl, final String link, final String description) {
+        this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
         this.link = link;
@@ -17,7 +19,8 @@ public final class FeedViewModel {
     @Override
     public String toString() {
         return "FeedViewModel{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", link='" + link + '\'' +
                 ", description='" + description + '\'' +

@@ -21,7 +21,7 @@ public final class FeedViewModelMapperImpl implements FeedViewModeMapper {
 
     @Override
     public FeedViewModel mapFeedToViewModel(final Feed feed) {
-        return new FeedViewModel(feed.title, feed.imageUrl, feed.pageLink, feed.description);
+        return new FeedViewModel(feed.id, feed.title, feed.imageUrl, feed.pageLink, feed.description);
     }
 
     @Override

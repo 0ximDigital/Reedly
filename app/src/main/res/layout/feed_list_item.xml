@@ -2,9 +2,11 @@
 <LinearLayout
     android:id="@+id/feed_content_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="wrap_content"
     android:background="?android:selectableItemBackground"
+    android:minHeight="72dp"
     android:orientation="horizontal"
     android:padding="8dp">
 
@@ -13,12 +15,12 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center_vertical"
+        android:padding="4dp"
         android:src="@drawable/secondary_circle"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:orientation="vertical">
 
@@ -26,16 +28,16 @@
             android:id="@+id/feed_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="xkcd.com"/>
 
         <TextView
             android:id="@+id/feed_description"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            tools:text="Lorem ipsum categorized libraries "/>
 
     </LinearLayout>
 
