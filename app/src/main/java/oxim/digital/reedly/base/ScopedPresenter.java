@@ -9,4 +9,6 @@ public interface ScopedPresenter {
     void deactivate();
 
     void destroy();
+
+    void back();
 }

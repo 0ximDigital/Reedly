@@ -14,6 +14,7 @@ import oxim.digital.reedly.configuration.ViewActionQueue;
 import oxim.digital.reedly.configuration.ViewActionQueueProvider;
 import oxim.digital.reedly.dagger.application.module.ThreadingModule;
 import oxim.digital.reedly.data.util.connectivity.ConnectivityReceiver;
+import oxim.digital.reedly.ui.router.Router;
 import rx.Scheduler;
 import rx.Subscription;
 import rx.functions.Action0;
@@ -28,7 +29,10 @@ public abstract class BasePresenter<View extends BaseView> implements ScopedPres
     protected ViewActionQueueProvider viewActionQueueProvider;
 
     @Inject
-    ConnectivityReceiver connectivityReceiver;
+    protected ConnectivityReceiver connectivityReceiver;
+
+    @Inject
+    protected Router router;
 
     @Inject
     @Named(ThreadingModule.MAIN_SCHEDULER)
@@ -96,6 +100,11 @@ public abstract class BasePresenter<View extends BaseView> implements ScopedPres
         Log.i("PRES", "Destroy");
         viewActionQueue.destroy();
         viewActionQueueProvider.dispose(viewId);
+    }
+
+    @Override
+    public void back() {
+        router.goBack();
     }
 
     private void addSubscription(final Subscription subscription) {

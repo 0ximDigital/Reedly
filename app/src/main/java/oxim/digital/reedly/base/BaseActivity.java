@@ -12,6 +12,8 @@ import javax.inject.Inject;
 
 import oxim.digital.reedly.configuration.ViewIdGenerator;
 import oxim.digital.reedly.dagger.activity.DaggerActivity;
+import oxim.digital.reedly.domain.util.ActionRouter;
+import oxim.digital.reedly.util.ActivityUtils;
 
 public abstract class BaseActivity extends DaggerActivity implements BaseView {
 
@@ -23,6 +25,12 @@ public abstract class BaseActivity extends DaggerActivity implements BaseView {
     @Inject
     ViewIdGenerator viewIdGenerator;
 
+    @Inject
+    ActionRouter actionRouter;
+
+    @Inject
+    ActivityUtils activityUtils;
+
     private String viewId;
     private boolean isViewRecreated;
 
@@ -30,6 +38,7 @@ public abstract class BaseActivity extends DaggerActivity implements BaseView {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeView(savedInstanceState);
+        getPresenter().start();
     }
 
     private void initializeView(@Nullable final Bundle savedInstanceState) {
@@ -69,8 +78,10 @@ public abstract class BaseActivity extends DaggerActivity implements BaseView {
 
     @Override
     public void onBackPressed() {
-        // TODO - send back to the router - a onda on odlucuje dal salje na top(content/feedCouple ili uvijek na fedCouple)
-        super.onBackPressed();
+//        actionRouter.throttle(super::onBackPressed);
+        if (!activityUtils.propagateBackToTopFragment(fragmentManager)) {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -83,7 +94,6 @@ public abstract class BaseActivity extends DaggerActivity implements BaseView {
     }
 
     private void clearFragments() {
-        Log.i("ACT", "Clearing fragments");
         final List<Fragment> fragments = fragmentManager.getFragments();
         for (final Fragment fragment : fragments) {
             if (fragment instanceof BaseFragment) {
@@ -92,5 +102,5 @@ public abstract class BaseActivity extends DaggerActivity implements BaseView {
         }
     }
 
-    abstract ScopedPresenter getPresenter();
+    protected abstract ScopedPresenter getPresenter();
 }

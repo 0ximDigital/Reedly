@@ -4,15 +4,11 @@ import javax.inject.Inject;
 
 import oxim.digital.reedly.base.BasePresenter;
 import oxim.digital.reedly.domain.interactor.AddNewFeedUseCase;
-import oxim.digital.reedly.ui.router.Router;
 
 public final class NewFeedSubscriptionPresenter extends BasePresenter<NewFeedSubscriptionContract.View> implements NewFeedSubscriptionContract.Presenter {
 
     @Inject
     AddNewFeedUseCase addNewFeedUseCase;
-
-    @Inject
-    Router router;
 
     public NewFeedSubscriptionPresenter(final NewFeedSubscriptionContract.View view) {
         super(view);

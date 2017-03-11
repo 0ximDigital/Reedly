@@ -7,13 +7,17 @@ import javax.inject.Inject;
 
 import oxim.digital.reedly.configuration.ViewIdGenerator;
 import oxim.digital.reedly.dagger.fragment.DaggerFragment;
+import oxim.digital.reedly.domain.util.ActionRouter;
 
-public abstract class BaseFragment extends DaggerFragment implements BaseView {
+public abstract class BaseFragment extends DaggerFragment implements BaseView, BackPropagatingFragment {
 
     private static final String KEY_VIEW_ID = "view_id";
 
     @Inject
     ViewIdGenerator viewIdGenerator;
+
+    @Inject
+    ActionRouter actionRouter;
 
     private String viewId;
     private boolean isViewRecreated;
@@ -62,6 +66,12 @@ public abstract class BaseFragment extends DaggerFragment implements BaseView {
     @Override
     public boolean isRecreated() {
         return isViewRecreated;
+    }
+
+    @Override
+    public boolean onBack() {
+        actionRouter.throttle(() -> getPresenter().back());
+        return true;
     }
 
     public abstract ScopedPresenter getPresenter();

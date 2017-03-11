@@ -6,11 +6,13 @@ import android.support.v4.app.FragmentManager;
 
 import dagger.Module;
 import dagger.Provides;
+import oxim.digital.reedly.MainActivity;
 import oxim.digital.reedly.dagger.activity.ActivityScope;
 import oxim.digital.reedly.dagger.activity.DaggerActivity;
 import oxim.digital.reedly.dagger.activity.ForActivity;
 import oxim.digital.reedly.domain.util.ActionRouter;
 import oxim.digital.reedly.domain.util.ActionRouterImpl;
+import oxim.digital.reedly.ui.MainPresenter;
 import oxim.digital.reedly.ui.router.Router;
 import oxim.digital.reedly.ui.router.RouterImpl;
 
@@ -52,6 +54,14 @@ public class ActivityModule {
     @ActivityScope
     ActionRouter provideActionRouter() {
         return new ActionRouterImpl();
+    }
+
+    @Provides
+    @ActivityScope
+    MainPresenter provideMainPresenter() {
+        final MainPresenter mainPresenter = new MainPresenter((MainActivity) daggerActivity);
+        daggerActivity.getActivityComponent().inject(mainPresenter);
+        return mainPresenter;
     }
 
     public interface Exposes {

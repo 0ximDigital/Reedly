@@ -52,11 +52,13 @@ public final class ActionRouterImpl implements ActionRouter {
 
     @Override
     public void blockActions() {
+        System.out.println("Blocking actions");
         actionsBlocked = true;
     }
 
     @Override
     public void unblockActions() {
+        System.out.println("Unblocking actions");
         actionsBlocked = false;
     }
 
