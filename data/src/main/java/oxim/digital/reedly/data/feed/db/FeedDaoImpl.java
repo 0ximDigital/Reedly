@@ -73,6 +73,7 @@ public class FeedDaoImpl implements FeedDao {
     private List<FeedItem> innerGetFeedItemsForFeed(final int feedId) {
         return Stream.of(select().from(FeedItemModel.class)
                                  .where(FeedItemModel_Table.feedId.eq(feedId))
+                                 .orderBy(FeedItemModel_Table.publicationDate, false)
                                  .queryList())
                      .map(feedModelConverter::modelToDomain)
                      .collect(Collectors.toList());

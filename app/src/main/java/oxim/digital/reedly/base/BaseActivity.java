@@ -78,7 +78,6 @@ public abstract class BaseActivity extends DaggerActivity implements BaseView {
 
     @Override
     public void onBackPressed() {
-//        actionRouter.throttle(super::onBackPressed);
         if (!activityUtils.propagateBackToTopFragment(fragmentManager)) {
             super.onBackPressed();
         }
