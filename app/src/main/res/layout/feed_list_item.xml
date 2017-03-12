@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<RelativeLayout
     android:id="@+id/feed_content_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:selectableItemBackground"
-    android:minHeight="@dimen/feed_list_item_min_height">
+    android:background="?android:selectableItemBackground" android:minHeight="@dimen/feed_list_item_min_height">
 
     <LinearLayout
+        android:id="@+id/feed_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/small_margin"
@@ -54,16 +55,13 @@
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/selection_indicator"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="end"
-        android:layout_marginEnd="-8dp"
-        android:layout_marginTop="-8dp"
-        android:background="@drawable/secondary_circle"
-        android:visibility="gone"
-        tools:visibility="visible"/>
+    <oxim.digital.reedly.ui.view.RevealFillView
+        android:id="@+id/selected_indicator_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/feed_container"
+        android:layout_alignTop="@id/feed_container"
+        app:revealFillColor="@color/favouritePink"/>
 
     <View
         android:layout_width="match_parent"
@@ -72,4 +70,4 @@
         android:layout_marginStart="@dimen/divider_margin"
         android:background="@color/dividers"/>
 
-</FrameLayout>
+</RelativeLayout>

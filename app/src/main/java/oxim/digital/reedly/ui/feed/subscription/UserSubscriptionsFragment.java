@@ -104,14 +104,17 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
         if (viewState == DELETE_FEED) {
             selectedFeedModel = FeedViewModel.EMPTY;
             setViewState(ADD_FEED);
+            feedAdapter.clearSelection();
         } else {
             presenter.showFeedItems(feedViewModel);
         }
     }
 
     private void onFeedSelected(final FeedViewModel feedViewModel) {
+        feedAdapter.clearSelection();
         selectedFeedModel = feedViewModel;
         setViewState(DELETE_FEED);
+        feedAdapter.selectFeed(selectedFeedModel);
     }
 
     private void setViewState(@ViewState final int viewState) {
@@ -177,6 +180,7 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
         }
         selectedFeedModel = FeedViewModel.EMPTY;
         setViewState(ADD_FEED);
+        feedAdapter.clearSelection();
         return true;
     }
 
@@ -185,6 +189,7 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
         if (viewState == ADD_FEED) {
             presenter.showAddNewFeed();
         } else {
+            feedAdapter.clearSelection();
             presenter.unsubscribeFromFeed(selectedFeedModel);
         }
     }
