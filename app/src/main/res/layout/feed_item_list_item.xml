@@ -2,6 +2,7 @@
 <FrameLayout
     android:id="@+id/feed_item_content_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,54 +12,66 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackground"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:layout_margin="@dimen/small_margin"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/small_margin"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/feed_item_title"
+                style="@style/ContentText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 tools:text="Awesome news for the feed"/>
 
-            <TextView
-                android:id="@+id/feed_item_date"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                tools:text="1.1.1970"/>
+                android:layout_marginTop="@dimen/small_margin"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/feed_item_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    tools:text="Jul 29"/>
+
+                <TextView
+                    android:id="@+id/feed_item_new_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_margin"
+                    android:text="NEW"
+                    android:textColor="@color/dangerRed"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <View
+        <ImageView
             android:id="@+id/feed_item_favourite_indicator"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical"
-            android:background="#ddd"
-            android:foreground="?android:selectableItemBackgroundBorderless"/>
+            android:layout_width="@dimen/favourite_button_size"
+            android:layout_height="@dimen/favourite_button_size"
+            android:background="?android:selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_favorite"/>
 
     </LinearLayout>
 
     <View
-        android:id="@+id/feed_item_new_indicator"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="end"
-        android:layout_marginEnd="-8dp"
-        android:layout_marginTop="-8dp"
-        android:background="@drawable/secondary_circle"
-        android:visibility="gone"
-        tools:visibility="visible"/>
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="@dimen/divider_margin"
+        android:background="@color/dividers"/>
 
 </FrameLayout>

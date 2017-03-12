@@ -34,4 +34,10 @@
         <item name="android:textColor">@color/secondaryText</item>
     </style>
 
+    <style name="ContentText">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/primaryText</item>
+    </style>
+
 </resources>

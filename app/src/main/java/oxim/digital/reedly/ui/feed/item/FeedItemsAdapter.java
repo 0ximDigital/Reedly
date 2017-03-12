@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.LinkedList;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
-import butterknife.BindColor;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import oxim.digital.reedly.R;
@@ -47,7 +47,6 @@ public final class FeedItemsAdapter extends RecyclerView.Adapter<FeedItemsAdapte
     }
 
     public void onFeedsUpdate(final List<FeedItemViewModel> feedItemViewModels) {
-        // TODO - diff utils
         this.feedItemViewModels = feedItemViewModels;
         notifyDataSetChanged();
     }
@@ -85,16 +84,10 @@ public final class FeedItemsAdapter extends RecyclerView.Adapter<FeedItemsAdapte
         TextView publicationDate;
 
         @Bind(R.id.feed_item_favourite_indicator)
-        View favouriteIndicator;
+        ImageView favouriteIndicator;
 
         @Bind(R.id.feed_item_new_indicator)
         View newIndicator;
-
-        @BindColor(R.color.favouritePink)
-        int favouriteIndicatorColor;
-
-        @BindColor(R.color.unFavouriteGray)
-        int unFavouriteIndicatorColor;
 
         private final Subject<FeedItemViewModel, FeedItemViewModel> clickSubject;
         private final Subject<FeedItemViewModel, FeedItemViewModel> favouriteClickSubject;
@@ -113,7 +106,7 @@ public final class FeedItemsAdapter extends RecyclerView.Adapter<FeedItemsAdapte
             this.feedItemViewModel = feedItemViewModel;
             title.setText(feedItemViewModel.title);
             publicationDate.setText(feedItemViewModel.publicationDate);
-            favouriteIndicator.setBackgroundColor(feedItemViewModel.isFavourite ? favouriteIndicatorColor : unFavouriteIndicatorColor);
+            favouriteIndicator.setImageResource(feedItemViewModel.isFavourite ? R.drawable.ic_favorite : R.drawable.ic_not_favorite);
             newIndicator.setVisibility(feedItemViewModel.isNew ? View.VISIBLE : View.GONE);
         }
 
