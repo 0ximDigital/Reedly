@@ -56,6 +56,7 @@ public final class FeedItemContentFragment extends BaseFragment implements FeedI
 
     private void setupWebView(final String url) {
         feedItemContentWebView.setWebViewClient(new FeedItemClient(url));
+        feedItemContentWebView.getSettings().setJavaScriptEnabled(true);
         feedItemContentWebView.loadUrl(url);
     }
 
