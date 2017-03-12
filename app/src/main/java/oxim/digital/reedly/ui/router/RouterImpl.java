@@ -77,7 +77,7 @@ public final class RouterImpl implements Router {
         if (destinationFragment == null) {
             destinationFragment = destinationFragmentFactory.call();
             fragmentManager.beginTransaction()
-                           .setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out, R.anim.fragment_fade_in, R.anim.fragment_fade_out)
+                           .setCustomAnimations(R.anim.fragment_left_enter, R.anim.fragment_right_exit, R.anim.fragment_right_enter, R.anim.fragment_left_exit)
                            .addToBackStack(null)
                            .hide(sourceFragment)
                            .add(R.id.activity_container, destinationFragment, FeedItemsFragment.TAG)

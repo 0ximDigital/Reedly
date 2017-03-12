@@ -6,44 +6,49 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:selectableItemBackground"
-    android:minHeight="72dp">
+    android:minHeight="@dimen/feed_list_item_min_height">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/small_margin"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:paddingBottom="@dimen/small_margin"
+        android:paddingTop="@dimen/small_margin">
 
         <ImageView
             android:id="@+id/feed_image"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/feed_image_size"
+            android:layout_height="@dimen/feed_image_size"
             android:layout_gravity="center_vertical"
-            android:padding="4dp"
+            android:layout_marginBottom="@dimen/smallest_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginTop="@dimen/smallest_margin"
             android:src="@drawable/secondary_circle"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/feed_title"
+                style="@style/TitleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 tools:text="xkcd.com"/>
 
             <TextView
                 android:id="@+id/feed_description"
+                style="@style/DescriptionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/half_margin"
                 android:ellipsize="end"
-                android:maxLines="4"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                tools:text="Lorem ipsum categorized libraries "/>
+                android:maxLines="3"
+                tools:text="Lorem ipsum categorized libraries"/>
 
         </LinearLayout>
 
@@ -59,5 +64,12 @@
         android:background="@drawable/secondary_circle"
         android:visibility="gone"
         tools:visibility="visible"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="72dp"
+        android:background="@color/dividers"/>
 
 </FrameLayout>

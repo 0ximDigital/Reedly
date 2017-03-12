@@ -64,8 +64,9 @@ public final class NewFeedSubscriptionFragment extends BaseFragment implements N
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        feedUrlInput.setText("https://www.reddit.com/r/androiddev/new.rss");
+//        feedUrlInput.setText("https://www.reddit.com/r/androiddev/new.rss");
 //        feedUrlInput.setText("https://xkcd.com/rss.xml");
+        feedUrlInput.setText("http://android-developers.blogspot.com/feeds/posts/default?alt=rss");
     }
 
     @Override
@@ -110,5 +111,10 @@ public final class NewFeedSubscriptionFragment extends BaseFragment implements N
     @OnClick(R.id.add_feed_button)
     public void onAddFeedButtonClick() {
         presenter.addNewFeed(feedUrlInput.getText().toString());
+    }
+
+    @OnClick(R.id.dialog_background)
+    public void onDialogBackgroundClick() {
+        actionRouter.throttle(() -> presenter.back());
     }
 }

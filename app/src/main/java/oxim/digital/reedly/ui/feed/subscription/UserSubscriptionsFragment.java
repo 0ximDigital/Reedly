@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.lang.annotation.Retention;
 import java.util.List;
@@ -50,7 +49,7 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
     RecyclerView userFeedsRecyclerView;
 
     @Bind(R.id.empty_state_view)
-    TextView emptyStateView;
+    View emptyStateView;
 
     @Bind(R.id.add_new_feed_button)
     FloatingActionButton actionButton;
@@ -121,10 +120,12 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
 
     private void setupAddFeedViewState() {
         actionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+        actionButton.setImageResource(R.drawable.ic_add);
     }
 
     private void setupDeleteFeedViewState() {
-        actionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+        actionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.dangerRed)));
+        actionButton.setImageResource(R.drawable.ic_delete);
     }
 
     public void refreshUserSubscriptions() {
@@ -146,6 +147,11 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
     public void showFeedSubscriptions(final List<FeedViewModel> feedSubscriptions) {
         setViewState(ADD_FEED);
         feedAdapter.onFeedsUpdate(feedSubscriptions);
+        adjustEmptyState(feedSubscriptions.isEmpty());
+    }
+
+    private void adjustEmptyState(final boolean isViewEmpty) {
+        emptyStateView.setVisibility(isViewEmpty ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -172,7 +178,7 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
         }
     }
 
-    @OnClick(R.id.favourite_feed_items_button)
+    @OnClick(R.id.show_favourites_button)
     public void onShowFavouriteFeedItemsButtonClick() {
         presenter.showFavouriteFeedItems();
     }

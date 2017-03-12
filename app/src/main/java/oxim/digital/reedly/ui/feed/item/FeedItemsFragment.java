@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,9 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
 
     @Inject
     FeedItemsContract.Presenter presenter;
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     @Bind(R.id.feed_items_recycler_view)
     RecyclerView feedItemsRecyclerView;
@@ -89,6 +93,7 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
 
     @Override
     public void showFeedItems(final List<FeedItemViewModel> feedItems) {
+        toolbar.setTitle("newest submissions : androiddev");
         feedItemsAdapter.onFeedsUpdate(feedItems);
     }
 
