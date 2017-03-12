@@ -35,9 +35,9 @@ public final class ReedlyApplication extends Application {
         FlowManager.init(new FlowConfig.Builder(this).build());
         checkForBackgroundUpdate();
 
-        if (BuildConfig.DEBUG) {
-            Stetho.initializeWithDefaults(this);
-        }
+//        if (BuildConfig.DEBUG) {
+//            Stetho.initializeWithDefaults(this);
+//        }
     }
 
     private void checkForBackgroundUpdate() {

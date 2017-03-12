@@ -33,7 +33,6 @@ public abstract class BaseFragment extends DaggerFragment implements BaseView, B
         isViewRecreated = (savedInstanceState != null);
         viewId = (savedInstanceState == null) ? viewIdGenerator.newId()
                                               : savedInstanceState.getString(KEY_VIEW_ID);
-        Log.i("FRAG", "initialized view, id -> " + viewId + ", isRecreated -> " + isViewRecreated);
     }
 
     @Override

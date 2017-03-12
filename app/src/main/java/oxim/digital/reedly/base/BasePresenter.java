@@ -48,7 +48,6 @@ public abstract class BasePresenter<View extends BaseView> implements ScopedPres
 
     public BasePresenter(final View view) {
         viewReference = new WeakReference<>(view);
-        Log.i("PRES", "Created presenter for -> " + view);
     }
 
     @Override
@@ -56,7 +55,6 @@ public abstract class BasePresenter<View extends BaseView> implements ScopedPres
     public void start() {
         viewId = getIfViewNotNull(BaseView::getViewId, "");
         viewActionQueue = viewActionQueueProvider.queueFor(viewId);
-        Log.i("PRES", "Started presenter for -> " + viewId);
         subscribeToConnectivityChange();
     }
 
@@ -74,7 +72,6 @@ public abstract class BasePresenter<View extends BaseView> implements ScopedPres
     @Override
     @CallSuper
     public void activate() {
-        Log.i("PRES", "Activating");
         viewActionsSubscription = viewActionQueue.viewActionsObservable()
                                                  .observeOn(mainThreadScheduler)
                                                  .subscribe(this::onViewAction);
@@ -88,7 +85,6 @@ public abstract class BasePresenter<View extends BaseView> implements ScopedPres
     @Override
     @CallSuper
     public void deactivate() {
-        Log.i("PRES", "Deactivate");
         viewActionQueue.pause();
         viewActionsSubscription.unsubscribe();
         subscriptions.clear();
@@ -97,7 +93,6 @@ public abstract class BasePresenter<View extends BaseView> implements ScopedPres
     @Override
     @CallSuper
     public void destroy() {
-        Log.i("PRES", "Destroy");
         viewActionQueue.destroy();
         viewActionQueueProvider.dispose(viewId);
     }

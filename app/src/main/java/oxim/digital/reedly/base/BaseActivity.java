@@ -45,7 +45,6 @@ public abstract class BaseActivity extends DaggerActivity implements BaseView {
         isViewRecreated = (savedInstanceState != null);
         viewId = (savedInstanceState == null) ? viewIdGenerator.newId()
                                               : savedInstanceState.getString(KEY_VIEW_ID);
-        Log.i("ACT", "initialized view, id -> " + viewId + ", isRecreated -> " + isViewRecreated);
     }
 
     @Override
