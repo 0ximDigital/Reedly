@@ -1,5 +1,7 @@
 package oxim.digital.reedly.ui.feed.create;
 
+import android.database.sqlite.SQLiteConstraintException;
+
 import javax.inject.Inject;
 
 import oxim.digital.reedly.base.BasePresenter;
@@ -16,15 +18,17 @@ public final class NewFeedSubscriptionPresenter extends BasePresenter<NewFeedSub
 
     @Override
     public void addNewFeed(final String feedUrl) {
-        // TODO - check internet connection
-        // TODO - check for duplicate entry - in the use case -> specified error
+        doIfConnectedToInternet(() -> initiateNewFeedAddition(feedUrl), this::showNoInternetConnection);
+    }
+
+    private void initiateNewFeedAddition(final String feedUrl) {
         doIfViewNotNull(view -> view.showIsLoading(true));
         viewActionQueue.subscribeTo(addNewFeedUseCase.execute(feedUrl), this::onAddNewFeedCompletion, this::onAddNewFeedError);
     }
 
     private void onAddNewFeedCompletion(final NewFeedSubscriptionContract.View view) {
         view.showIsLoading(false);
-        router.goBack();
+        back();
         router.showUserSubscriptionsScreen();
     }
 
@@ -32,7 +36,19 @@ public final class NewFeedSubscriptionPresenter extends BasePresenter<NewFeedSub
         logError(throwable);
         doIfViewNotNull(view -> {
             view.showIsLoading(false);
-            view.showMessage("Incorrect feed URL, please check and try again");
+            view.showMessage((throwable instanceof SQLiteConstraintException) ? "You are already subscribed to this feed dummy :)"
+                                                                              : "Incorrect feed URL, please check and try again");
         });
     }
+
+    private void showNoInternetConnection() {
+        doIfViewNotNull(view -> view.showMessage("Please check internet connection"));
+    }
+
+    @Override
+    public void back() {
+        destroy();
+        router.hideAddNewFeedScreen();
+    }
 }
+

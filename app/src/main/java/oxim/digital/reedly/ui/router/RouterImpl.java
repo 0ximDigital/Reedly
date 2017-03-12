@@ -96,8 +96,18 @@ public final class RouterImpl implements Router {
     public void showAddNewFeedScreen() {
         final Fragment fragment = NewFeedSubscriptionFragment.newInstance();
         fragmentManager.beginTransaction()
-                       .addToBackStack(null)    // TODO - we wil handle this ourselves
-                       .add(R.id.activity_container, fragment, FeedItemsFragment.TAG)
+//                       .addToBackStack(null)
+                       .add(R.id.activity_container, fragment, NewFeedSubscriptionFragment.TAG)
                        .commit();
+    }
+
+    @Override
+    public void hideAddNewFeedScreen() {
+        final Fragment fragment = fragmentManager.findFragmentByTag(NewFeedSubscriptionFragment.TAG);
+        if (fragment != null) {
+            fragmentManager.beginTransaction()
+                           .remove(fragment)
+                           .commit();
+        }
     }
 }

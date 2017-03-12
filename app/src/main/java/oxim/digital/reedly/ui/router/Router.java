@@ -16,4 +16,6 @@ public interface Router {
 
     void showAddNewFeedScreen();
 
+    void hideAddNewFeedScreen();
+
 }

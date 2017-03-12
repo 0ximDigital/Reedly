@@ -9,6 +9,8 @@ import rx.Single;
 
 public final class GetFeedItemsUseCase implements SingleUseCaseWithParameter<Integer, List<FeedItem>> {
 
+    // TODO Pagination
+
     private final FeedRepository feedRepository;
 
     public GetFeedItemsUseCase(final FeedRepository feedRepository) {

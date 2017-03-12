@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.CardView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import oxim.digital.reedly.base.BaseFragment;
 import oxim.digital.reedly.base.ScopedPresenter;
 import oxim.digital.reedly.dagger.fragment.FragmentComponent;
 import oxim.digital.reedly.domain.util.ActionRouter;
+import rx.functions.Action1;
 
 public final class NewFeedSubscriptionFragment extends BaseFragment implements NewFeedSubscriptionContract.View {
 
@@ -67,6 +70,8 @@ public final class NewFeedSubscriptionFragment extends BaseFragment implements N
 //        feedUrlInput.setText("https://www.reddit.com/r/androiddev/new.rss");
         feedUrlInput.setText("https://xkcd.com/rss.xml");
 //        feedUrlInput.setText("http://android-developers.blogspot.com/feeds/posts/default?alt=rss");
+
+        feedUrlInput.addTextChangedListener(new ActionTextWatcher(text -> clearMessage()));
     }
 
     @Override
@@ -116,5 +121,29 @@ public final class NewFeedSubscriptionFragment extends BaseFragment implements N
     @OnClick(R.id.dialog_background)
     public void onDialogBackgroundClick() {
         actionRouter.throttle(() -> presenter.back());
+    }
+
+    private static final class ActionTextWatcher implements TextWatcher {
+
+        private final Action1<CharSequence> onTextChangedAction;
+
+        public ActionTextWatcher(final Action1<CharSequence> onTextChangedAction) {
+            this.onTextChangedAction = onTextChangedAction;
+        }
+
+        @Override
+        public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
+            onTextChangedAction.call(charSequence);
+        }
+
+        @Override
+        public void afterTextChanged(final Editable editable) {
+
+        }
     }
 }

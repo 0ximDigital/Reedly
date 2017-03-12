@@ -91,7 +91,7 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
                    .subscribe(this::onFeedClicked);
         feedAdapter.onItemLongClick()
                    .subscribe(this::onFeedSelected);
-        feedsLayoutManager = new LinearLayoutManager(null);             // TODO - inject this
+        feedsLayoutManager = new LinearLayoutManager(null);             // TODO - inject this, save its state on orientation change
         userFeedsRecyclerView.setLayoutManager(feedsLayoutManager);
     }
 
