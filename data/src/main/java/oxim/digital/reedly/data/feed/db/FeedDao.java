@@ -30,4 +30,6 @@ public interface FeedDao {
     Completable unFavouriteFeedItem(final int feedItemId);
 
     Single<Long> getUnreadFeedItemsCount();
+
+    Single<List<FeedItem>> getFavouriteFeedItems();
 }

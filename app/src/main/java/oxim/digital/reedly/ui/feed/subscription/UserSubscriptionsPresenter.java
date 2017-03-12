@@ -81,6 +81,11 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
                                     Throwable::printStackTrace);
     }
 
+    @Override
+    public void showFavouriteFeedItems() {
+        router.showFavouriteFeedItemsScreen();
+    }
+
     private void fetchUserFeeds() {
         viewActionQueue.subscribeTo(getUserFeedsUseCase.execute()
                                                        .doOnSuccess(this::updateUserFeeds)

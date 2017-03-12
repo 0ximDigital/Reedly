@@ -17,6 +17,8 @@ public interface FeedItemsContract {
 
         void fetchFeedItems(int feedId);
 
+        void fetchFavouriteFeedItems();
+
         void showItemContent(FeedItemViewModel feedItemViewModel);
 
         void markFeedItemAsRead(int feedItemId);

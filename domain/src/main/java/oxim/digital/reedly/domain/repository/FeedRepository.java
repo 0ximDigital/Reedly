@@ -28,4 +28,6 @@ public interface FeedRepository {
     Completable unFavouriteFeedItem(int feedItemId);
 
     Single<Long> getUnreadFeedItemsCount();
+
+    Single<List<FeedItem>> getFavouriteFeedItems();
 }

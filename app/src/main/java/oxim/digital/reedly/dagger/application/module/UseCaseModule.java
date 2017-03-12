@@ -7,6 +7,7 @@ import dagger.Provides;
 import oxim.digital.reedly.domain.interactor.AddNewFeedUseCase;
 import oxim.digital.reedly.domain.interactor.DeleteFeedUseCase;
 import oxim.digital.reedly.domain.interactor.FavouriteFeedItemUseCase;
+import oxim.digital.reedly.domain.interactor.GetFavouriteFeedItemsUseCase;
 import oxim.digital.reedly.domain.interactor.GetFeedItemsUseCase;
 import oxim.digital.reedly.domain.interactor.GetUnreadFeedItemsCountUseCase;
 import oxim.digital.reedly.domain.interactor.GetUserFeedsUseCase;
@@ -79,6 +80,12 @@ public final class UseCaseModule {
         return new GetUnreadFeedItemsCountUseCase(feedRepository);
     }
 
+    @Provides
+    @Singleton
+    GetFavouriteFeedItemsUseCase provideGetFavouriteFeedItemsUseCase(final FeedRepository feedRepository) {
+        return new GetFavouriteFeedItemsUseCase(feedRepository);
+    }
+
     public interface Exposes {
 
         GetUserFeedsUseCase getUserSubscribedFeedsUseCase();
@@ -100,5 +107,7 @@ public final class UseCaseModule {
         UnFavouriteFeedItemUseCase unFavouriteFeedItemUseCase();
 
         GetUnreadFeedItemsCountUseCase getUnreadFeedItemsCountUseCase();
+
+        GetFavouriteFeedItemsUseCase getFavouriteFeedItemsUseCase();
     }
 }

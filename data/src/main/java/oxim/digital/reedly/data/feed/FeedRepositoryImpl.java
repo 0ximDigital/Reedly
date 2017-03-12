@@ -83,4 +83,9 @@ public final class FeedRepositoryImpl implements FeedRepository {
     public Single<Long> getUnreadFeedItemsCount() {
         return Single.defer(feedDao::getUnreadFeedItemsCount);
     }
+
+    @Override
+    public Single<List<FeedItem>> getFavouriteFeedItems() {
+        return Single.defer(feedDao::getFavouriteFeedItems);
+    }
 }

@@ -22,5 +22,7 @@ public interface UserSubscriptionsContract {
         void updateUserSubscriptions();
 
         void unsubscribeFromFeed(FeedViewModel selectedFeedModel);
+
+        void showFavouriteFeedItems();
     }
 }

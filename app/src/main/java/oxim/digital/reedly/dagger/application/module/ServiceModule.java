@@ -30,7 +30,7 @@ import oxim.digital.reedly.ui.feed.background.NotificationFactory;
 public final class ServiceModule {
 
     private static final int FEEDS_UPDATE_JOB_ID = 1978;
-    private static final int FEEDS_UPDATE_INTERVAL_MINS = 1;        // TODO - bump to 10 mins
+    private static final int FEEDS_UPDATE_INTERVAL_MINS = 30;
 
     @Provides
     @Singleton

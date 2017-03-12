@@ -123,6 +123,20 @@ public class FeedDaoImpl implements FeedDao {
                                                .count());
     }
 
+    @Override
+    public Single<List<FeedItem>> getFavouriteFeedItems() {
+        return Single.fromCallable(this::innerGetFavouriteFeedItems);
+    }
+
+    private List<FeedItem> innerGetFavouriteFeedItems() {
+        return Stream.of(SQLite.select()
+                               .from(FeedItemModel.class)
+                               .where(FeedItemModel_Table.isFavourite.eq(true))
+                               .queryList())
+                     .map(feedModelConverter::modelToDomain)
+                     .collect(Collectors.toList());
+    }
+
     private void setFavouriteToFeedItem(final boolean isFavourite, final int feedItemId) {
         SQLite.update(FeedItemModel.class)
               .set(FeedItemModel_Table.isFavourite.eq(isFavourite))

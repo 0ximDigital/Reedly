@@ -167,4 +167,9 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
             presenter.unsubscribeFromFeed(selectedFeedModel);
         }
     }
+
+    @OnClick(R.id.favourite_feed_items_button)
+    public void onShowFavouriteFeedItemsButtonClick() {
+        presenter.showFavouriteFeedItems();
+    }
 }

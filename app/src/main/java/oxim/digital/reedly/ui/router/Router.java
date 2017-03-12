@@ -8,6 +8,8 @@ public interface Router {
 
     void showUserSubscriptionsScreen();
 
+    void showFavouriteFeedItemsScreen();
+
     void showFeedItemsScreen(int feedId);
 
     void showFeedItemContentScreen(String contentUrl);

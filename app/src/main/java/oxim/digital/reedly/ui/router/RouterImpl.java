@@ -46,7 +46,13 @@ public final class RouterImpl implements Router {
         if (fragment != null) {
             fragment.refreshUserSubscriptions();
         }
-        // TODO - fragment should always be != null, handle this just in case
+    }
+
+    @Override
+    public void showFavouriteFeedItemsScreen() {
+        advanceToFragment(FeedItemsFragment.TAG, UserSubscriptionsFragment.TAG,
+                          FeedItemsFragment::newInstance,
+                          FeedItemsFragment::setFavouriteItems);
     }
 
     @Override

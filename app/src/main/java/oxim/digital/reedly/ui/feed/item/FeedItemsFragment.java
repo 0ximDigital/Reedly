@@ -25,6 +25,7 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
     public static final String TAG = FeedItemsFragment.class.getSimpleName();
 
     private static final String KEY_ITEMS_FEED_ID = "key_items_feed_id";
+    private static final String KEY_FAVOURITE_ITEMS = "KEY_FAVOURITE_ITEMS";
 
     @Inject
     FeedItemsContract.Presenter presenter;
@@ -35,10 +36,20 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
     private RecyclerView.LayoutManager feedItemsLayoutManager;
     private FeedItemsAdapter feedItemsAdapter;
 
+    private boolean areFavouriteItems;
+
     public static FeedItemsFragment newInstance(final int feedId) {
         final FeedItemsFragment fragment = new FeedItemsFragment();
         final Bundle arguments = new Bundle();
         arguments.putInt(KEY_ITEMS_FEED_ID, feedId);
+        fragment.setArguments(arguments);
+        return fragment;
+    }
+
+    public static FeedItemsFragment newInstance() {
+        final FeedItemsFragment fragment = new FeedItemsFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putBoolean(KEY_FAVOURITE_ITEMS, true);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -59,11 +70,20 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
     }
 
     private void extractArguments(final Bundle arguments) {
-        updateFeedId(arguments.getInt(KEY_ITEMS_FEED_ID));
+        if (arguments.getBoolean(KEY_FAVOURITE_ITEMS, false)) {
+            setFavouriteItems();
+        } else {
+            updateFeedId(arguments.getInt(KEY_ITEMS_FEED_ID));
+        }
     }
 
     public void updateFeedId(final int feedId) {
         presenter.fetchFeedItems(feedId);
+    }
+
+    public void setFavouriteItems() {
+        areFavouriteItems = true;
+        presenter.fetchFavouriteFeedItems();
     }
 
     @Override

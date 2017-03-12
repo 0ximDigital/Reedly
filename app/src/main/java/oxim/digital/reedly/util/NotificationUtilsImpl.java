@@ -16,7 +16,6 @@ public final class NotificationUtilsImpl implements NotificationUtils {
 
     @Override
     public void showNotification(final int notificationId, final Notification notification) {
-        Log.e("NotificationUtils", "Showing notification -> " + notificationId);
         notificationManagerCompat.notify(notificationId, notification);
     }
 
