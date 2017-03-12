@@ -128,6 +128,8 @@ public final class RevealFillView extends View {
         if (opacityAnimator.isRunning()) {
             opacityAnimator.cancel();
         }
+        this.x = getWidth() / 2;
+        this.y = getHeight() / 2;
         setAlpha(1.0f);
         final int maxDrawRadius = (int) Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) + 10;
         final ValueAnimator radiusAnimator = reversed ? ValueAnimator.ofInt(maxDrawRadius, 0) : ValueAnimator.ofInt(0, maxDrawRadius);

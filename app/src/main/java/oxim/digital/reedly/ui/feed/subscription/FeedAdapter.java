@@ -128,7 +128,7 @@ public final class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedView
 
         public void setItem(final FeedViewModel feedViewModel) {
             this.feedViewModel = feedViewModel;
-            imageLoader.loadImage(feedViewModel.imageUrl, feedImage, R.drawable.secondary_circle, R.drawable.secondary_circle);
+            imageLoader.loadImage(feedViewModel.imageUrl, feedImage, R.drawable.feed_icon, R.drawable.feed_icon);
             feedTitle.setText(feedViewModel.title);
             feedDescription.setText(feedViewModel.description);
             if (feedViewModel.isSelected) {
