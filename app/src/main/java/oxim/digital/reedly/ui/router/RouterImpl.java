@@ -56,10 +56,10 @@ public final class RouterImpl implements Router {
     }
 
     @Override
-    public void showFeedItemsScreen(final int feedId) {
+    public void showFeedItemsScreen(final int feedId, final String feedTitle) {
         advanceToFragment(FeedItemsFragment.TAG, UserSubscriptionsFragment.TAG,
-                          () -> FeedItemsFragment.newInstance(feedId),
-                          feedItemsFragment -> feedItemsFragment.updateFeedId(feedId));
+                          () -> FeedItemsFragment.newInstance(feedId, feedTitle),
+                          feedItemsFragment -> feedItemsFragment.updateFeed(feedId, feedTitle));
     }
 
     @Override

@@ -10,7 +10,7 @@ public interface Router {
 
     void showFavouriteFeedItemsScreen();
 
-    void showFeedItemsScreen(int feedId);
+    void showFeedItemsScreen(int feedId, String feedTitle);
 
     void showFeedItemContentScreen(String contentUrl);
 

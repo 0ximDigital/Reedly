@@ -58,7 +58,7 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
 
     @Override
     public void showFeedItems(final FeedViewModel feedViewModel) {
-        router.showFeedItemsScreen(feedViewModel.id);
+        router.showFeedItemsScreen(feedViewModel.id, feedViewModel.title);
     }
 
     @Override

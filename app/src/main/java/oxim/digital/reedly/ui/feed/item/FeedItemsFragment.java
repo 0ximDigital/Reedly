@@ -1,13 +1,14 @@
 package oxim.digital.reedly.ui.feed.item;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -26,13 +27,17 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
     public static final String TAG = FeedItemsFragment.class.getSimpleName();
 
     private static final String KEY_ITEMS_FEED_ID = "key_items_feed_id";
-    private static final String KEY_FAVOURITE_ITEMS = "KEY_FAVOURITE_ITEMS";
+    private static final String KEY_FEED_TITLE = "key_feed_title";
+    private static final String KEY_FAVOURITE_ITEMS = "key_favourite_items";
 
     @Inject
     FeedItemsContract.Presenter presenter;
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    @Inject
+    Resources resources;
+
+    @Bind(R.id.feedTitle)
+    TextView feedTitle;
 
     @Bind(R.id.feed_items_recycler_view)
     RecyclerView feedItemsRecyclerView;
@@ -42,10 +47,11 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
 
     private boolean areFavouriteItems;
 
-    public static FeedItemsFragment newInstance(final int feedId) {
+    public static FeedItemsFragment newInstance(final int feedId, final String feedTitle) {
         final FeedItemsFragment fragment = new FeedItemsFragment();
         final Bundle arguments = new Bundle();
         arguments.putInt(KEY_ITEMS_FEED_ID, feedId);
+        arguments.putString(KEY_FEED_TITLE, feedTitle);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -77,13 +83,18 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
         if (arguments.getBoolean(KEY_FAVOURITE_ITEMS, false)) {
             setFavouriteItems();
         } else {
-            updateFeedId(arguments.getInt(KEY_ITEMS_FEED_ID));
+            updateFeed(arguments.getInt(KEY_ITEMS_FEED_ID), arguments.getString(KEY_FEED_TITLE, resources.getString(R.string.app_name)));
         }
     }
 
-    public void updateFeedId(final int feedId) {
+    public void updateFeed(final int feedId, final String feedTitle) {
         areFavouriteItems = false;
+        updateTitle(feedTitle);
         presenter.fetchFeedItems(feedId);
+    }
+
+    private void updateTitle(final String feedTitle) {
+        this.feedTitle.setText(feedTitle);
     }
 
     public void setFavouriteItems() {
@@ -93,12 +104,11 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
 
     @Override
     public void showFeedItems(final List<FeedItemViewModel> feedItems) {
-        toolbar.setTitle("newest submissions : androiddev");
         feedItemsAdapter.onFeedsUpdate(feedItems);
     }
 
     private void initializeRecyclerView() {
-        if (feedItemsRecyclerView.getAdapter() == null) {   // TODO - provjeri dal ovo ima smisla kod configuration changea
+        if (feedItemsRecyclerView.getAdapter() == null) {
             feedItemsAdapter = new FeedItemsAdapter();
             feedItemsRecyclerView.setAdapter(feedItemsAdapter);
         } else {
@@ -108,7 +118,7 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
                         .subscribe(this::onFeedItemSelected);
         feedItemsAdapter.onFavouriteItemClick()
                         .subscribe(this::onFeedItemFavouriteChanged);
-        feedItemsLayoutManager = new LinearLayoutManager(null);             // TODO - inject this
+        feedItemsLayoutManager = new LinearLayoutManager(null);
         feedItemsRecyclerView.setLayoutManager(feedItemsLayoutManager);
     }
 
