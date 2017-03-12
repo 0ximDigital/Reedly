@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.lang.annotation.Retention;
 import java.util.List;
@@ -54,10 +55,14 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
     @Bind(R.id.add_new_feed_button)
     FloatingActionButton actionButton;
 
+    @Bind(R.id.toggle_notifications_button)
+    ImageView backgroundUpdatesNotification;
+
     private RecyclerView.LayoutManager feedsLayoutManager;
     private FeedAdapter feedAdapter;
 
     private FeedViewModel selectedFeedModel = FeedViewModel.EMPTY;
+    private boolean isBackgroundFeedUpdateEnabled;
 
     @ViewState
     private int viewState = ADD_FEED;
@@ -150,6 +155,12 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
         adjustEmptyState(feedSubscriptions.isEmpty());
     }
 
+    @Override
+    public void setIsBackgroundFeedUpdateEnabled(final boolean isEnabled) {
+        isBackgroundFeedUpdateEnabled = isEnabled;
+        backgroundUpdatesNotification.setImageResource(isEnabled ? R.drawable.ic_active_notification : R.drawable.ic_inactive_notification);
+    }
+
     private void adjustEmptyState(final boolean isViewEmpty) {
         emptyStateView.setVisibility(isViewEmpty ? View.VISIBLE : View.GONE);
     }
@@ -181,5 +192,14 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
     @OnClick(R.id.show_favourites_button)
     public void onShowFavouriteFeedItemsButtonClick() {
         presenter.showFavouriteFeedItems();
+    }
+
+    @OnClick(R.id.toggle_notifications_button)
+    public void onToggleBackgroundFeedsUpdateButtonClick() {
+        if (isBackgroundFeedUpdateEnabled) {
+            presenter.disableBackgroundFeedUpdates();
+        } else {
+            presenter.enableBackgroundFeedUpdates();
+        }
     }
 }

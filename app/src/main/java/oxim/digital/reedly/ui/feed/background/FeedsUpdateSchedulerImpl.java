@@ -4,6 +4,8 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.util.Log;
 
+import oxim.digital.reedly.domain.repository.FeedsUpdateScheduler;
+
 public final class FeedsUpdateSchedulerImpl implements FeedsUpdateScheduler {
 
     private static final String TAG = FeedsUpdateSchedulerImpl.class.getSimpleName();
@@ -30,7 +32,6 @@ public final class FeedsUpdateSchedulerImpl implements FeedsUpdateScheduler {
     private void checkScheduleResult(final int scheduleResult) {
         if (scheduleResult != JobScheduler.RESULT_SUCCESS) {
             Log.e(TAG, "Failed to schedule background feeds update");
-            // TODO - crashlytics
         }
     }
 }

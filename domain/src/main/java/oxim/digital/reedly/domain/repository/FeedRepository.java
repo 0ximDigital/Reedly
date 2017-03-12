@@ -30,4 +30,8 @@ public interface FeedRepository {
     Single<Long> getUnreadFeedItemsCount();
 
     Single<List<FeedItem>> getFavouriteFeedItems();
+
+    Single<Boolean> shouldUpdateFeedsInBackground();
+
+    Completable setShouldUpdateFeedsInBackground(boolean shouldUpdate);
 }

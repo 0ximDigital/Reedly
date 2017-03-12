@@ -20,7 +20,7 @@ import oxim.digital.reedly.data.feed.service.parser.FeedParser;
 import oxim.digital.reedly.data.util.CurrentTimeProvider;
 import oxim.digital.reedly.ui.feed.background.BackgroundFeedsUpdateService;
 import oxim.digital.reedly.ui.feed.background.FeedUpdateJobInfoFactory;
-import oxim.digital.reedly.ui.feed.background.FeedsUpdateScheduler;
+import oxim.digital.reedly.domain.repository.FeedsUpdateScheduler;
 import oxim.digital.reedly.ui.feed.background.FeedsUpdateSchedulerImpl;
 import oxim.digital.reedly.ui.feed.background.JobSchedulerWrapper;
 import oxim.digital.reedly.ui.feed.background.JobSchedulerWrapperImpl;

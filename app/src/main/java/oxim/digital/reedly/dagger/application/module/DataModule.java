@@ -12,6 +12,7 @@ import oxim.digital.reedly.data.feed.db.FeedDaoImpl;
 import oxim.digital.reedly.data.feed.service.FeedService;
 import oxim.digital.reedly.data.feed.service.parser.FeedParser;
 import oxim.digital.reedly.data.feed.service.parser.FeedParserImpl;
+import oxim.digital.reedly.data.util.PreferenceUtils;
 import oxim.digital.reedly.domain.repository.FeedRepository;
 
 @Module
@@ -19,8 +20,8 @@ public final class DataModule {
 
     @Provides
     @Singleton
-    FeedRepository provideFeedRepository(final FeedService feedService, final FeedDao feedDao) {
-        return new FeedRepositoryImpl(feedService, feedDao);
+    FeedRepository provideFeedRepository(final FeedService feedService, final FeedDao feedDao, final PreferenceUtils preferenceUtils) {
+        return new FeedRepositoryImpl(feedService, feedDao, preferenceUtils);
     }
 
     @Provides

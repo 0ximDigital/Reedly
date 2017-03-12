@@ -4,6 +4,7 @@ import java.util.List;
 
 import oxim.digital.reedly.data.feed.db.FeedDao;
 import oxim.digital.reedly.data.feed.service.FeedService;
+import oxim.digital.reedly.data.util.PreferenceUtils;
 import oxim.digital.reedly.domain.model.Feed;
 import oxim.digital.reedly.domain.model.FeedItem;
 import oxim.digital.reedly.domain.repository.FeedRepository;
@@ -16,9 +17,12 @@ public final class FeedRepositoryImpl implements FeedRepository {
     private final FeedService feedService;
     private final FeedDao feedDao;
 
-    public FeedRepositoryImpl(final FeedService feedService, final FeedDao feedDao) {
+    private final PreferenceUtils preferenceUtils;
+
+    public FeedRepositoryImpl(final FeedService feedService, final FeedDao feedDao, final PreferenceUtils preferenceUtils) {
         this.feedService = feedService;
         this.feedDao = feedDao;
+        this.preferenceUtils = preferenceUtils;
     }
 
     @Override
@@ -28,7 +32,7 @@ public final class FeedRepositoryImpl implements FeedRepository {
     }
 
     @Override
-    public Single<List<FeedItem>> getFeedItems(final int feedId) {      // TODO -> cache -> db -> network/update
+    public Single<List<FeedItem>> getFeedItems(final int feedId) {
         return Single.defer(() -> feedDao.getFeedItemsForFeed(feedId))
                      .subscribeOn(Schedulers.io());
     }
@@ -39,7 +43,6 @@ public final class FeedRepositoryImpl implements FeedRepository {
                      .subscribeOn(Schedulers.io());
     }
 
-    // TODO - prior check that feed does not exist (In the use case)
     @Override
     public Completable createNewFeed(final String feedUrl) {
         return Completable.defer(() -> feedService.fetchFeed(feedUrl)
@@ -87,5 +90,15 @@ public final class FeedRepositoryImpl implements FeedRepository {
     @Override
     public Single<List<FeedItem>> getFavouriteFeedItems() {
         return Single.defer(feedDao::getFavouriteFeedItems);
+    }
+
+    @Override
+    public Single<Boolean> shouldUpdateFeedsInBackground() {
+        return Single.fromCallable(preferenceUtils::shouldUpdateFeedsInBackground);
+    }
+
+    @Override
+    public Completable setShouldUpdateFeedsInBackground(final boolean shouldUpdate) {
+        return Completable.fromAction(() -> preferenceUtils.setShouldUpdateFeedsInBackground(shouldUpdate));
     }
 }

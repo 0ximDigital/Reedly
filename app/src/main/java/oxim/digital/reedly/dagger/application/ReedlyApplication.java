@@ -4,18 +4,24 @@ import android.app.Application;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.facebook.stetho.Stetho;
+import com.raizlabs.android.dbflow.BuildConfig;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 import javax.inject.Inject;
 
 import oxim.digital.reedly.dagger.ComponentFactory;
-import oxim.digital.reedly.ui.feed.background.FeedsUpdateScheduler;
+import oxim.digital.reedly.domain.interactor.EnableBackgroundFeedUpdatesUseCase;
+import oxim.digital.reedly.domain.interactor.ShouldUpdateFeedsInBackgroundUseCase;
+import rx.Completable;
 
 public final class ReedlyApplication extends Application {
 
     @Inject
-    FeedsUpdateScheduler feedsUpdateScheduler;
+    ShouldUpdateFeedsInBackgroundUseCase shouldUpdateFeedsInBackgroundUseCase;
+
+    @Inject
+    EnableBackgroundFeedUpdatesUseCase enableBackgroundFeedUpdatesUseCase;
 
     private ApplicationComponent applicationComponent;
 
@@ -27,9 +33,19 @@ public final class ReedlyApplication extends Application {
         applicationComponent.inject(this);
 
         FlowManager.init(new FlowConfig.Builder(this).build());
-        Stetho.initializeWithDefaults(this);
+        checkForBackgroundUpdate();
 
-        feedsUpdateScheduler.scheduleBackgroundFeedUpdates();
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this);
+        }
+    }
+
+    private void checkForBackgroundUpdate() {
+        shouldUpdateFeedsInBackgroundUseCase.execute()
+                                            .flatMap(shouldUpdate -> ((shouldUpdate) ? enableBackgroundFeedUpdatesUseCase.execute()
+                                                                                     : Completable.complete())
+                                                    .toSingleDefault(true))
+                                            .subscribe();
     }
 
     public ApplicationComponent getApplicationComponent() {

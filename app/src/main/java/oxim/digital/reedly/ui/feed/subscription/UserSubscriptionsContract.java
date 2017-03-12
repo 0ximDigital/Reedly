@@ -11,6 +11,8 @@ public interface UserSubscriptionsContract {
     interface View extends BaseView {
 
         void showFeedSubscriptions(List<FeedViewModel> feedSubscriptions);
+
+        void setIsBackgroundFeedUpdateEnabled(boolean isEnabled);
     }
 
     interface Presenter extends ScopedPresenter {
@@ -24,5 +26,9 @@ public interface UserSubscriptionsContract {
         void unsubscribeFromFeed(FeedViewModel selectedFeedModel);
 
         void showFavouriteFeedItems();
+
+        void enableBackgroundFeedUpdates();
+
+        void disableBackgroundFeedUpdates();
     }
 }

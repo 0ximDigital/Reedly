@@ -9,6 +9,8 @@ import dagger.Provides;
 import oxim.digital.reedly.dagger.application.ForApplication;
 import oxim.digital.reedly.data.util.CurrentTimeProvider;
 import oxim.digital.reedly.data.util.CurrentTimeProviderImpl;
+import oxim.digital.reedly.data.util.PreferenceUtils;
+import oxim.digital.reedly.data.util.PreferenceUtilsImpl;
 import oxim.digital.reedly.data.util.connectivity.ConnectivityManagerWrapper;
 import oxim.digital.reedly.data.util.connectivity.ConnectivityManagerWrapperImpl;
 import oxim.digital.reedly.data.util.connectivity.ConnectivityReceiver;
@@ -82,6 +84,12 @@ public final class UtilsModule {
     @Singleton
     ImageLoader provideImageLoader(final @ForApplication Context context) {
         return new ImageLoaderImpl(context);
+    }
+
+    @Provides
+    @Singleton
+    PreferenceUtils providePreferenceUtils(final @ForApplication Context context) {
+        return new PreferenceUtilsImpl(context);
     }
 
     public interface Exposes {

@@ -1,4 +1,4 @@
-package oxim.digital.reedly.ui.feed.background;
+package oxim.digital.reedly.domain.repository;
 
 public interface FeedsUpdateScheduler {
 

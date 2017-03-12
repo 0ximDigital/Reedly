@@ -6,6 +6,8 @@ import dagger.Module;
 import dagger.Provides;
 import oxim.digital.reedly.domain.interactor.AddNewFeedUseCase;
 import oxim.digital.reedly.domain.interactor.DeleteFeedUseCase;
+import oxim.digital.reedly.domain.interactor.DisableBackgroundFeedUpdatesUseCase;
+import oxim.digital.reedly.domain.interactor.EnableBackgroundFeedUpdatesUseCase;
 import oxim.digital.reedly.domain.interactor.FavouriteFeedItemUseCase;
 import oxim.digital.reedly.domain.interactor.GetFavouriteFeedItemsUseCase;
 import oxim.digital.reedly.domain.interactor.GetFeedItemsUseCase;
@@ -13,9 +15,12 @@ import oxim.digital.reedly.domain.interactor.GetUnreadFeedItemsCountUseCase;
 import oxim.digital.reedly.domain.interactor.GetUserFeedsUseCase;
 import oxim.digital.reedly.domain.interactor.IsUserSubscribedToFeedUseCase;
 import oxim.digital.reedly.domain.interactor.MarkFeedItemAsReadUseCase;
+import oxim.digital.reedly.domain.interactor.SetShouldUpdateFeedsInBackground;
+import oxim.digital.reedly.domain.interactor.ShouldUpdateFeedsInBackgroundUseCase;
 import oxim.digital.reedly.domain.interactor.UnFavouriteFeedItemUseCase;
 import oxim.digital.reedly.domain.interactor.UpdateFeedUseCase;
 import oxim.digital.reedly.domain.repository.FeedRepository;
+import oxim.digital.reedly.domain.repository.FeedsUpdateScheduler;
 
 @Module
 public final class UseCaseModule {
@@ -86,6 +91,32 @@ public final class UseCaseModule {
         return new GetFavouriteFeedItemsUseCase(feedRepository);
     }
 
+    @Provides
+    @Singleton
+    ShouldUpdateFeedsInBackgroundUseCase provideShouldUpdateFeedsInBackgroundUseCase(final FeedRepository feedRepository) {
+        return new ShouldUpdateFeedsInBackgroundUseCase(feedRepository);
+    }
+
+    @Provides
+    @Singleton
+    SetShouldUpdateFeedsInBackground provideSetShouldUpdateFeedsInBackground(final FeedRepository feedRepository) {
+        return new SetShouldUpdateFeedsInBackground(feedRepository);
+    }
+
+    @Provides
+    @Singleton
+    EnableBackgroundFeedUpdatesUseCase provideEnableBackgroundFeedUpdatesUseCase(final SetShouldUpdateFeedsInBackground setShouldUpdateFeedsInBackground,
+                                                                                 final FeedsUpdateScheduler feedsUpdateScheduler) {
+        return new EnableBackgroundFeedUpdatesUseCase(setShouldUpdateFeedsInBackground, feedsUpdateScheduler);
+    }
+
+    @Provides
+    @Singleton
+    DisableBackgroundFeedUpdatesUseCase provideDisableBackgroundFeedUpdatesUseCase(final SetShouldUpdateFeedsInBackground setShouldUpdateFeedsInBackground,
+                                                                                   final FeedsUpdateScheduler feedsUpdateScheduler) {
+        return new DisableBackgroundFeedUpdatesUseCase(setShouldUpdateFeedsInBackground, feedsUpdateScheduler);
+    }
+
     public interface Exposes {
 
         GetUserFeedsUseCase getUserSubscribedFeedsUseCase();
@@ -109,5 +140,13 @@ public final class UseCaseModule {
         GetUnreadFeedItemsCountUseCase getUnreadFeedItemsCountUseCase();
 
         GetFavouriteFeedItemsUseCase getFavouriteFeedItemsUseCase();
+
+        ShouldUpdateFeedsInBackgroundUseCase shouldUpdateFeedsInBackgroundUseCase();
+
+        SetShouldUpdateFeedsInBackground setShouldUpdateFeedsInBackground();
+
+        EnableBackgroundFeedUpdatesUseCase enableBackgroundFeedUpdatesUseCase();
+
+        DisableBackgroundFeedUpdatesUseCase disableBackgroundFeedUpdatesUseCase();
     }
 }
