@@ -25,6 +25,7 @@ import oxim.digital.reedly.base.BaseFragment;
 import oxim.digital.reedly.base.ScopedPresenter;
 import oxim.digital.reedly.dagger.fragment.FragmentComponent;
 import oxim.digital.reedly.ui.feed.model.FeedViewModel;
+import oxim.digital.reedly.util.ImageLoader;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
@@ -41,6 +42,9 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
 
     @Inject
     UserSubscriptionsContract.Presenter presenter;
+
+    @Inject
+    ImageLoader imageLoader;
 
     @Bind(R.id.user_feeds_recycler_view)
     RecyclerView userFeedsRecyclerView;
@@ -79,7 +83,7 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
 
     private void initializeRecyclerView() {
         if (userFeedsRecyclerView.getAdapter() == null) {
-            feedAdapter = new FeedAdapter();
+            feedAdapter = new FeedAdapter(imageLoader);
             userFeedsRecyclerView.setAdapter(feedAdapter);
         } else {
             feedAdapter = (FeedAdapter) userFeedsRecyclerView.getAdapter();

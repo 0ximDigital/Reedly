@@ -21,6 +21,8 @@ import oxim.digital.reedly.util.ActivityUtils;
 import oxim.digital.reedly.util.ActivityUtilsImpl;
 import oxim.digital.reedly.util.DateUtils;
 import oxim.digital.reedly.util.DateUtilsImpl;
+import oxim.digital.reedly.util.ImageLoader;
+import oxim.digital.reedly.util.ImageLoaderImpl;
 import oxim.digital.reedly.util.NotificationUtils;
 import oxim.digital.reedly.util.NotificationUtilsImpl;
 import rx.schedulers.Schedulers;
@@ -76,6 +78,12 @@ public final class UtilsModule {
         return new NotificationUtilsImpl(context);
     }
 
+    @Provides
+    @Singleton
+    ImageLoader provideImageLoader(final @ForApplication Context context) {
+        return new ImageLoaderImpl(context);
+    }
+
     public interface Exposes {
 
         CollectionUtils collectionUtils();
@@ -89,5 +97,7 @@ public final class UtilsModule {
         ConnectivityReceiver connectivityReceiver();
 
         NotificationUtils notificationUtils();
+
+        ImageLoader imageLoader();
     }
 }

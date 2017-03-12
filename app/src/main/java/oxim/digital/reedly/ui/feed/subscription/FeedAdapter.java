@@ -17,6 +17,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import oxim.digital.reedly.R;
 import oxim.digital.reedly.ui.feed.model.FeedViewModel;
+import oxim.digital.reedly.util.ImageLoader;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.Subject;
@@ -25,16 +26,22 @@ public final class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedView
 
     private static final long CLICK_THROTTLE_WINDOW_MILLIS = 300L;
 
+    private final ImageLoader imageLoader;
+
     private List<FeedViewModel> feedViewModels = new ArrayList<>();
 
     private final Subject<FeedViewModel, FeedViewModel> onItemClickSubject = BehaviorSubject.create();
     private final Subject<FeedViewModel, FeedViewModel> onItemLongClickSubject = BehaviorSubject.create();
 
+    public FeedAdapter(final ImageLoader imageLoader) {
+        this.imageLoader = imageLoader;
+    }
+
     @Override
     public FeedViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         final View itemView = LayoutInflater.from(parent.getContext())
                                             .inflate(R.layout.feed_list_item, parent, false);
-        return new FeedViewHolder(itemView, onItemClickSubject, onItemLongClickSubject);
+        return new FeedViewHolder(itemView, imageLoader, onItemClickSubject, onItemLongClickSubject);
     }
 
     @Override
@@ -48,7 +55,6 @@ public final class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedView
     }
 
     public void onFeedsUpdate(final List<FeedViewModel> feedViewModels) {
-        // TODO - diff utils
         this.feedViewModels = feedViewModels;
         notifyDataSetChanged();
     }
@@ -75,22 +81,26 @@ public final class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedView
         @Bind(R.id.feed_description)
         TextView feedDescription;
 
+        private final ImageLoader imageLoader;
+
         private final Subject<FeedViewModel, FeedViewModel> clickSubject;
         private final Subject<FeedViewModel, FeedViewModel> longClickSubject;
 
         private FeedViewModel feedViewModel;
 
-        public FeedViewHolder(final View itemView, final Subject<FeedViewModel, FeedViewModel> clickSubject,
+        public FeedViewHolder(final View itemView, final ImageLoader imageLoader,
+                              final Subject<FeedViewModel, FeedViewModel> clickSubject,
                               final Subject<FeedViewModel, FeedViewModel> longClickSubject) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.imageLoader = imageLoader;
             this.clickSubject = clickSubject;
             this.longClickSubject = longClickSubject;
         }
 
         public void setItem(final FeedViewModel feedViewModel) {
             this.feedViewModel = feedViewModel;
-            // TODO - load image
+            imageLoader.loadImage(feedViewModel.imageUrl, feedImage, R.drawable.secondary_circle, R.drawable.secondary_circle);
             feedTitle.setText(feedViewModel.title);
             feedDescription.setText(feedViewModel.description);
         }

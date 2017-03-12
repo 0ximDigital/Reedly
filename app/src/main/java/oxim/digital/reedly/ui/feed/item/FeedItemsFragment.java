@@ -78,6 +78,7 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
     }
 
     public void updateFeedId(final int feedId) {
+        areFavouriteItems = false;
         presenter.fetchFeedItems(feedId);
     }
 

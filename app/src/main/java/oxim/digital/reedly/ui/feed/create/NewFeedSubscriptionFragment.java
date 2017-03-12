@@ -65,6 +65,7 @@ public final class NewFeedSubscriptionFragment extends BaseFragment implements N
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         feedUrlInput.setText("https://www.reddit.com/r/androiddev/new.rss");
+//        feedUrlInput.setText("https://xkcd.com/rss.xml");
     }
 
     @Override

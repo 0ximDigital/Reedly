@@ -21,11 +21,18 @@ public final class FeedModelConverterImpl implements FeedModelConverter {
 
     @Override
     public FeedModel apiToModel(final ApiFeed apiFeed) {
-        return new FeedModel(apiFeed.title, apiFeed.imageUrl, apiFeed.pageLink, apiFeed.description, apiFeed.url);
+        return new FeedModel(apiFeed.title, clearImageUrl(apiFeed.imageUrl), apiFeed.pageLink, apiFeed.description, apiFeed.url);
     }
 
     @Override
     public FeedItemModel apiToModel(final ApiFeedItem apiFeedItem, final int feedId) {
         return new FeedItemModel(feedId, apiFeedItem.title, apiFeedItem.link, apiFeedItem.publicationDate);
+    }
+
+    private String clearImageUrl(final String imageUrl) {
+        if (imageUrl != null && imageUrl.endsWith("/")) {
+            return imageUrl.substring(0, imageUrl.length() - 1);
+        }
+        return imageUrl;
     }
 }
