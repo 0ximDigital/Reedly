@@ -6,7 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:selectableItemBackground" android:minHeight="@dimen/feed_list_item_min_height">
+    android:background="?android:selectableItemBackground"
+    android:minHeight="@dimen/feed_list_item_min_height">
 
     <LinearLayout
         android:id="@+id/feed_container"

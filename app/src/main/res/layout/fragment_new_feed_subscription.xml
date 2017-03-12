@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/normal_margin"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/feed_url_input_top_margin"
                 android:paddingEnd="@dimen/normal_margin"
                 android:paddingStart="@dimen/normal_margin">
 
@@ -48,7 +48,7 @@
                     android:id="@+id/feed_url_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Feed URL"
+                    android:hint="@string/feed_url"
                     android:inputType="textCapWords"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:text="Add"/>
+                    android:text="@string/add"/>
             </LinearLayout>
 
         </LinearLayout>

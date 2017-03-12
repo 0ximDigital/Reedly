@@ -1,9 +1,11 @@
 package oxim.digital.reedly.ui.feed.create;
 
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteConstraintException;
 
 import javax.inject.Inject;
 
+import oxim.digital.reedly.R;
 import oxim.digital.reedly.base.BasePresenter;
 import oxim.digital.reedly.domain.interactor.AddNewFeedUseCase;
 
@@ -11,6 +13,9 @@ public final class NewFeedSubscriptionPresenter extends BasePresenter<NewFeedSub
 
     @Inject
     AddNewFeedUseCase addNewFeedUseCase;
+
+    @Inject
+    Resources resources;
 
     public NewFeedSubscriptionPresenter(final NewFeedSubscriptionContract.View view) {
         super(view);
@@ -36,13 +41,13 @@ public final class NewFeedSubscriptionPresenter extends BasePresenter<NewFeedSub
         logError(throwable);
         doIfViewNotNull(view -> {
             view.showIsLoading(false);
-            view.showMessage((throwable instanceof SQLiteConstraintException) ? "You are already subscribed to this feed dummy :)"
-                                                                              : "Incorrect feed URL, please check and try again");
+            view.showMessage((throwable instanceof SQLiteConstraintException) ? resources.getString(R.string.already_subscribed_message)
+                                                                              : resources.getString(R.string.incorrect_feed_url_message));
         });
     }
 
     private void showNoInternetConnection() {
-        doIfViewNotNull(view -> view.showMessage("Please check internet connection"));
+        doIfViewNotNull(view -> view.showMessage(resources.getString(R.string.please_check_internet_connection_message)));
     }
 
     @Override

@@ -69,15 +69,15 @@
             android:layout_marginStart="@dimen/large_margin"
             android:layout_marginTop="@dimen/feed_empty_state_text_top_margin"
             android:gravity="center"
-            android:text="Looks like you need a feed to read"
+            android:text="@string/looks_like_you_need_a_feed_to_read"
             android:textSize="@dimen/feed_empty_state_text_size"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_marginBottom="48dp"
-            android:layout_marginEnd="72dp"
+            android:layout_marginBottom="@dimen/pointer_image_bottom_margin"
+            android:layout_marginEnd="@dimen/pointer_image_end_margin"
             app:srcCompat="@drawable/pointer"/>
 
     </FrameLayout>

@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.CardView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +20,7 @@ import oxim.digital.reedly.base.BaseFragment;
 import oxim.digital.reedly.base.ScopedPresenter;
 import oxim.digital.reedly.dagger.fragment.FragmentComponent;
 import oxim.digital.reedly.domain.util.ActionRouter;
+import oxim.digital.reedly.ui.view.TextWatcherAdapter;
 import rx.functions.Action1;
 
 public final class NewFeedSubscriptionFragment extends BaseFragment implements NewFeedSubscriptionContract.View {
@@ -123,7 +122,7 @@ public final class NewFeedSubscriptionFragment extends BaseFragment implements N
         actionRouter.throttle(() -> presenter.back());
     }
 
-    private static final class ActionTextWatcher implements TextWatcher {
+    private static final class ActionTextWatcher extends TextWatcherAdapter {
 
         private final Action1<CharSequence> onTextChangedAction;
 
@@ -132,18 +131,8 @@ public final class NewFeedSubscriptionFragment extends BaseFragment implements N
         }
 
         @Override
-        public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
-
-        }
-
-        @Override
         public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
             onTextChangedAction.call(charSequence);
-        }
-
-        @Override
-        public void afterTextChanged(final Editable editable) {
-
         }
     }
 }
