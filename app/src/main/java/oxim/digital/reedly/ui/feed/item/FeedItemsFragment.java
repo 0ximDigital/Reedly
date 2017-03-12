@@ -80,12 +80,19 @@ public final class FeedItemsFragment extends BaseFragment implements FeedItemsCo
         }
         feedItemsAdapter.onItemClick()
                         .subscribe(this::onFeedItemSelected);
+        feedItemsAdapter.onFavouriteItemClick()
+                        .subscribe(this::onFeedItemFavouriteChanged);
         feedItemsLayoutManager = new LinearLayoutManager(null);             // TODO - inject this
         feedItemsRecyclerView.setLayoutManager(feedItemsLayoutManager);
     }
 
     private void onFeedItemSelected(final FeedItemViewModel feedItemViewModel) {
+        presenter.markFeedItemAsRead(feedItemViewModel.id);
         presenter.showItemContent(feedItemViewModel);
+    }
+
+    private void onFeedItemFavouriteChanged(final FeedItemViewModel feedItemViewModel) {
+        presenter.toggleFeedItemFavourite(feedItemViewModel);
     }
 
     @Override

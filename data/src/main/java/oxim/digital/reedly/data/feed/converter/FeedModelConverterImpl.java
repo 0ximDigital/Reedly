@@ -16,7 +16,7 @@ public final class FeedModelConverterImpl implements FeedModelConverter {
 
     @Override
     public FeedItem modelToDomain(final FeedItemModel model) {
-        return new FeedItem(model.getId(), model.getFeedId(), model.getTitle(), model.getLink(), model.getPublicationDate());
+        return new FeedItem(model.getId(), model.getFeedId(), model.getTitle(), model.getLink(), model.getPublicationDate(), model.isNew(), model.isFavourite());
     }
 
     @Override

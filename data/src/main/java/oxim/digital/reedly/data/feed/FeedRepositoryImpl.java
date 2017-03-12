@@ -63,4 +63,19 @@ public final class FeedRepositoryImpl implements FeedRepository {
                                                   .toCompletable())
                           .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Completable markFeedItemAsRead(final int feedItemId) {
+        return Completable.defer(() -> feedDao.markFeedItemAsRead(feedItemId));
+    }
+
+    @Override
+    public Completable favouriteFeedItem(final int feedItemId) {
+        return Completable.defer(() -> feedDao.favouriteFeedItem(feedItemId));
+    }
+
+    @Override
+    public Completable unFavouriteFeedItem(final int feedItemId) {
+        return Completable.defer(() -> feedDao.unFavouriteFeedItem(feedItemId));
+    }
 }

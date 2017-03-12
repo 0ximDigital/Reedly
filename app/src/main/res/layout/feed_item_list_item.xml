@@ -6,29 +6,59 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:selectableItemBackground"
-    android:padding="8dp">
+    android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-        <TextView
-            android:id="@+id/feed_item_title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            tools:text="Awesome news for the feed"/>
+            android:layout_gravity="bottom"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/feed_item_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            tools:text="1.1.1970"/>
+            <TextView
+                android:id="@+id/feed_item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                tools:text="Awesome news for the feed"/>
+
+            <TextView
+                android:id="@+id/feed_item_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                tools:text="1.1.1970"/>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/feed_item_favourite_indicator"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
+            android:background="#ddd"
+            android:foreground="?android:selectableItemBackgroundBorderless"/>
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/feed_item_new_indicator"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="-8dp"
+        android:layout_marginTop="-8dp"
+        android:background="@drawable/secondary_circle"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
 </FrameLayout>

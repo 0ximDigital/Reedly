@@ -20,4 +20,10 @@ public interface FeedRepository {
     Completable deleteFeed(int feedId);
 
     Completable updateFeedItems(Feed feed);
+
+    Completable markFeedItemAsRead(int feedItemId);
+
+    Completable favouriteFeedItem(int feedItemId);
+
+    Completable unFavouriteFeedItem(int feedItemId);
 }

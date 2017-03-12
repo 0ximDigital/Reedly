@@ -96,6 +96,31 @@ public class FeedDaoImpl implements FeedDao {
         return Completable.fromAction(() -> innerDeleteFeed(feedId));
     }
 
+    @Override
+    public Completable markFeedItemAsRead(final int feedItemId) {
+        return Completable.fromAction(() -> SQLite.update(FeedItemModel.class)
+                                                  .set(FeedItemModel_Table.isNew.eq(false))
+                                                  .where(FeedItemModel_Table.id.eq(feedItemId))
+                                                  .execute());
+    }
+
+    @Override
+    public Completable favouriteFeedItem(final int feedItemId) {
+        return Completable.fromAction(() -> setFavouriteToFeedItem(true, feedItemId));
+    }
+
+    @Override
+    public Completable unFavouriteFeedItem(final int feedItemId) {
+        return Completable.fromAction(() -> setFavouriteToFeedItem(false, feedItemId));
+    }
+
+    private void setFavouriteToFeedItem(final boolean isFavourite, final int feedItemId) {
+        SQLite.update(FeedItemModel.class)
+              .set(FeedItemModel_Table.isFavourite.eq(isFavourite))
+              .where(FeedItemModel_Table.id.eq(feedItemId))
+              .execute();
+    }
+
     private void innerDeleteFeed(final int feedId) {
         deleteFeedItemsForFeed(feedId);
         SQLite.delete(FeedModel.class)

@@ -33,7 +33,7 @@ public final class FeedViewModelMapperImpl implements FeedViewModeMapper {
 
     @Override
     public FeedItemViewModel mapFeedItemToViewModel(final FeedItem feedItem) {
-        return new FeedItemViewModel(feedItem.title, feedItem.link, dateUtils.format(feedItem.publicationDate, DateUtils.SHORT_DATE_FORMAT));
+        return new FeedItemViewModel(feedItem.id, feedItem.title, feedItem.link, dateUtils.format(feedItem.publicationDate, DateUtils.SHORT_DATE_FORMAT), feedItem.isNew, feedItem.isFavourite);
     }
 
     @Override

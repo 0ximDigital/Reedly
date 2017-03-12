@@ -6,9 +6,12 @@ import dagger.Module;
 import dagger.Provides;
 import oxim.digital.reedly.domain.interactor.AddNewFeedUseCase;
 import oxim.digital.reedly.domain.interactor.DeleteFeedUseCase;
+import oxim.digital.reedly.domain.interactor.FavouriteFeedItemUseCase;
 import oxim.digital.reedly.domain.interactor.GetFeedItemsUseCase;
 import oxim.digital.reedly.domain.interactor.GetUserFeedsUseCase;
 import oxim.digital.reedly.domain.interactor.IsUserSubscribedToFeedUseCase;
+import oxim.digital.reedly.domain.interactor.MarkFeedItemAsReadUseCase;
+import oxim.digital.reedly.domain.interactor.UnFavouriteFeedItemUseCase;
 import oxim.digital.reedly.domain.interactor.UpdateFeedUseCase;
 import oxim.digital.reedly.domain.repository.FeedRepository;
 
@@ -51,6 +54,24 @@ public final class UseCaseModule {
         return new UpdateFeedUseCase(feedRepository);
     }
 
+    @Provides
+    @Singleton
+    MarkFeedItemAsReadUseCase provideMarkFeedItemAsReadUseCase(final FeedRepository feedRepository) {
+        return new MarkFeedItemAsReadUseCase(feedRepository);
+    }
+
+    @Provides
+    @Singleton
+    FavouriteFeedItemUseCase provideFavouriteFeedItemUseCase(final FeedRepository feedRepository) {
+        return new FavouriteFeedItemUseCase(feedRepository);
+    }
+
+    @Provides
+    @Singleton
+    UnFavouriteFeedItemUseCase provideUnFavouriteFeedItemUseCase(final FeedRepository feedRepository) {
+        return new UnFavouriteFeedItemUseCase(feedRepository);
+    }
+
     public interface Exposes {
 
         GetUserFeedsUseCase getUserSubscribedFeedsUseCase();
@@ -64,5 +85,11 @@ public final class UseCaseModule {
         IsUserSubscribedToFeedUseCase isUserSubscribedToFeedUseCase();
 
         UpdateFeedUseCase updateFeedUseCase();
+
+        MarkFeedItemAsReadUseCase markFeedItemAsReadUseCase();
+
+        FavouriteFeedItemUseCase favouriteFeedItemUseCase();
+
+        UnFavouriteFeedItemUseCase unFavouriteFeedItemUseCase();
     }
 }

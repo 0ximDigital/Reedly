@@ -3,7 +3,10 @@ package oxim.digital.reedly.ui.feed.item;
 import javax.inject.Inject;
 
 import oxim.digital.reedly.base.BasePresenter;
+import oxim.digital.reedly.domain.interactor.FavouriteFeedItemUseCase;
 import oxim.digital.reedly.domain.interactor.GetFeedItemsUseCase;
+import oxim.digital.reedly.domain.interactor.MarkFeedItemAsReadUseCase;
+import oxim.digital.reedly.domain.interactor.UnFavouriteFeedItemUseCase;
 import oxim.digital.reedly.ui.feed.mapper.FeedViewModeMapper;
 import oxim.digital.reedly.ui.feed.model.FeedItemViewModel;
 import rx.functions.Action1;
@@ -12,6 +15,15 @@ public final class FeedItemsPresenter extends BasePresenter<FeedItemsContract.Vi
 
     @Inject
     GetFeedItemsUseCase getFeedItemsUseCase;
+
+    @Inject
+    MarkFeedItemAsReadUseCase markFeedItemAsReadUseCase;
+
+    @Inject
+    FavouriteFeedItemUseCase favouriteFeedItemUseCase;
+
+    @Inject
+    UnFavouriteFeedItemUseCase unFavouriteFeedItemUseCase;
 
     @Inject
     FeedViewModeMapper feedViewModeMapper;
@@ -31,5 +43,21 @@ public final class FeedItemsPresenter extends BasePresenter<FeedItemsContract.Vi
     @Override
     public void showItemContent(final FeedItemViewModel feedItemViewModel) {
         router.showFeedItemContentScreen(feedItemViewModel.link);
+    }
+
+    @Override
+    public void markFeedItemAsRead(final int feedItemId) {
+        viewActionQueue.subscribeTo(markFeedItemAsReadUseCase.execute(feedItemId),
+                                    view -> { },
+                                    Throwable::printStackTrace);
+    }
+
+    @Override
+    public void toggleFeedItemFavourite(final FeedItemViewModel feedItemViewModel) {
+        System.out.println("Is feed item " + feedItemViewModel.id + " favourite -> " + feedItemViewModel.isFavourite);
+        viewActionQueue.subscribeTo(feedItemViewModel.isFavourite ? unFavouriteFeedItemUseCase.execute(feedItemViewModel.id)
+                                                                  : favouriteFeedItemUseCase.execute(feedItemViewModel.id),
+                                    view -> { },
+                                    Throwable::printStackTrace);
     }
 }

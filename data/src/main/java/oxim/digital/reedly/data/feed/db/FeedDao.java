@@ -22,4 +22,10 @@ public interface FeedDao {
     Single<Boolean> doesFeedExist(String feedUrl);
 
     Completable deleteFeed(int feedId);
+
+    Completable markFeedItemAsRead(final int feedItemId);
+
+    Completable favouriteFeedItem(final int feedItemId);
+
+    Completable unFavouriteFeedItem(final int feedItemId);
 }

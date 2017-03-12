@@ -34,14 +34,26 @@ public final class FeedItemModel extends BaseModel {
     @Column
     long publicationDate;
 
+    @Column
+    boolean isNew;
+
+    @Column
+    boolean isFavourite;
+
     public FeedItemModel() {
     }
 
     public FeedItemModel(final int feedId, final String title, final String link, final long publicationDate) {
+        this(feedId, title, link, publicationDate, true, false);
+    }
+
+    public FeedItemModel(final int feedId, final String title, final String link, final long publicationDate, final boolean isNew, final boolean isFavourite) {
         this.feedId = feedId;
         this.title = title;
         this.link = link;
         this.publicationDate = publicationDate;
+        this.isNew = isNew;
+        this.isFavourite = isFavourite;
     }
 
     public int getId() {
@@ -62,5 +74,13 @@ public final class FeedItemModel extends BaseModel {
 
     public long getPublicationDate() {
         return publicationDate;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public boolean isFavourite() {
+        return isFavourite;
     }
 }
