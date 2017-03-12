@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 
 public final class NotificationUtilsImpl implements NotificationUtils {
 
@@ -15,6 +16,7 @@ public final class NotificationUtilsImpl implements NotificationUtils {
 
     @Override
     public void showNotification(final int notificationId, final Notification notification) {
+        Log.e("NotificationUtils", "Showing notification -> " + notificationId);
         notificationManagerCompat.notify(notificationId, notification);
     }
 

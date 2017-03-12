@@ -1,5 +1,6 @@
 package oxim.digital.reedly.ui.feed.background;
 
+import android.app.PendingIntent;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 
@@ -29,6 +30,12 @@ public final class BackgroundFeedsUpdateService extends JobService {
     @Inject
     NotificationUtils notificationUtils;
 
+    @Inject
+    NotificationFactory notificationFactory;
+
+    @Inject
+    PendingIntent notificationPendingIntent;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -38,31 +45,45 @@ public final class BackgroundFeedsUpdateService extends JobService {
     @Override
     public boolean onStartJob(final JobParameters jobParameters) {
         getUnreadFeedItemsCountUseCase.execute()
-                                      .flatMapObservable(unreadItemsCount -> getUserFeedsUseCase.execute()
-                                                                                                .flatMapObservable(Observable::from)
-                                                                                                .flatMap(feed -> updateFeedUseCase.execute(feed).toObservable())
-                                                                                                .flatMap(o -> getUnreadFeedItemsCountUseCase.execute().toObservable())
-                                                                                                .doOnNext(newUnreadCount -> {
-                                                                                                    if (newUnreadCount > unreadItemsCount) {
-                                                                                                        showNotification();
-                                                                                                    }
-                                                                                                }))
-                                      .doOnTerminate(() -> jobFinished(jobParameters, false))
-                                      .toCompletable()
                                       .subscribeOn(Schedulers.io())
-                                      .subscribe(this::onFeedUpdateError, () -> {
-                                      });
-
+                                      .subscribe(unreadCount -> onUnreadItemsCount(unreadCount, jobParameters),
+                                                 throwable -> handleError(throwable, jobParameters));
         return true;
     }
 
-    private void showNotification() {
-        notificationUtils.showNotification(NEW_FEED_ITEMS_NOTIFICATION_ID, NotificationFactory.createFeedUpdateNotification(getApplicationContext(), null));
+    private void onUnreadItemsCount(final long unreadItemsCount, final JobParameters jobParameters) {
+        getUserFeedsUseCase.execute()
+                           .flatMapObservable(Observable::from)
+                           .flatMap(feed -> updateFeedUseCase.execute(feed).toObservable())
+                           .toCompletable()
+                           .subscribeOn(Schedulers.io())
+                           .subscribe(throwable -> handleError(throwable, jobParameters),
+                                      () -> onUpdatedFeeds(unreadItemsCount, jobParameters));
     }
 
-    private void onFeedUpdateError(final Throwable throwable) {
-        // TODO - Crashlytics log
+    private void onUpdatedFeeds(final long unreadItemsCount, final JobParameters jobParameters) {
+        getUnreadFeedItemsCountUseCase.execute()
+                                      .subscribeOn(Schedulers.io())
+                                      .doOnSuccess(c -> jobFinished(jobParameters, false))
+                                      .subscribe(newUnreadCount -> onNewUnreadCount(unreadItemsCount, newUnreadCount),
+                                                 throwable -> handleError(throwable, jobParameters));
+    }
+
+    private void onNewUnreadCount(final long oldCount, final long newCount) {
+        if (newCount > oldCount) {
+            showNotification();
+        }
+    }
+
+    private void handleError(final Throwable throwable, final JobParameters jobParameters) {
+        // TODO - Crashlytics
         throwable.printStackTrace();
+        jobFinished(jobParameters, false);
+    }
+
+    private void showNotification() {
+        notificationUtils.showNotification(NEW_FEED_ITEMS_NOTIFICATION_ID,
+                                           notificationFactory.createFeedUpdateNotification(getApplicationContext(), notificationPendingIntent));
     }
 
     @Override

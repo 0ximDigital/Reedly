@@ -1,6 +1,7 @@
 package oxim.digital.reedly.dagger.application.module;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import javax.inject.Singleton;
 
@@ -45,6 +46,12 @@ public final class ApplicationModule {
         return new ViewActionQueueProvider();
     }
 
+    @Provides
+    @Singleton
+    Resources provideResources() {
+        return reedlyApplication.getResources();
+    }
+
     public interface Exposes {
 
         ReedlyApplication reedlyApplication();
@@ -55,5 +62,7 @@ public final class ApplicationModule {
         ViewIdGenerator viewIdGenerator();
 
         ViewActionQueueProvider viewActionQueueProvider();
+
+        Resources resources();
     }
 }

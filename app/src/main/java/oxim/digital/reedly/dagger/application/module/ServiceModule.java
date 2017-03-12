@@ -1,14 +1,18 @@
 package oxim.digital.reedly.dagger.application.module;
 
+import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import oxim.digital.reedly.MainActivity;
 import oxim.digital.reedly.dagger.application.ForApplication;
 import oxim.digital.reedly.data.feed.service.FeedService;
 import oxim.digital.reedly.data.feed.service.FeedServiceImpl;
@@ -20,12 +24,13 @@ import oxim.digital.reedly.ui.feed.background.FeedsUpdateScheduler;
 import oxim.digital.reedly.ui.feed.background.FeedsUpdateSchedulerImpl;
 import oxim.digital.reedly.ui.feed.background.JobSchedulerWrapper;
 import oxim.digital.reedly.ui.feed.background.JobSchedulerWrapperImpl;
+import oxim.digital.reedly.ui.feed.background.NotificationFactory;
 
 @Module
 public final class ServiceModule {
 
     private static final int FEEDS_UPDATE_JOB_ID = 1978;
-    private static final int FEEDS_UPDATE_INTERVAL_MINS = 30;        // TODO - bump to 10 mins
+    private static final int FEEDS_UPDATE_INTERVAL_MINS = 1;        // TODO - bump to 10 mins
 
     @Provides
     @Singleton
@@ -59,8 +64,21 @@ public final class ServiceModule {
 
     @Provides
     @Singleton
+    NotificationFactory provideNotificationFactory(final Resources resources) {
+        return new NotificationFactory(resources);
+    }
+
+    @Provides
+    @Singleton
     ComponentName provideFeedsUpdateJobService(final @ForApplication Context context) {
         return new ComponentName(context, BackgroundFeedsUpdateService.class);
+    }
+
+    @Provides
+    @Singleton
+    PendingIntent provideFeedUpdateNotificationPendingIntent(final @ForApplication Context context) {
+        final Intent targetActivityIntent = new Intent(context, MainActivity.class);
+        return PendingIntent.getActivity(context, 0, targetActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public interface Exposes {
