@@ -8,6 +8,7 @@ import oxim.digital.reedly.domain.interactor.AddNewFeedUseCase;
 import oxim.digital.reedly.domain.interactor.DeleteFeedUseCase;
 import oxim.digital.reedly.domain.interactor.FavouriteFeedItemUseCase;
 import oxim.digital.reedly.domain.interactor.GetFeedItemsUseCase;
+import oxim.digital.reedly.domain.interactor.GetUnreadFeedItemsCountUseCase;
 import oxim.digital.reedly.domain.interactor.GetUserFeedsUseCase;
 import oxim.digital.reedly.domain.interactor.IsUserSubscribedToFeedUseCase;
 import oxim.digital.reedly.domain.interactor.MarkFeedItemAsReadUseCase;
@@ -72,6 +73,12 @@ public final class UseCaseModule {
         return new UnFavouriteFeedItemUseCase(feedRepository);
     }
 
+    @Provides
+    @Singleton
+    GetUnreadFeedItemsCountUseCase provideGetUnreadFeedItemsCountUseCase(final FeedRepository feedRepository) {
+        return new GetUnreadFeedItemsCountUseCase(feedRepository);
+    }
+
     public interface Exposes {
 
         GetUserFeedsUseCase getUserSubscribedFeedsUseCase();
@@ -91,5 +98,7 @@ public final class UseCaseModule {
         FavouriteFeedItemUseCase favouriteFeedItemUseCase();
 
         UnFavouriteFeedItemUseCase unFavouriteFeedItemUseCase();
+
+        GetUnreadFeedItemsCountUseCase getUnreadFeedItemsCountUseCase();
     }
 }

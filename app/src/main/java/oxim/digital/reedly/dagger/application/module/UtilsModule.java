@@ -21,6 +21,8 @@ import oxim.digital.reedly.util.ActivityUtils;
 import oxim.digital.reedly.util.ActivityUtilsImpl;
 import oxim.digital.reedly.util.DateUtils;
 import oxim.digital.reedly.util.DateUtilsImpl;
+import oxim.digital.reedly.util.NotificationUtils;
+import oxim.digital.reedly.util.NotificationUtilsImpl;
 import rx.schedulers.Schedulers;
 
 @Module
@@ -68,6 +70,12 @@ public final class UtilsModule {
         return new ConnectivityManagerWrapperImpl(context);
     }
 
+    @Provides
+    @Singleton
+    NotificationUtils provideNotificationUtils(final @ForApplication Context context) {
+        return new NotificationUtilsImpl(context);
+    }
+
     public interface Exposes {
 
         CollectionUtils collectionUtils();
@@ -79,5 +87,7 @@ public final class UtilsModule {
         DateUtils dateUtils();
 
         ConnectivityReceiver connectivityReceiver();
+
+        NotificationUtils notificationUtils();
     }
 }

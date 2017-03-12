@@ -29,7 +29,7 @@ public final class ReedlyApplication extends Application {
         FlowManager.init(new FlowConfig.Builder(this).build());
         Stetho.initializeWithDefaults(this);
 
-//        feedsUpdateScheduler.scheduleBackgroundFeedUpdates(); // TODO - uncomment this
+        feedsUpdateScheduler.scheduleBackgroundFeedUpdates();
     }
 
     public ApplicationComponent getApplicationComponent() {

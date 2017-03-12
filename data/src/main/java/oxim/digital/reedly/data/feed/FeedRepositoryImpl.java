@@ -78,4 +78,9 @@ public final class FeedRepositoryImpl implements FeedRepository {
     public Completable unFavouriteFeedItem(final int feedItemId) {
         return Completable.defer(() -> feedDao.unFavouriteFeedItem(feedItemId));
     }
+
+    @Override
+    public Single<Long> getUnreadFeedItemsCount() {
+        return Single.defer(feedDao::getUnreadFeedItemsCount);
+    }
 }

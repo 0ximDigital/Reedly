@@ -2,6 +2,7 @@ package oxim.digital.reedly.data.feed.db;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
+import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
@@ -112,6 +113,14 @@ public class FeedDaoImpl implements FeedDao {
     @Override
     public Completable unFavouriteFeedItem(final int feedItemId) {
         return Completable.fromAction(() -> setFavouriteToFeedItem(false, feedItemId));
+    }
+
+    @Override
+    public Single<Long> getUnreadFeedItemsCount() {
+        return Single.fromCallable(() -> SQLite.select(Method.count())
+                                               .from(FeedItemModel.class)
+                                               .where(FeedItemModel_Table.isNew.eq(true))
+                                               .count());
     }
 
     private void setFavouriteToFeedItem(final boolean isFavourite, final int feedItemId) {
