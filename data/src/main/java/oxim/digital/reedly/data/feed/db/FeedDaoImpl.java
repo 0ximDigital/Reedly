@@ -9,12 +9,12 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import java.util.List;
 
 import oxim.digital.reedly.data.feed.converter.FeedModelConverter;
-import oxim.digital.reedly.data.feed.db.model.FeedItemModel;
-import oxim.digital.reedly.data.feed.db.model.FeedItemModel_Table;
+import oxim.digital.reedly.data.feed.db.model.ArticleModel;
+import oxim.digital.reedly.data.feed.db.model.ArticleModel_Table;
 import oxim.digital.reedly.data.feed.db.model.FeedModel;
 import oxim.digital.reedly.data.feed.db.model.FeedModel_Table;
+import oxim.digital.reedly.data.feed.service.model.ApiArticle;
 import oxim.digital.reedly.data.feed.service.model.ApiFeed;
-import oxim.digital.reedly.data.feed.service.model.ApiFeedItem;
 import oxim.digital.reedly.domain.model.Article;
 import oxim.digital.reedly.domain.model.Feed;
 import rx.Completable;
@@ -35,13 +35,12 @@ public class FeedDaoImpl implements FeedDao {
         return Completable.fromAction(() -> innerInsertFeed(apiFeed));
     }
 
-    // TODO - use transactions for both feed and feed items
     private void innerInsertFeed(final ApiFeed apiFeed) {
         final FeedModel feedModel = feedModelConverter.apiToModel(apiFeed);
         feedModel.save();
 
-        Stream.of(apiFeed.items)
-              .map(apiFeedItem -> feedModelConverter.apiToModel(apiFeedItem, feedModel.getId()))
+        Stream.of(apiFeed.articles)
+              .map(apiArticle -> feedModelConverter.apiToModel(apiArticle, feedModel.getId()))
               .forEach(BaseModel::save);
     }
 
@@ -55,25 +54,25 @@ public class FeedDaoImpl implements FeedDao {
     }
 
     @Override
-    public Completable updateFeed(final int feedId, List<ApiFeedItem> apiFeedItems) {
-        return Completable.fromAction(() -> innerUpdateFeed(feedId, apiFeedItems));
+    public Completable updateFeed(final int feedId, List<ApiArticle> apiArticles) {
+        return Completable.fromAction(() -> innerUpdateFeed(feedId, apiArticles));
     }
 
-    private void innerUpdateFeed(final int feedId, List<ApiFeedItem> apiFeedItems) {
-        Stream.of(apiFeedItems)
-              .map(apiFeedItem -> feedModelConverter.apiToModel(apiFeedItem, feedId))
+    private void innerUpdateFeed(final int feedId, List<ApiArticle> apiArticles) {
+        Stream.of(apiArticles)
+              .map(apiArticle -> feedModelConverter.apiToModel(apiArticle, feedId))
               .forEach(BaseModel::save);
     }
 
     @Override
-    public Single<List<Article>> getFeedItemsForFeed(final int feedId) {
-        return Single.defer(() -> Single.just(innerGetFeedItemsForFeed(feedId)));
+    public Single<List<Article>> getArticlesForFeed(final int feedId) {
+        return Single.defer(() -> Single.just(innerGetArticlesForFeed(feedId)));
     }
 
-    private List<Article> innerGetFeedItemsForFeed(final int feedId) {
-        return Stream.of(select().from(FeedItemModel.class)
-                                 .where(FeedItemModel_Table.feedId.eq(feedId))
-                                 .orderBy(FeedItemModel_Table.publicationDate, false)
+    private List<Article> innerGetArticlesForFeed(final int feedId) {
+        return Stream.of(select().from(ArticleModel.class)
+                                 .where(ArticleModel_Table.feedId.eq(feedId))
+                                 .orderBy(ArticleModel_Table.publicationDate, false)
                                  .queryList())
                      .map(feedModelConverter::modelToDomain)
                      .collect(Collectors.toList());
@@ -98,62 +97,62 @@ public class FeedDaoImpl implements FeedDao {
     }
 
     @Override
-    public Completable markFeedItemAsRead(final int feedItemId) {
-        return Completable.fromAction(() -> SQLite.update(FeedItemModel.class)
-                                                  .set(FeedItemModel_Table.isNew.eq(false))
-                                                  .where(FeedItemModel_Table.id.eq(feedItemId))
+    public Completable markArticlesAsRead(final int articleId) {
+        return Completable.fromAction(() -> SQLite.update(ArticleModel.class)
+                                                  .set(ArticleModel_Table.isNew.eq(false))
+                                                  .where(ArticleModel_Table.id.eq(articleId))
                                                   .execute());
     }
 
     @Override
-    public Completable favouriteFeedItem(final int feedItemId) {
-        return Completable.fromAction(() -> setFavouriteToFeedItem(true, feedItemId));
+    public Completable favouriteArticle(final int articleId) {
+        return Completable.fromAction(() -> setFavouriteToArticle(true, articleId));
     }
 
     @Override
-    public Completable unFavouriteFeedItem(final int feedItemId) {
-        return Completable.fromAction(() -> setFavouriteToFeedItem(false, feedItemId));
+    public Completable unFavouriteArticle(final int articleId) {
+        return Completable.fromAction(() -> setFavouriteToArticle(false, articleId));
     }
 
     @Override
-    public Single<Long> getUnreadFeedItemsCount() {
+    public Single<Long> getUnreadArticlesCount() {
         return Single.fromCallable(() -> SQLite.select(Method.count())
-                                               .from(FeedItemModel.class)
-                                               .where(FeedItemModel_Table.isNew.eq(true))
+                                               .from(ArticleModel.class)
+                                               .where(ArticleModel_Table.isNew.eq(true))
                                                .count());
     }
 
     @Override
-    public Single<List<Article>> getFavouriteFeedItems() {
-        return Single.fromCallable(this::innerGetFavouriteFeedItems);
+    public Single<List<Article>> getFavouriteArticles() {
+        return Single.fromCallable(this::innerGetFavouriteArticles);
     }
 
-    private List<Article> innerGetFavouriteFeedItems() {
+    private List<Article> innerGetFavouriteArticles() {
         return Stream.of(SQLite.select()
-                               .from(FeedItemModel.class)
-                               .where(FeedItemModel_Table.isFavourite.eq(true))
+                               .from(ArticleModel.class)
+                               .where(ArticleModel_Table.isFavourite.eq(true))
                                .queryList())
                      .map(feedModelConverter::modelToDomain)
                      .collect(Collectors.toList());
     }
 
-    private void setFavouriteToFeedItem(final boolean isFavourite, final int feedItemId) {
-        SQLite.update(FeedItemModel.class)
-              .set(FeedItemModel_Table.isFavourite.eq(isFavourite))
-              .where(FeedItemModel_Table.id.eq(feedItemId))
+    private void setFavouriteToArticle(final boolean isFavourite, final int articleId) {
+        SQLite.update(ArticleModel.class)
+              .set(ArticleModel_Table.isFavourite.eq(isFavourite))
+              .where(ArticleModel_Table.id.eq(articleId))
               .execute();
     }
 
     private void innerDeleteFeed(final int feedId) {
-        deleteFeedItemsForFeed(feedId);
+        deleteArticlesForFeed(feedId);
         SQLite.delete(FeedModel.class)
               .where(FeedModel_Table.id.eq(feedId))
               .execute();
     }
 
-    private void deleteFeedItemsForFeed(final int feedId) {
-        SQLite.delete(FeedItemModel.class)
-              .where(FeedItemModel_Table.feedId.eq(feedId))
+    private void deleteArticlesForFeed(final int feedId) {
+        SQLite.delete(ArticleModel.class)
+              .where(ArticleModel_Table.feedId.eq(feedId))
               .execute();
     }
 }

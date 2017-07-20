@@ -11,8 +11,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import oxim.digital.reedly.data.feed.db.definition.FeedDatabase;
 
 @Table(database = FeedDatabase.class,
-        uniqueColumnGroups = @UniqueGroup(groupNumber = FeedItemModel.UNIQUE_GROUP_ID, uniqueConflict = ConflictAction.IGNORE))
-public final class FeedItemModel extends BaseModel {
+        uniqueColumnGroups = @UniqueGroup(groupNumber = ArticleModel.UNIQUE_GROUP_ID, uniqueConflict = ConflictAction.IGNORE))
+public final class ArticleModel extends BaseModel {
 
     static final int UNIQUE_GROUP_ID = 100;
 
@@ -40,14 +40,13 @@ public final class FeedItemModel extends BaseModel {
     @Column
     boolean isFavourite;
 
-    public FeedItemModel() {
-    }
+    public ArticleModel() { }
 
-    public FeedItemModel(final int feedId, final String title, final String link, final long publicationDate) {
+    public ArticleModel(final int feedId, final String title, final String link, final long publicationDate) {
         this(feedId, title, link, publicationDate, true, false);
     }
 
-    public FeedItemModel(final int feedId, final String title, final String link, final long publicationDate, final boolean isNew, final boolean isFavourite) {
+    public ArticleModel(final int feedId, final String title, final String link, final long publicationDate, final boolean isNew, final boolean isFavourite) {
         this.feedId = feedId;
         this.title = title;
         this.link = link;

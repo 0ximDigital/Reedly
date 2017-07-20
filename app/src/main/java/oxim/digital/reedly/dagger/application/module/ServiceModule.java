@@ -34,8 +34,8 @@ public final class ServiceModule {
 
     @Provides
     @Singleton
-    FeedService provideFeedService(final FeedParser feedParser, final CurrentTimeProvider currentTimeProvider) {
-        return new FeedServiceImpl(feedParser, currentTimeProvider);
+    FeedService provideFeedService(final FeedParser feedParser) {
+        return new FeedServiceImpl(feedParser);
     }
 
     @Provides

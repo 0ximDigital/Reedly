@@ -32,8 +32,7 @@ public final class FeedModel extends BaseModel {
     @Unique(onUniqueConflict = ConflictAction.FAIL)
     String url;
 
-    public FeedModel() {
-    }
+    public FeedModel() { }
 
     public FeedModel(final String title, final String imageUrl, final String pageLink, final String description, final String url) {
         this(0, title, imageUrl, pageLink, description, url);

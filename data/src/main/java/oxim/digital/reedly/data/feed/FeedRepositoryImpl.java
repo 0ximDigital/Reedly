@@ -33,7 +33,7 @@ public final class FeedRepositoryImpl implements FeedRepository {
 
     @Override
     public Single<List<Article>> getArticles(final int feedId) {
-        return Single.defer(() -> feedDao.getFeedItemsForFeed(feedId))
+        return Single.defer(() -> feedDao.getArticlesForFeed(feedId))
                      .subscribeOn(Schedulers.io());
     }
 
@@ -61,7 +61,7 @@ public final class FeedRepositoryImpl implements FeedRepository {
     @Override
     public Completable updateArticles(final Feed feed) {
         return Completable.defer(() -> feedService.fetchFeed(feed.url)
-                                                  .flatMap(apiFeed -> feedDao.updateFeed(feed.id, apiFeed.items).toSingleDefault(true))
+                                                  .flatMap(apiFeed -> feedDao.updateFeed(feed.id, apiFeed.articles).toSingleDefault(true))
                                                   .toObservable()
                                                   .toCompletable())
                           .subscribeOn(Schedulers.io());
@@ -69,27 +69,27 @@ public final class FeedRepositoryImpl implements FeedRepository {
 
     @Override
     public Completable markArticleAsRead(final int articleId) {
-        return Completable.defer(() -> feedDao.markFeedItemAsRead(articleId));
+        return Completable.defer(() -> feedDao.markArticlesAsRead(articleId));
     }
 
     @Override
     public Completable favouriteArticle(final int articleId) {
-        return Completable.defer(() -> feedDao.favouriteFeedItem(articleId));
+        return Completable.defer(() -> feedDao.favouriteArticle(articleId));
     }
 
     @Override
     public Completable unFavouriteArticle(final int articleId) {
-        return Completable.defer(() -> feedDao.unFavouriteFeedItem(articleId));
+        return Completable.defer(() -> feedDao.unFavouriteArticle(articleId));
     }
 
     @Override
     public Single<Long> getUnreadArticlesCount() {
-        return Single.defer(feedDao::getUnreadFeedItemsCount);
+        return Single.defer(feedDao::getUnreadArticlesCount);
     }
 
     @Override
     public Single<List<Article>> getFavouriteArticles() {
-        return Single.defer(feedDao::getFavouriteFeedItems);
+        return Single.defer(feedDao::getFavouriteArticles);
     }
 
     @Override

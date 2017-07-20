@@ -12,6 +12,7 @@ import oxim.digital.reedly.data.feed.db.FeedDaoImpl;
 import oxim.digital.reedly.data.feed.service.FeedService;
 import oxim.digital.reedly.data.feed.service.parser.FeedParser;
 import oxim.digital.reedly.data.feed.service.parser.FeedParserImpl;
+import oxim.digital.reedly.data.util.CurrentTimeProvider;
 import oxim.digital.reedly.data.util.PreferenceUtils;
 import oxim.digital.reedly.domain.repository.FeedRepository;
 
@@ -32,8 +33,8 @@ public final class DataModule {
 
     @Provides
     @Singleton
-    FeedParser provideFeedParser() {
-        return new FeedParserImpl();
+    FeedParser provideFeedParser(final CurrentTimeProvider currentTimeProvider) {
+        return new FeedParserImpl(currentTimeProvider);
     }
 
     @Provides
