@@ -10,7 +10,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+        classpath 'me.tatarka:gradle-retrolambda:' + project.ext.retrolambdaVersion
     }
 }
 
@@ -18,7 +18,7 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-def getEnviromentVariable(String variableName, int defaultValue) {
+def getEnvironmentVariable(String variableName, int defaultValue) {
     String environmentVariable = System.getenv(variableName)
     if (environmentVariable != null) {
         return Integer.parseInt(environmentVariable)
@@ -28,20 +28,20 @@ def getEnviromentVariable(String variableName, int defaultValue) {
 }
 
 def getVersionMajor() {
-    return getEnviromentVariable('VERSION_MAJOR', 1)
+    return getEnvironmentVariable('VERSION_MAJOR', 1)
 }
 
 def getVersionMinor() {
-    return getEnviromentVariable('VERSION_MINOR', 0)
+    return getEnvironmentVariable('VERSION_MINOR', 0)
 }
 
 def getVersionPatch() {
-    return getEnviromentVariable('VERSION_PATCH', 0)
+    return getEnvironmentVariable('VERSION_PATCH', 0)
 }
 
 // bump for dogfood builds, public betas, etc.
 def getVersionBuild() {
-    return getEnviromentVariable('BUILD_NUMBER', 0)
+    return getEnvironmentVariable('BUILD_NUMBER', 0)
 }
 
 def buildVersionCode() {
@@ -65,13 +65,13 @@ retrolambda {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    compileSdkVersion project.ext.compileSdkVersion
+    buildToolsVersion project.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "oxim.digital.reedly"
-        minSdkVersion 21
-        targetSdkVersion 25
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
         versionCode buildVersionCode()
         versionName buildVersionName()
 
@@ -93,26 +93,28 @@ android {
     }
 }
 
-def support_lib_version = "25.1.1"
-
 dependencies {
+
+    compile project(':domain')
     compile project(':data')
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:${support_lib_version}"
+    compile "com.android.support:appcompat-v7:" + project.ext.supportLibVersion
 
     testCompile 'junit:junit:4.12'
 
     apt 'com.google.dagger:dagger-compiler:2.2'
     compile 'com.google.dagger:dagger:2.2'
-    compile 'com.annimon:stream:1.0.8'
-    compile 'io.reactivex:rxjava:1.1.6'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+
+    compile 'com.annimon:stream:' + project.ext.streamsVersion
+    compile 'io.reactivex:rxjava:' + project.ext.rxJavaVersion
+    compile 'io.reactivex:rxandroid:' + project.ext.rxAndroidVersion
+
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.google.code.gson:gson:2.5'
-    compile "com.android.support:design:${support_lib_version}"
-    compile "com.android.support:recyclerview-v7:${support_lib_version}"
-    compile "com.android.support:cardview-v7:${support_lib_version}"
+    compile 'com.google.code.gson:gson:2.7'
+    compile "com.android.support:design:" + project.ext.supportLibVersion
+    compile "com.android.support:recyclerview-v7:" + project.ext.supportLibVersion
+    compile "com.android.support:cardview-v7:" + project.ext.supportLibVersion
 
     compile 'com.facebook.stetho:stetho:1.4.2'
 

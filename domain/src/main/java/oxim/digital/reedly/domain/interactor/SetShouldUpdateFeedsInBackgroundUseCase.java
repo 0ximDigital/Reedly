@@ -4,11 +4,11 @@ import oxim.digital.reedly.domain.interactor.type.CompletableUseCaseWithParamete
 import oxim.digital.reedly.domain.repository.FeedRepository;
 import rx.Completable;
 
-public final class SetShouldUpdateFeedsInBackground implements CompletableUseCaseWithParameter<Boolean> {
+public final class SetShouldUpdateFeedsInBackgroundUseCase implements CompletableUseCaseWithParameter<Boolean> {
 
     private final FeedRepository feedRepository;
 
-    public SetShouldUpdateFeedsInBackground(final FeedRepository feedRepository) {
+    public SetShouldUpdateFeedsInBackgroundUseCase(final FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
     }
 

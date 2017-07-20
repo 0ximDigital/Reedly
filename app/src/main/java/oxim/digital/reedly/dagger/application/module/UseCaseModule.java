@@ -15,7 +15,7 @@ import oxim.digital.reedly.domain.interactor.GetUnreadFeedItemsCountUseCase;
 import oxim.digital.reedly.domain.interactor.GetUserFeedsUseCase;
 import oxim.digital.reedly.domain.interactor.IsUserSubscribedToFeedUseCase;
 import oxim.digital.reedly.domain.interactor.MarkFeedItemAsReadUseCase;
-import oxim.digital.reedly.domain.interactor.SetShouldUpdateFeedsInBackground;
+import oxim.digital.reedly.domain.interactor.SetShouldUpdateFeedsInBackgroundUseCase;
 import oxim.digital.reedly.domain.interactor.ShouldUpdateFeedsInBackgroundUseCase;
 import oxim.digital.reedly.domain.interactor.UnFavouriteFeedItemUseCase;
 import oxim.digital.reedly.domain.interactor.UpdateFeedUseCase;
@@ -99,22 +99,22 @@ public final class UseCaseModule {
 
     @Provides
     @Singleton
-    SetShouldUpdateFeedsInBackground provideSetShouldUpdateFeedsInBackground(final FeedRepository feedRepository) {
-        return new SetShouldUpdateFeedsInBackground(feedRepository);
+    SetShouldUpdateFeedsInBackgroundUseCase provideSetShouldUpdateFeedsInBackgroundUseCase(final FeedRepository feedRepository) {
+        return new SetShouldUpdateFeedsInBackgroundUseCase(feedRepository);
     }
 
     @Provides
     @Singleton
-    EnableBackgroundFeedUpdatesUseCase provideEnableBackgroundFeedUpdatesUseCase(final SetShouldUpdateFeedsInBackground setShouldUpdateFeedsInBackground,
+    EnableBackgroundFeedUpdatesUseCase provideEnableBackgroundFeedUpdatesUseCase(final SetShouldUpdateFeedsInBackgroundUseCase setShouldUpdateFeedsInBackgroundUseCase,
                                                                                  final FeedsUpdateScheduler feedsUpdateScheduler) {
-        return new EnableBackgroundFeedUpdatesUseCase(setShouldUpdateFeedsInBackground, feedsUpdateScheduler);
+        return new EnableBackgroundFeedUpdatesUseCase(setShouldUpdateFeedsInBackgroundUseCase, feedsUpdateScheduler);
     }
 
     @Provides
     @Singleton
-    DisableBackgroundFeedUpdatesUseCase provideDisableBackgroundFeedUpdatesUseCase(final SetShouldUpdateFeedsInBackground setShouldUpdateFeedsInBackground,
+    DisableBackgroundFeedUpdatesUseCase provideDisableBackgroundFeedUpdatesUseCase(final SetShouldUpdateFeedsInBackgroundUseCase setShouldUpdateFeedsInBackgroundUseCase,
                                                                                    final FeedsUpdateScheduler feedsUpdateScheduler) {
-        return new DisableBackgroundFeedUpdatesUseCase(setShouldUpdateFeedsInBackground, feedsUpdateScheduler);
+        return new DisableBackgroundFeedUpdatesUseCase(setShouldUpdateFeedsInBackgroundUseCase, feedsUpdateScheduler);
     }
 
     public interface Exposes {
@@ -143,7 +143,7 @@ public final class UseCaseModule {
 
         ShouldUpdateFeedsInBackgroundUseCase shouldUpdateFeedsInBackgroundUseCase();
 
-        SetShouldUpdateFeedsInBackground setShouldUpdateFeedsInBackground();
+        SetShouldUpdateFeedsInBackgroundUseCase setShouldUpdateFeedsInBackgroundUseCase();
 
         EnableBackgroundFeedUpdatesUseCase enableBackgroundFeedUpdatesUseCase();
 

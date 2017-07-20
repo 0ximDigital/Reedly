@@ -6,18 +6,18 @@ import rx.Completable;
 
 public final class DisableBackgroundFeedUpdatesUseCase implements CompletableUseCase {
 
-    private final SetShouldUpdateFeedsInBackground setShouldUpdateFeedsInBackground;
+    private final SetShouldUpdateFeedsInBackgroundUseCase setShouldUpdateFeedsInBackgroundUseCase;
     private final FeedsUpdateScheduler feedsUpdateScheduler;
 
-    public DisableBackgroundFeedUpdatesUseCase(final SetShouldUpdateFeedsInBackground setShouldUpdateFeedsInBackground,
+    public DisableBackgroundFeedUpdatesUseCase(final SetShouldUpdateFeedsInBackgroundUseCase setShouldUpdateFeedsInBackgroundUseCase,
                                                final FeedsUpdateScheduler feedsUpdateScheduler) {
-        this.setShouldUpdateFeedsInBackground = setShouldUpdateFeedsInBackground;
+        this.setShouldUpdateFeedsInBackgroundUseCase = setShouldUpdateFeedsInBackgroundUseCase;
         this.feedsUpdateScheduler = feedsUpdateScheduler;
     }
 
     @Override
     public Completable execute() {
-        return setShouldUpdateFeedsInBackground.execute(false)
-                                               .concatWith(Completable.fromAction(feedsUpdateScheduler::cancelBackgroundFeedUpdates));
+        return setShouldUpdateFeedsInBackgroundUseCase.execute(false)
+                                                      .concatWith(Completable.fromAction(feedsUpdateScheduler::cancelBackgroundFeedUpdates));
     }
 }
