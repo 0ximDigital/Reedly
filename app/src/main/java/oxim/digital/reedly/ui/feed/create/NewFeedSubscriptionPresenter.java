@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import oxim.digital.reedly.R;
 import oxim.digital.reedly.base.BasePresenter;
-import oxim.digital.reedly.domain.interactor.AddNewFeedUseCase;
+import oxim.digital.reedly.domain.interactor.feed.AddNewFeedUseCase;
 
 public final class NewFeedSubscriptionPresenter extends BasePresenter<NewFeedSubscriptionContract.View> implements NewFeedSubscriptionContract.Presenter {
 

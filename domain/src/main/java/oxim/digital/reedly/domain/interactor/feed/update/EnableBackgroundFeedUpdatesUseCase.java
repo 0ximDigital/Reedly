@@ -1,7 +1,7 @@
-package oxim.digital.reedly.domain.interactor;
+package oxim.digital.reedly.domain.interactor.feed.update;
 
 import oxim.digital.reedly.domain.interactor.type.CompletableUseCase;
-import oxim.digital.reedly.domain.repository.FeedsUpdateScheduler;
+import oxim.digital.reedly.domain.update.FeedsUpdateScheduler;
 import rx.Completable;
 
 public final class EnableBackgroundFeedUpdatesUseCase implements CompletableUseCase {

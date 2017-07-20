@@ -1,4 +1,4 @@
-package oxim.digital.reedly.domain.interactor;
+package oxim.digital.reedly.domain.interactor.feed;
 
 import oxim.digital.reedly.domain.interactor.type.SingleUseCaseWithParameter;
 import oxim.digital.reedly.domain.repository.FeedRepository;

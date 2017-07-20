@@ -3,16 +3,14 @@ package oxim.digital.reedly.dagger.application;
 import android.app.Application;
 import android.support.v7.app.AppCompatDelegate;
 
-import com.facebook.stetho.Stetho;
-import com.raizlabs.android.dbflow.BuildConfig;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 import javax.inject.Inject;
 
 import oxim.digital.reedly.dagger.ComponentFactory;
-import oxim.digital.reedly.domain.interactor.EnableBackgroundFeedUpdatesUseCase;
-import oxim.digital.reedly.domain.interactor.ShouldUpdateFeedsInBackgroundUseCase;
+import oxim.digital.reedly.domain.interactor.feed.update.EnableBackgroundFeedUpdatesUseCase;
+import oxim.digital.reedly.domain.interactor.feed.update.ShouldUpdateFeedsInBackgroundUseCase;
 import rx.Completable;
 
 public final class ReedlyApplication extends Application {

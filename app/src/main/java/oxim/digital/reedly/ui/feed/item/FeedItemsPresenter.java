@@ -3,11 +3,11 @@ package oxim.digital.reedly.ui.feed.item;
 import javax.inject.Inject;
 
 import oxim.digital.reedly.base.BasePresenter;
-import oxim.digital.reedly.domain.interactor.FavouriteFeedItemUseCase;
-import oxim.digital.reedly.domain.interactor.GetFavouriteFeedItemsUseCase;
-import oxim.digital.reedly.domain.interactor.GetFeedItemsUseCase;
-import oxim.digital.reedly.domain.interactor.MarkFeedItemAsReadUseCase;
-import oxim.digital.reedly.domain.interactor.UnFavouriteFeedItemUseCase;
+import oxim.digital.reedly.domain.interactor.article.favourite.FavouriteArticleUseCase;
+import oxim.digital.reedly.domain.interactor.article.GetArticlesUseCase;
+import oxim.digital.reedly.domain.interactor.article.favourite.GetFavouriteArticlesUseCase;
+import oxim.digital.reedly.domain.interactor.article.MarkArticleAsReadUseCase;
+import oxim.digital.reedly.domain.interactor.article.favourite.UnFavouriteArticleUseCase;
 import oxim.digital.reedly.ui.feed.mapper.FeedViewModeMapper;
 import oxim.digital.reedly.ui.feed.model.FeedItemViewModel;
 import rx.functions.Action1;
@@ -15,19 +15,19 @@ import rx.functions.Action1;
 public final class FeedItemsPresenter extends BasePresenter<FeedItemsContract.View> implements FeedItemsContract.Presenter {
 
     @Inject
-    GetFeedItemsUseCase getFeedItemsUseCase;
+    GetArticlesUseCase getArticlesUseCase;
 
     @Inject
-    MarkFeedItemAsReadUseCase markFeedItemAsReadUseCase;
+    MarkArticleAsReadUseCase markArticleAsReadUseCase;
 
     @Inject
-    FavouriteFeedItemUseCase favouriteFeedItemUseCase;
+    FavouriteArticleUseCase favouriteArticleUseCase;
 
     @Inject
-    UnFavouriteFeedItemUseCase unFavouriteFeedItemUseCase;
+    UnFavouriteArticleUseCase unFavouriteArticleUseCase;
 
     @Inject
-    GetFavouriteFeedItemsUseCase getFavouriteFeedItemsUseCase;
+    GetFavouriteArticlesUseCase getFavouriteArticlesUseCase;
 
     @Inject
     FeedViewModeMapper feedViewModeMapper;
@@ -38,17 +38,17 @@ public final class FeedItemsPresenter extends BasePresenter<FeedItemsContract.Vi
 
     @Override
     public void fetchFeedItems(final int feedId) {
-        viewActionQueue.subscribeTo(getFeedItemsUseCase.execute(feedId)
-                                                       .map(feedViewModeMapper::mapFeedItemsToViewModels)
-                                                       .map(feedItems -> (Action1<FeedItemsContract.View>) view -> view.showFeedItems(feedItems)),
+        viewActionQueue.subscribeTo(getArticlesUseCase.execute(feedId)
+                                                      .map(feedViewModeMapper::mapFeedItemsToViewModels)
+                                                      .map(feedItems -> (Action1<FeedItemsContract.View>) view -> view.showFeedItems(feedItems)),
                                     Throwable::printStackTrace);
     }
 
     @Override
     public void fetchFavouriteFeedItems() {
-        viewActionQueue.subscribeTo(getFavouriteFeedItemsUseCase.execute()
-                                                                .map(feedViewModeMapper::mapFeedItemsToViewModels)
-                                                                .map(feedItems -> (Action1<FeedItemsContract.View>) view -> view.showFeedItems(feedItems)),
+        viewActionQueue.subscribeTo(getFavouriteArticlesUseCase.execute()
+                                                               .map(feedViewModeMapper::mapFeedItemsToViewModels)
+                                                               .map(feedItems -> (Action1<FeedItemsContract.View>) view -> view.showFeedItems(feedItems)),
                                     Throwable::printStackTrace);
     }
 
@@ -59,15 +59,15 @@ public final class FeedItemsPresenter extends BasePresenter<FeedItemsContract.Vi
 
     @Override
     public void markFeedItemAsRead(final int feedItemId) {
-        viewActionQueue.subscribeTo(markFeedItemAsReadUseCase.execute(feedItemId),
+        viewActionQueue.subscribeTo(markArticleAsReadUseCase.execute(feedItemId),
                                     view -> { },
                                     Throwable::printStackTrace);
     }
 
     @Override
     public void toggleFeedItemFavourite(final FeedItemViewModel feedItemViewModel) {
-        viewActionQueue.subscribeTo(feedItemViewModel.isFavourite ? unFavouriteFeedItemUseCase.execute(feedItemViewModel.id)
-                                                                  : favouriteFeedItemUseCase.execute(feedItemViewModel.id),
+        viewActionQueue.subscribeTo(feedItemViewModel.isFavourite ? unFavouriteArticleUseCase.execute(feedItemViewModel.id)
+                                                                  : favouriteArticleUseCase.execute(feedItemViewModel.id),
                                     view -> { },
                                     Throwable::printStackTrace);
     }

@@ -15,8 +15,8 @@ import oxim.digital.reedly.data.feed.db.model.FeedModel;
 import oxim.digital.reedly.data.feed.db.model.FeedModel_Table;
 import oxim.digital.reedly.data.feed.service.model.ApiFeed;
 import oxim.digital.reedly.data.feed.service.model.ApiFeedItem;
+import oxim.digital.reedly.domain.model.Article;
 import oxim.digital.reedly.domain.model.Feed;
-import oxim.digital.reedly.domain.model.FeedItem;
 import rx.Completable;
 import rx.Single;
 
@@ -66,11 +66,11 @@ public class FeedDaoImpl implements FeedDao {
     }
 
     @Override
-    public Single<List<FeedItem>> getFeedItemsForFeed(final int feedId) {
+    public Single<List<Article>> getFeedItemsForFeed(final int feedId) {
         return Single.defer(() -> Single.just(innerGetFeedItemsForFeed(feedId)));
     }
 
-    private List<FeedItem> innerGetFeedItemsForFeed(final int feedId) {
+    private List<Article> innerGetFeedItemsForFeed(final int feedId) {
         return Stream.of(select().from(FeedItemModel.class)
                                  .where(FeedItemModel_Table.feedId.eq(feedId))
                                  .orderBy(FeedItemModel_Table.publicationDate, false)
@@ -124,11 +124,11 @@ public class FeedDaoImpl implements FeedDao {
     }
 
     @Override
-    public Single<List<FeedItem>> getFavouriteFeedItems() {
+    public Single<List<Article>> getFavouriteFeedItems() {
         return Single.fromCallable(this::innerGetFavouriteFeedItems);
     }
 
-    private List<FeedItem> innerGetFavouriteFeedItems() {
+    private List<Article> innerGetFavouriteFeedItems() {
         return Stream.of(SQLite.select()
                                .from(FeedItemModel.class)
                                .where(FeedItemModel_Table.isFavourite.eq(true))

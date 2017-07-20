@@ -4,23 +4,23 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import oxim.digital.reedly.domain.interactor.AddNewFeedUseCase;
-import oxim.digital.reedly.domain.interactor.DeleteFeedUseCase;
-import oxim.digital.reedly.domain.interactor.DisableBackgroundFeedUpdatesUseCase;
-import oxim.digital.reedly.domain.interactor.EnableBackgroundFeedUpdatesUseCase;
-import oxim.digital.reedly.domain.interactor.FavouriteFeedItemUseCase;
-import oxim.digital.reedly.domain.interactor.GetFavouriteFeedItemsUseCase;
-import oxim.digital.reedly.domain.interactor.GetFeedItemsUseCase;
-import oxim.digital.reedly.domain.interactor.GetUnreadFeedItemsCountUseCase;
-import oxim.digital.reedly.domain.interactor.GetUserFeedsUseCase;
-import oxim.digital.reedly.domain.interactor.IsUserSubscribedToFeedUseCase;
-import oxim.digital.reedly.domain.interactor.MarkFeedItemAsReadUseCase;
-import oxim.digital.reedly.domain.interactor.SetShouldUpdateFeedsInBackgroundUseCase;
-import oxim.digital.reedly.domain.interactor.ShouldUpdateFeedsInBackgroundUseCase;
-import oxim.digital.reedly.domain.interactor.UnFavouriteFeedItemUseCase;
-import oxim.digital.reedly.domain.interactor.UpdateFeedUseCase;
+import oxim.digital.reedly.domain.interactor.feed.AddNewFeedUseCase;
+import oxim.digital.reedly.domain.interactor.feed.DeleteFeedUseCase;
+import oxim.digital.reedly.domain.interactor.feed.update.DisableBackgroundFeedUpdatesUseCase;
+import oxim.digital.reedly.domain.interactor.feed.update.EnableBackgroundFeedUpdatesUseCase;
+import oxim.digital.reedly.domain.interactor.article.favourite.FavouriteArticleUseCase;
+import oxim.digital.reedly.domain.interactor.article.favourite.GetFavouriteArticlesUseCase;
+import oxim.digital.reedly.domain.interactor.article.GetArticlesUseCase;
+import oxim.digital.reedly.domain.interactor.article.GetUnreadArticlesCountUseCase;
+import oxim.digital.reedly.domain.interactor.feed.GetUserFeedsUseCase;
+import oxim.digital.reedly.domain.interactor.feed.IsUserSubscribedToFeedUseCase;
+import oxim.digital.reedly.domain.interactor.article.MarkArticleAsReadUseCase;
+import oxim.digital.reedly.domain.interactor.feed.update.SetShouldUpdateFeedsInBackgroundUseCase;
+import oxim.digital.reedly.domain.interactor.feed.update.ShouldUpdateFeedsInBackgroundUseCase;
+import oxim.digital.reedly.domain.interactor.article.favourite.UnFavouriteArticleUseCase;
+import oxim.digital.reedly.domain.interactor.feed.update.UpdateFeedUseCase;
 import oxim.digital.reedly.domain.repository.FeedRepository;
-import oxim.digital.reedly.domain.repository.FeedsUpdateScheduler;
+import oxim.digital.reedly.domain.update.FeedsUpdateScheduler;
 
 @Module
 public final class UseCaseModule {
@@ -39,8 +39,8 @@ public final class UseCaseModule {
 
     @Provides
     @Singleton
-    GetFeedItemsUseCase provideGetFeedItemsUseCase(final FeedRepository feedRepository) {
-        return new GetFeedItemsUseCase(feedRepository);
+    GetArticlesUseCase provideGetFeedItemsUseCase(final FeedRepository feedRepository) {
+        return new GetArticlesUseCase(feedRepository);
     }
 
     @Provides
@@ -63,32 +63,32 @@ public final class UseCaseModule {
 
     @Provides
     @Singleton
-    MarkFeedItemAsReadUseCase provideMarkFeedItemAsReadUseCase(final FeedRepository feedRepository) {
-        return new MarkFeedItemAsReadUseCase(feedRepository);
+    MarkArticleAsReadUseCase provideMarkFeedItemAsReadUseCase(final FeedRepository feedRepository) {
+        return new MarkArticleAsReadUseCase(feedRepository);
     }
 
     @Provides
     @Singleton
-    FavouriteFeedItemUseCase provideFavouriteFeedItemUseCase(final FeedRepository feedRepository) {
-        return new FavouriteFeedItemUseCase(feedRepository);
+    FavouriteArticleUseCase provideFavouriteFeedItemUseCase(final FeedRepository feedRepository) {
+        return new FavouriteArticleUseCase(feedRepository);
     }
 
     @Provides
     @Singleton
-    UnFavouriteFeedItemUseCase provideUnFavouriteFeedItemUseCase(final FeedRepository feedRepository) {
-        return new UnFavouriteFeedItemUseCase(feedRepository);
+    UnFavouriteArticleUseCase provideUnFavouriteFeedItemUseCase(final FeedRepository feedRepository) {
+        return new UnFavouriteArticleUseCase(feedRepository);
     }
 
     @Provides
     @Singleton
-    GetUnreadFeedItemsCountUseCase provideGetUnreadFeedItemsCountUseCase(final FeedRepository feedRepository) {
-        return new GetUnreadFeedItemsCountUseCase(feedRepository);
+    GetUnreadArticlesCountUseCase provideGetUnreadFeedItemsCountUseCase(final FeedRepository feedRepository) {
+        return new GetUnreadArticlesCountUseCase(feedRepository);
     }
 
     @Provides
     @Singleton
-    GetFavouriteFeedItemsUseCase provideGetFavouriteFeedItemsUseCase(final FeedRepository feedRepository) {
-        return new GetFavouriteFeedItemsUseCase(feedRepository);
+    GetFavouriteArticlesUseCase provideGetFavouriteFeedItemsUseCase(final FeedRepository feedRepository) {
+        return new GetFavouriteArticlesUseCase(feedRepository);
     }
 
     @Provides
@@ -123,7 +123,7 @@ public final class UseCaseModule {
 
         AddNewFeedUseCase addNewFeedUseCase();
 
-        GetFeedItemsUseCase getFeedItemsUseCase();
+        GetArticlesUseCase getFeedItemsUseCase();
 
         DeleteFeedUseCase deleteFeedUseCase();
 
@@ -131,15 +131,15 @@ public final class UseCaseModule {
 
         UpdateFeedUseCase updateFeedUseCase();
 
-        MarkFeedItemAsReadUseCase markFeedItemAsReadUseCase();
+        MarkArticleAsReadUseCase markFeedItemAsReadUseCase();
 
-        FavouriteFeedItemUseCase favouriteFeedItemUseCase();
+        FavouriteArticleUseCase favouriteFeedItemUseCase();
 
-        UnFavouriteFeedItemUseCase unFavouriteFeedItemUseCase();
+        UnFavouriteArticleUseCase unFavouriteFeedItemUseCase();
 
-        GetUnreadFeedItemsCountUseCase getUnreadFeedItemsCountUseCase();
+        GetUnreadArticlesCountUseCase getUnreadFeedItemsCountUseCase();
 
-        GetFavouriteFeedItemsUseCase getFavouriteFeedItemsUseCase();
+        GetFavouriteArticlesUseCase getFavouriteFeedItemsUseCase();
 
         ShouldUpdateFeedsInBackgroundUseCase shouldUpdateFeedsInBackgroundUseCase();
 

@@ -5,8 +5,8 @@ import com.annimon.stream.Stream;
 
 import java.util.List;
 
+import oxim.digital.reedly.domain.model.Article;
 import oxim.digital.reedly.domain.model.Feed;
-import oxim.digital.reedly.domain.model.FeedItem;
 import oxim.digital.reedly.ui.feed.model.FeedItemViewModel;
 import oxim.digital.reedly.ui.feed.model.FeedViewModel;
 import oxim.digital.reedly.util.DateUtils;
@@ -32,13 +32,13 @@ public final class FeedViewModelMapperImpl implements FeedViewModeMapper {
     }
 
     @Override
-    public FeedItemViewModel mapFeedItemToViewModel(final FeedItem feedItem) {
-        return new FeedItemViewModel(feedItem.id, feedItem.title, feedItem.link, dateUtils.format(feedItem.publicationDate, DateUtils.SHORT_DATE_FORMAT), feedItem.isNew, feedItem.isFavourite);
+    public FeedItemViewModel mapFeedItemToViewModel(final Article article) {
+        return new FeedItemViewModel(article.id, article.title, article.link, dateUtils.format(article.publicationDate, DateUtils.SHORT_DATE_FORMAT), article.isNew, article.isFavourite);
     }
 
     @Override
-    public List<FeedItemViewModel> mapFeedItemsToViewModels(final List<FeedItem> feedItems) {
-        return Stream.of(feedItems)
+    public List<FeedItemViewModel> mapFeedItemsToViewModels(final List<Article> articles) {
+        return Stream.of(articles)
                      .map(this::mapFeedItemToViewModel)
                      .collect(Collectors.toList());
     }

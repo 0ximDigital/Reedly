@@ -1,19 +1,19 @@
-package oxim.digital.reedly.domain.interactor;
+package oxim.digital.reedly.domain.interactor.article;
 
 import oxim.digital.reedly.domain.interactor.type.SingleUseCase;
 import oxim.digital.reedly.domain.repository.FeedRepository;
 import rx.Single;
 
-public final class GetUnreadFeedItemsCountUseCase implements SingleUseCase<Long> {
+public final class GetUnreadArticlesCountUseCase implements SingleUseCase<Long> {
 
     private final FeedRepository feedRepository;
 
-    public GetUnreadFeedItemsCountUseCase(final FeedRepository feedRepository) {
+    public GetUnreadArticlesCountUseCase(final FeedRepository feedRepository) {
         this.feedRepository = feedRepository;
     }
 
     @Override
     public Single<Long> execute() {
-        return feedRepository.getUnreadFeedItemsCount();
+        return feedRepository.getUnreadArticlesCount();
     }
 }

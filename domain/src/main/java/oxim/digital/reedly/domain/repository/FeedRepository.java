@@ -2,8 +2,8 @@ package oxim.digital.reedly.domain.repository;
 
 import java.util.List;
 
+import oxim.digital.reedly.domain.model.Article;
 import oxim.digital.reedly.domain.model.Feed;
-import oxim.digital.reedly.domain.model.FeedItem;
 import rx.Completable;
 import rx.Single;
 
@@ -11,7 +11,7 @@ public interface FeedRepository {
 
     Single<List<Feed>> getUserFeeds();
 
-    Single<List<FeedItem>> getFeedItems(int feedId);
+    Single<List<Article>> getArticles(int feedId);
 
     Single<Boolean> feedExists(String feedUrl);
 
@@ -19,17 +19,17 @@ public interface FeedRepository {
 
     Completable deleteFeed(int feedId);
 
-    Completable updateFeedItems(Feed feed);
+    Completable updateArticles(Feed feed);
 
-    Completable markFeedItemAsRead(int feedItemId);
+    Completable markArticleAsRead(int articleId);
 
-    Completable favouriteFeedItem(int feedItemId);
+    Completable favouriteArticle(int articleId);
 
-    Completable unFavouriteFeedItem(int feedItemId);
+    Completable unFavouriteArticle(int articleId);
 
-    Single<Long> getUnreadFeedItemsCount();
+    Single<Long> getUnreadArticlesCount();
 
-    Single<List<FeedItem>> getFavouriteFeedItems();
+    Single<List<Article>> getFavouriteArticles();
 
     Single<Boolean> shouldUpdateFeedsInBackground();
 

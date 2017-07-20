@@ -1,4 +1,4 @@
-package oxim.digital.reedly.domain.interactor;
+package oxim.digital.reedly.domain.interactor.feed.update;
 
 import oxim.digital.reedly.domain.interactor.type.CompletableUseCaseWithParameter;
 import oxim.digital.reedly.domain.model.Feed;
@@ -15,6 +15,6 @@ public final class UpdateFeedUseCase implements CompletableUseCaseWithParameter<
 
     @Override
     public Completable execute(final Feed feed) {
-        return feedRepository.updateFeedItems(feed);
+        return feedRepository.updateArticles(feed);
     }
 }

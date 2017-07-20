@@ -7,9 +7,9 @@ import android.app.job.JobService;
 import javax.inject.Inject;
 
 import oxim.digital.reedly.dagger.application.ReedlyApplication;
-import oxim.digital.reedly.domain.interactor.GetUnreadFeedItemsCountUseCase;
-import oxim.digital.reedly.domain.interactor.GetUserFeedsUseCase;
-import oxim.digital.reedly.domain.interactor.UpdateFeedUseCase;
+import oxim.digital.reedly.domain.interactor.article.GetUnreadArticlesCountUseCase;
+import oxim.digital.reedly.domain.interactor.feed.GetUserFeedsUseCase;
+import oxim.digital.reedly.domain.interactor.feed.update.UpdateFeedUseCase;
 import oxim.digital.reedly.util.NotificationUtils;
 import rx.Observable;
 import rx.schedulers.Schedulers;
@@ -25,7 +25,7 @@ public final class BackgroundFeedsUpdateService extends JobService {
     UpdateFeedUseCase updateFeedUseCase;
 
     @Inject
-    GetUnreadFeedItemsCountUseCase getUnreadFeedItemsCountUseCase;
+    GetUnreadArticlesCountUseCase getUnreadArticlesCountUseCase;
 
     @Inject
     NotificationUtils notificationUtils;
@@ -44,9 +44,9 @@ public final class BackgroundFeedsUpdateService extends JobService {
 
     @Override
     public boolean onStartJob(final JobParameters jobParameters) {
-        getUnreadFeedItemsCountUseCase.execute()
-                                      .subscribeOn(Schedulers.io())
-                                      .subscribe(unreadCount -> onUnreadItemsCount(unreadCount, jobParameters),
+        getUnreadArticlesCountUseCase.execute()
+                                     .subscribeOn(Schedulers.io())
+                                     .subscribe(unreadCount -> onUnreadItemsCount(unreadCount, jobParameters),
                                                  throwable -> handleError(throwable, jobParameters));
         return true;
     }
@@ -57,15 +57,15 @@ public final class BackgroundFeedsUpdateService extends JobService {
                            .flatMap(feed -> updateFeedUseCase.execute(feed).toObservable())
                            .toCompletable()
                            .subscribeOn(Schedulers.io())
-                           .subscribe(throwable -> handleError(throwable, jobParameters),
-                                      () -> onUpdatedFeeds(unreadItemsCount, jobParameters));
+                           .subscribe(() -> onUpdatedFeeds(unreadItemsCount, jobParameters),
+                                      throwable -> handleError(throwable, jobParameters));
     }
 
     private void onUpdatedFeeds(final long unreadItemsCount, final JobParameters jobParameters) {
-        getUnreadFeedItemsCountUseCase.execute()
-                                      .subscribeOn(Schedulers.io())
-                                      .doOnSuccess(c -> jobFinished(jobParameters, false))
-                                      .subscribe(newUnreadCount -> onNewUnreadCount(unreadItemsCount, newUnreadCount),
+        getUnreadArticlesCountUseCase.execute()
+                                     .subscribeOn(Schedulers.io())
+                                     .doOnSuccess(c -> jobFinished(jobParameters, false))
+                                     .subscribe(newUnreadCount -> onNewUnreadCount(unreadItemsCount, newUnreadCount),
                                                  throwable -> handleError(throwable, jobParameters));
     }
 

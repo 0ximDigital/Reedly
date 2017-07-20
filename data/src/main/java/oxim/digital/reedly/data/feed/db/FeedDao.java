@@ -4,8 +4,8 @@ import java.util.List;
 
 import oxim.digital.reedly.data.feed.service.model.ApiFeed;
 import oxim.digital.reedly.data.feed.service.model.ApiFeedItem;
+import oxim.digital.reedly.domain.model.Article;
 import oxim.digital.reedly.domain.model.Feed;
-import oxim.digital.reedly.domain.model.FeedItem;
 import rx.Completable;
 import rx.Single;
 
@@ -17,7 +17,7 @@ public interface FeedDao {
 
     Completable updateFeed(int feedId, List<ApiFeedItem> apiFeedItems);
 
-    Single<List<FeedItem>> getFeedItemsForFeed(int feedId);
+    Single<List<Article>> getFeedItemsForFeed(int feedId);
 
     Single<Boolean> doesFeedExist(String feedUrl);
 
@@ -31,5 +31,5 @@ public interface FeedDao {
 
     Single<Long> getUnreadFeedItemsCount();
 
-    Single<List<FeedItem>> getFavouriteFeedItems();
+    Single<List<Article>> getFavouriteFeedItems();
 }

@@ -6,7 +6,7 @@ import oxim.digital.reedly.data.feed.db.FeedDao;
 import oxim.digital.reedly.data.feed.service.FeedService;
 import oxim.digital.reedly.data.util.PreferenceUtils;
 import oxim.digital.reedly.domain.model.Feed;
-import oxim.digital.reedly.domain.model.FeedItem;
+import oxim.digital.reedly.domain.model.Article;
 import oxim.digital.reedly.domain.repository.FeedRepository;
 import rx.Completable;
 import rx.Single;
@@ -32,7 +32,7 @@ public final class FeedRepositoryImpl implements FeedRepository {
     }
 
     @Override
-    public Single<List<FeedItem>> getFeedItems(final int feedId) {
+    public Single<List<Article>> getArticles(final int feedId) {
         return Single.defer(() -> feedDao.getFeedItemsForFeed(feedId))
                      .subscribeOn(Schedulers.io());
     }
@@ -59,7 +59,7 @@ public final class FeedRepositoryImpl implements FeedRepository {
     }
 
     @Override
-    public Completable updateFeedItems(final Feed feed) {
+    public Completable updateArticles(final Feed feed) {
         return Completable.defer(() -> feedService.fetchFeed(feed.url)
                                                   .flatMap(apiFeed -> feedDao.updateFeed(feed.id, apiFeed.items).toSingleDefault(true))
                                                   .toObservable()
@@ -68,27 +68,27 @@ public final class FeedRepositoryImpl implements FeedRepository {
     }
 
     @Override
-    public Completable markFeedItemAsRead(final int feedItemId) {
-        return Completable.defer(() -> feedDao.markFeedItemAsRead(feedItemId));
+    public Completable markArticleAsRead(final int articleId) {
+        return Completable.defer(() -> feedDao.markFeedItemAsRead(articleId));
     }
 
     @Override
-    public Completable favouriteFeedItem(final int feedItemId) {
-        return Completable.defer(() -> feedDao.favouriteFeedItem(feedItemId));
+    public Completable favouriteArticle(final int articleId) {
+        return Completable.defer(() -> feedDao.favouriteFeedItem(articleId));
     }
 
     @Override
-    public Completable unFavouriteFeedItem(final int feedItemId) {
-        return Completable.defer(() -> feedDao.unFavouriteFeedItem(feedItemId));
+    public Completable unFavouriteArticle(final int articleId) {
+        return Completable.defer(() -> feedDao.unFavouriteFeedItem(articleId));
     }
 
     @Override
-    public Single<Long> getUnreadFeedItemsCount() {
+    public Single<Long> getUnreadArticlesCount() {
         return Single.defer(feedDao::getUnreadFeedItemsCount);
     }
 
     @Override
-    public Single<List<FeedItem>> getFavouriteFeedItems() {
+    public Single<List<Article>> getFavouriteArticles() {
         return Single.defer(feedDao::getFavouriteFeedItems);
     }
 

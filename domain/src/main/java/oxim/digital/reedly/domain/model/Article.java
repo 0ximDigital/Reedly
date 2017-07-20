@@ -1,6 +1,6 @@
 package oxim.digital.reedly.domain.model;
 
-public final class FeedItem {
+public final class Article {
 
     public final int id;
     public final int feedId;
@@ -11,7 +11,7 @@ public final class FeedItem {
     public final boolean isNew;
     public final boolean isFavourite;
 
-    public FeedItem(final int id, final int feedId, final String title, final String link, final long publicationDate, final boolean isNew, final boolean isFavourite) {
+    public Article(final int id, final int feedId, final String title, final String link, final long publicationDate, final boolean isNew, final boolean isFavourite) {
         this.id = id;
         this.feedId = feedId;
         this.title = title;
@@ -23,7 +23,7 @@ public final class FeedItem {
 
     @Override
     public String toString() {
-        return "FeedItem{" +
+        return "Article{" +
                 "id=" + id +
                 ", feedId=" + feedId +
                 ", title='" + title + '\'' +

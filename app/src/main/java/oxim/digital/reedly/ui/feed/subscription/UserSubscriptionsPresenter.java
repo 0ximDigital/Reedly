@@ -7,12 +7,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import oxim.digital.reedly.base.BasePresenter;
-import oxim.digital.reedly.domain.interactor.DeleteFeedUseCase;
-import oxim.digital.reedly.domain.interactor.DisableBackgroundFeedUpdatesUseCase;
-import oxim.digital.reedly.domain.interactor.EnableBackgroundFeedUpdatesUseCase;
-import oxim.digital.reedly.domain.interactor.GetUserFeedsUseCase;
-import oxim.digital.reedly.domain.interactor.ShouldUpdateFeedsInBackgroundUseCase;
-import oxim.digital.reedly.domain.interactor.UpdateFeedUseCase;
+import oxim.digital.reedly.domain.interactor.feed.DeleteFeedUseCase;
+import oxim.digital.reedly.domain.interactor.feed.update.DisableBackgroundFeedUpdatesUseCase;
+import oxim.digital.reedly.domain.interactor.feed.update.EnableBackgroundFeedUpdatesUseCase;
+import oxim.digital.reedly.domain.interactor.feed.GetUserFeedsUseCase;
+import oxim.digital.reedly.domain.interactor.feed.update.ShouldUpdateFeedsInBackgroundUseCase;
+import oxim.digital.reedly.domain.interactor.feed.update.UpdateFeedUseCase;
 import oxim.digital.reedly.domain.model.Feed;
 import oxim.digital.reedly.ui.feed.mapper.FeedViewModeMapper;
 import oxim.digital.reedly.ui.feed.model.FeedViewModel;
@@ -112,7 +112,7 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
     private void updateUserFeeds(final List<Feed> feeds) {
         Stream.of(feeds)
               .map(feed -> updateFeedUseCase.execute(feed))
-              .forEach(completable -> addSubscription(completable.subscribe(this::onFeedUpdateError, () -> { })));
+              .forEach(completable -> addSubscription(completable.subscribe(() -> { }, this::onFeedUpdateError)));
     }
 
     private void onFeedUpdateError(final Throwable throwable) {

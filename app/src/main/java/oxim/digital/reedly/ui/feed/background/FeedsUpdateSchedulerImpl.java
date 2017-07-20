@@ -4,7 +4,7 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.util.Log;
 
-import oxim.digital.reedly.domain.repository.FeedsUpdateScheduler;
+import oxim.digital.reedly.domain.update.FeedsUpdateScheduler;
 
 public final class FeedsUpdateSchedulerImpl implements FeedsUpdateScheduler {
 

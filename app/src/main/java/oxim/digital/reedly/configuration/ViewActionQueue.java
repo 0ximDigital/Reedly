@@ -30,7 +30,7 @@ public final class ViewActionQueue<View> {
     }
 
     public void subscribeTo(final Completable completable, final Action1<View> onCompleteAction, final Action1<Throwable> errorAction) {
-        subscriptions.add(completable.observeOn(AndroidSchedulers.mainThread()).subscribe(errorAction::call, () -> onResult(onCompleteAction)));
+        subscriptions.add(completable.observeOn(AndroidSchedulers.mainThread()).subscribe(() -> onResult(onCompleteAction), errorAction::call));
     }
 
     private void onResult(final Action1<View> resultAction) {

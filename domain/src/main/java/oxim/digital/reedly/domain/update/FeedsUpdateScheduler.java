@@ -1,4 +1,4 @@
-package oxim.digital.reedly.domain.repository;
+package oxim.digital.reedly.domain.update;
 
 public interface FeedsUpdateScheduler {
 
