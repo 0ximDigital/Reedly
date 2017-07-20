@@ -1,4 +1,4 @@
-package oxim.digital.reedly.ui.feed.article;
+package oxim.digital.reedly.ui.article.content;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,22 +16,22 @@ import oxim.digital.reedly.base.BaseFragment;
 import oxim.digital.reedly.base.ScopedPresenter;
 import oxim.digital.reedly.dagger.fragment.FragmentComponent;
 
-public final class FeedItemContentFragment extends BaseFragment implements FeedItemContentContract.View {
+public final class ArticleContentFragment extends BaseFragment implements ArticleContentContract.View {
 
-    public static final String TAG = FeedItemContentFragment.class.getSimpleName();
+    public static final String TAG = ArticleContentFragment.class.getSimpleName();
 
-    private static final String KEY_FEED_ITEM_CONTENT_URL = "key_feed_item_content_url";
+    private static final String KEY_ARTICLE_CONTENT_URL = "key_article_content_url";
 
     @Inject
-    FeedItemContentContract.Presenter presenter;
+    ArticleContentContract.Presenter presenter;
 
-    @Bind(R.id.feed_item_content_web_view)
-    WebView feedItemContentWebView;
+    @Bind(R.id.article_content_web_view)
+    WebView articleContentWebView;
 
-    public static FeedItemContentFragment newInstance(final String feedItemContentUrl) {
-        final FeedItemContentFragment fragment = new FeedItemContentFragment();
+    public static ArticleContentFragment newInstance(final String articleContentUrl) {
+        final ArticleContentFragment fragment = new ArticleContentFragment();
         final Bundle arguments = new Bundle();
-        arguments.putString(KEY_FEED_ITEM_CONTENT_URL, feedItemContentUrl);
+        arguments.putString(KEY_ARTICLE_CONTENT_URL, articleContentUrl);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -39,7 +39,7 @@ public final class FeedItemContentFragment extends BaseFragment implements FeedI
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
-        final View fragmentView = inflater.inflate(R.layout.fragment_feed_item_content, container, false);
+        final View fragmentView = inflater.inflate(R.layout.fragment_article_content, container, false);
         ButterKnife.bind(this, fragmentView);
         return fragmentView;
     }
@@ -51,13 +51,13 @@ public final class FeedItemContentFragment extends BaseFragment implements FeedI
     }
 
     private void extractArguments(final Bundle arguments) {
-        setContentUrl(arguments.getString(KEY_FEED_ITEM_CONTENT_URL));
+        setContentUrl(arguments.getString(KEY_ARTICLE_CONTENT_URL));
     }
 
     private void setupWebView(final String url) {
-        feedItemContentWebView.setWebViewClient(new FeedItemClient(url));
-        feedItemContentWebView.getSettings().setJavaScriptEnabled(true);
-        feedItemContentWebView.loadUrl(url);
+        articleContentWebView.setWebViewClient(new ArticleWebClient(url));
+        articleContentWebView.getSettings().setJavaScriptEnabled(true);
+        articleContentWebView.loadUrl(url);
     }
 
     public void setContentUrl(final String url) {

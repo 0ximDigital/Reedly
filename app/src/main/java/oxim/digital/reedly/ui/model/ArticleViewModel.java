@@ -1,6 +1,6 @@
-package oxim.digital.reedly.ui.feed.model;
+package oxim.digital.reedly.ui.model;
 
-public final class FeedItemViewModel {
+public final class ArticleViewModel {
 
     public final int id;
     public final String title;
@@ -10,7 +10,7 @@ public final class FeedItemViewModel {
     public final boolean isNew;
     public final boolean isFavourite;
 
-    public FeedItemViewModel(final int id, final String title, final String link, final String publicationDate, final boolean isNew, final boolean isFavourite) {
+    public ArticleViewModel(final int id, final String title, final String link, final String publicationDate, final boolean isNew, final boolean isFavourite) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -19,11 +19,11 @@ public final class FeedItemViewModel {
         this.isFavourite = isFavourite;
     }
 
-    public FeedItemViewModel(final boolean isNew, final FeedItemViewModel model) {
+    public ArticleViewModel(final boolean isNew, final ArticleViewModel model) {
         this(model.id, model.title, model.link, model.publicationDate, isNew, model.isFavourite);
     }
 
-    public FeedItemViewModel(final FeedItemViewModel model, final boolean isFavourite) {
+    public ArticleViewModel(final ArticleViewModel model, final boolean isFavourite) {
         this(model.id, model.title, model.link, model.publicationDate, model.isNew, isFavourite);
     }
 
@@ -36,7 +36,7 @@ public final class FeedItemViewModel {
             return false;
         }
 
-        final FeedItemViewModel that = (FeedItemViewModel) o;
+        final ArticleViewModel that = (ArticleViewModel) o;
 
         return id == that.id;
     }
@@ -48,7 +48,7 @@ public final class FeedItemViewModel {
 
     @Override
     public String toString() {
-        return "FeedItemViewModel{" +
+        return "ArticleViewModel{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", link='" + link + '\'' +

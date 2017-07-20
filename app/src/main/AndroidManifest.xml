@@ -25,7 +25,7 @@
         </activity>
 
         <service
-            android:name=".ui.feed.background.BackgroundFeedsUpdateService"
+            android:name=".background.BackgroundFeedsUpdateService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 

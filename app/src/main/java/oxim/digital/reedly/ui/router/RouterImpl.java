@@ -6,9 +6,9 @@ import android.support.v4.app.FragmentManager;
 
 import oxim.digital.reedly.R;
 import oxim.digital.reedly.dagger.activity.ActivityScope;
-import oxim.digital.reedly.ui.feed.article.FeedItemContentFragment;
+import oxim.digital.reedly.ui.article.content.ArticleContentFragment;
 import oxim.digital.reedly.ui.feed.create.NewFeedSubscriptionFragment;
-import oxim.digital.reedly.ui.feed.item.FeedItemsFragment;
+import oxim.digital.reedly.ui.article.list.ArticlesFragment;
 import oxim.digital.reedly.ui.feed.subscription.UserSubscriptionsFragment;
 import rx.functions.Action1;
 import rx.functions.Func0;
@@ -49,24 +49,24 @@ public final class RouterImpl implements Router {
     }
 
     @Override
-    public void showFavouriteFeedItemsScreen() {
-        advanceToFragment(FeedItemsFragment.TAG, UserSubscriptionsFragment.TAG,
-                          FeedItemsFragment::newInstance,
-                          FeedItemsFragment::setFavouriteItems);
+    public void showFavouriteArticlesScreen() {
+        advanceToFragment(ArticlesFragment.TAG, UserSubscriptionsFragment.TAG,
+                          ArticlesFragment::newFavouriteArticlesInstance,
+                          ArticlesFragment::setFavouriteItems);
     }
 
     @Override
-    public void showFeedItemsScreen(final int feedId, final String feedTitle) {
-        advanceToFragment(FeedItemsFragment.TAG, UserSubscriptionsFragment.TAG,
-                          () -> FeedItemsFragment.newInstance(feedId, feedTitle),
-                          feedItemsFragment -> feedItemsFragment.updateFeed(feedId, feedTitle));
+    public void showArticlesScreen(final int feedId, final String feedTitle) {
+        advanceToFragment(ArticlesFragment.TAG, UserSubscriptionsFragment.TAG,
+                          () -> ArticlesFragment.newInstance(feedId, feedTitle),
+                          articlesFragment -> articlesFragment.updateFeed(feedId, feedTitle));
     }
 
     @Override
-    public void showFeedItemContentScreen(final String contentUrl) {
-        advanceToFragment(FeedItemContentFragment.TAG, FeedItemsFragment.TAG,
-                          () -> FeedItemContentFragment.newInstance(contentUrl),
-                          feedItemContentFragment -> feedItemContentFragment.setContentUrl(contentUrl));
+    public void showArticleContentScreen(final String contentUrl) {
+        advanceToFragment(ArticleContentFragment.TAG, ArticlesFragment.TAG,
+                          () -> ArticleContentFragment.newInstance(contentUrl),
+                          articleContentFragment -> articleContentFragment.setContentUrl(contentUrl));
     }
 
     private <T extends Fragment> void advanceToFragment(final String destinationFragmentTag, final String sourceFragmentTag, final Func0<T> destinationFragmentFactory,
@@ -80,7 +80,7 @@ public final class RouterImpl implements Router {
                            .setCustomAnimations(R.anim.fragment_left_enter, R.anim.fragment_right_exit, R.anim.fragment_right_enter, R.anim.fragment_left_exit)
                            .addToBackStack(null)
                            .hide(sourceFragment)
-                           .add(R.id.activity_container, destinationFragment, FeedItemsFragment.TAG)
+                           .add(R.id.activity_container, destinationFragment, ArticlesFragment.TAG)
                            .commit();
         } else {
             destinationFragmentExistsAction.call(destinationFragment);
@@ -96,7 +96,6 @@ public final class RouterImpl implements Router {
     public void showAddNewFeedScreen() {
         final Fragment fragment = NewFeedSubscriptionFragment.newInstance();
         fragmentManager.beginTransaction()
-//                       .addToBackStack(null)
                        .add(R.id.activity_container, fragment, NewFeedSubscriptionFragment.TAG)
                        .commit();
     }

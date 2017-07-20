@@ -17,14 +17,13 @@ import oxim.digital.reedly.dagger.application.ForApplication;
 import oxim.digital.reedly.data.feed.service.FeedService;
 import oxim.digital.reedly.data.feed.service.FeedServiceImpl;
 import oxim.digital.reedly.data.feed.service.parser.FeedParser;
-import oxim.digital.reedly.data.util.CurrentTimeProvider;
-import oxim.digital.reedly.ui.feed.background.BackgroundFeedsUpdateService;
-import oxim.digital.reedly.ui.feed.background.FeedUpdateJobInfoFactory;
+import oxim.digital.reedly.background.BackgroundFeedsUpdateService;
+import oxim.digital.reedly.background.FeedUpdateJobInfoFactory;
 import oxim.digital.reedly.domain.update.FeedsUpdateScheduler;
-import oxim.digital.reedly.ui.feed.background.FeedsUpdateSchedulerImpl;
-import oxim.digital.reedly.ui.feed.background.JobSchedulerWrapper;
-import oxim.digital.reedly.ui.feed.background.JobSchedulerWrapperImpl;
-import oxim.digital.reedly.ui.feed.background.NotificationFactory;
+import oxim.digital.reedly.background.FeedsUpdateSchedulerImpl;
+import oxim.digital.reedly.background.JobSchedulerWrapper;
+import oxim.digital.reedly.background.JobSchedulerWrapperImpl;
+import oxim.digital.reedly.background.NotificationFactory;
 
 @Module
 public final class ServiceModule {

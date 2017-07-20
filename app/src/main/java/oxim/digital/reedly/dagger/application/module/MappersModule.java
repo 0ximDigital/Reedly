@@ -4,8 +4,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import oxim.digital.reedly.ui.feed.mapper.FeedViewModeMapper;
-import oxim.digital.reedly.ui.feed.mapper.FeedViewModelMapperImpl;
+import oxim.digital.reedly.ui.mapper.FeedViewModeMapper;
+import oxim.digital.reedly.ui.mapper.FeedViewModelMapperImpl;
 import oxim.digital.reedly.util.DateUtils;
 
 @Module

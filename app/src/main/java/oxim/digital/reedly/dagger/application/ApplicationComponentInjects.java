@@ -1,6 +1,6 @@
 package oxim.digital.reedly.dagger.application;
 
-import oxim.digital.reedly.ui.feed.background.BackgroundFeedsUpdateService;
+import oxim.digital.reedly.background.BackgroundFeedsUpdateService;
 
 public interface ApplicationComponentInjects {
 

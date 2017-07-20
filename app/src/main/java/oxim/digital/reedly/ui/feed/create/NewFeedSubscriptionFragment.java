@@ -131,7 +131,7 @@ public final class NewFeedSubscriptionFragment extends BaseFragment implements N
         }
 
         @Override
-        public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
+        public void onTextChanged(final CharSequence charSequence, final int start, final int before, final int count) {
             onTextChangedAction.call(charSequence);
         }
     }

@@ -121,11 +121,11 @@ public abstract class BasePresenter<View extends BaseView> implements ScopedPres
         ((isConnected) ? ifConnected : ifNotConnected).call();
     }
 
-    protected final void logError(final Throwable throwable) {
+    public final void logError(final Throwable throwable) {
         if (!TextUtils.isEmpty(throwable.getMessage())) {
+            // Error reporting, Crashlytics in example
             Log.e(getClass().getSimpleName(), throwable.getMessage(), throwable);
         }
-        // TODO - crashlytics
     }
 
     protected void doIfViewNotNull(final Action1<View> whenViewNotNull) {

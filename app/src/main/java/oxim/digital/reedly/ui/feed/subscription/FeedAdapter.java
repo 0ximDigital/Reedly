@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import oxim.digital.reedly.R;
-import oxim.digital.reedly.ui.feed.model.FeedViewModel;
+import oxim.digital.reedly.ui.model.FeedViewModel;
 import oxim.digital.reedly.ui.view.RevealFillView;
 import oxim.digital.reedly.util.ImageLoader;
 import rx.Observable;
@@ -72,7 +72,7 @@ public final class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedView
     public void clearSelection() {
         Stream.of(feedViewModels)
               .filter(feedViewModel -> feedViewModel.isSelected)
-              .forEach(this::unselectFeed);
+              .forEach(this::unSelectFeed);
     }
 
     public boolean hasSelectedItem() {
@@ -80,7 +80,7 @@ public final class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedView
                      .anyMatch(feedViewModel -> feedViewModel.isSelected);
     }
 
-    private void unselectFeed(final FeedViewModel feedViewModel) {
+    private void unSelectFeed(final FeedViewModel feedViewModel) {
         final int position = feedViewModels.indexOf(feedViewModel);
         final FeedViewModel newItem = new FeedViewModel(feedViewModel, false);
         feedViewModels.set(position, newItem);

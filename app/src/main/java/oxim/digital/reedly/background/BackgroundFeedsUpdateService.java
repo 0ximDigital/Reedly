@@ -1,4 +1,4 @@
-package oxim.digital.reedly.ui.feed.background;
+package oxim.digital.reedly.background;
 
 import android.app.PendingIntent;
 import android.app.job.JobParameters;
@@ -16,7 +16,7 @@ import rx.schedulers.Schedulers;
 
 public final class BackgroundFeedsUpdateService extends JobService {
 
-    private static final int NEW_FEED_ITEMS_NOTIFICATION_ID = 1832;
+    private static final int NEW_ARTICLES_NOTIFICATION_ID = 1832;
 
     @Inject
     GetUserFeedsUseCase getUserFeedsUseCase;
@@ -76,13 +76,12 @@ public final class BackgroundFeedsUpdateService extends JobService {
     }
 
     private void handleError(final Throwable throwable, final JobParameters jobParameters) {
-        // TODO - Crashlytics
         throwable.printStackTrace();
         jobFinished(jobParameters, false);
     }
 
     private void showNotification() {
-        notificationUtils.showNotification(NEW_FEED_ITEMS_NOTIFICATION_ID,
+        notificationUtils.showNotification(NEW_ARTICLES_NOTIFICATION_ID,
                                            notificationFactory.createFeedUpdateNotification(getApplicationContext(), notificationPendingIntent));
     }
 

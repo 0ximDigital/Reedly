@@ -5,12 +5,12 @@ import dagger.Provides;
 import oxim.digital.reedly.dagger.fragment.DaggerFragment;
 import oxim.digital.reedly.dagger.fragment.FragmentComponent;
 import oxim.digital.reedly.dagger.fragment.FragmentScope;
-import oxim.digital.reedly.ui.feed.article.FeedItemContentContract;
-import oxim.digital.reedly.ui.feed.article.FeedItemContentPresenter;
+import oxim.digital.reedly.ui.article.content.ArticleContentContract;
+import oxim.digital.reedly.ui.article.content.ArticleContentPresenter;
 import oxim.digital.reedly.ui.feed.create.NewFeedSubscriptionContract;
 import oxim.digital.reedly.ui.feed.create.NewFeedSubscriptionPresenter;
-import oxim.digital.reedly.ui.feed.item.FeedItemsContract;
-import oxim.digital.reedly.ui.feed.item.FeedItemsPresenter;
+import oxim.digital.reedly.ui.article.list.ArticlesContract;
+import oxim.digital.reedly.ui.article.list.ArticlesPresenter;
 import oxim.digital.reedly.ui.feed.subscription.UserSubscriptionsContract;
 import oxim.digital.reedly.ui.feed.subscription.UserSubscriptionsPresenter;
 
@@ -37,18 +37,18 @@ public final class FragmentPresenterModule {
 
     @Provides
     @FragmentScope
-    public FeedItemsContract.Presenter provideFeedItemsPresenter() {
-        final FeedItemsPresenter feedItemsPresenter = new FeedItemsPresenter((FeedItemsContract.View) daggerFragment);
-        getFragmentComponent().inject(feedItemsPresenter);
-        return feedItemsPresenter;
+    public ArticlesContract.Presenter provideArticlesPresenter() {
+        final ArticlesPresenter articlesPresenter = new ArticlesPresenter((ArticlesContract.View) daggerFragment);
+        getFragmentComponent().inject(articlesPresenter);
+        return articlesPresenter;
     }
 
     @Provides
     @FragmentScope
-    public FeedItemContentContract.Presenter provideFeedItemContentPresenter() {
-        final FeedItemContentPresenter feedItemContentPresenter = new FeedItemContentPresenter((FeedItemContentContract.View) daggerFragment);
-        getFragmentComponent().inject(feedItemContentPresenter);
-        return feedItemContentPresenter;
+    public ArticleContentContract.Presenter provideArticleContentPresenter() {
+        final ArticleContentPresenter articleContentPresenter = new ArticleContentPresenter((ArticleContentContract.View) daggerFragment);
+        getFragmentComponent().inject(articleContentPresenter);
+        return articleContentPresenter;
     }
 
     @Provides

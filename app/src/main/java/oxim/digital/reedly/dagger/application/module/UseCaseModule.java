@@ -39,7 +39,7 @@ public final class UseCaseModule {
 
     @Provides
     @Singleton
-    GetArticlesUseCase provideGetFeedItemsUseCase(final FeedRepository feedRepository) {
+    GetArticlesUseCase provideGetArticlesUseCase(final FeedRepository feedRepository) {
         return new GetArticlesUseCase(feedRepository);
     }
 
@@ -63,31 +63,31 @@ public final class UseCaseModule {
 
     @Provides
     @Singleton
-    MarkArticleAsReadUseCase provideMarkFeedItemAsReadUseCase(final FeedRepository feedRepository) {
+    MarkArticleAsReadUseCase provideMarkArticleAsReadUseCase(final FeedRepository feedRepository) {
         return new MarkArticleAsReadUseCase(feedRepository);
     }
 
     @Provides
     @Singleton
-    FavouriteArticleUseCase provideFavouriteFeedItemUseCase(final FeedRepository feedRepository) {
+    FavouriteArticleUseCase provideFavouriteArticleUseCase(final FeedRepository feedRepository) {
         return new FavouriteArticleUseCase(feedRepository);
     }
 
     @Provides
     @Singleton
-    UnFavouriteArticleUseCase provideUnFavouriteFeedItemUseCase(final FeedRepository feedRepository) {
+    UnFavouriteArticleUseCase provideUnFavouriteArticleUseCase(final FeedRepository feedRepository) {
         return new UnFavouriteArticleUseCase(feedRepository);
     }
 
     @Provides
     @Singleton
-    GetUnreadArticlesCountUseCase provideGetUnreadFeedItemsCountUseCase(final FeedRepository feedRepository) {
+    GetUnreadArticlesCountUseCase provideGetUnreadArticlesCountUseCase(final FeedRepository feedRepository) {
         return new GetUnreadArticlesCountUseCase(feedRepository);
     }
 
     @Provides
     @Singleton
-    GetFavouriteArticlesUseCase provideGetFavouriteFeedItemsUseCase(final FeedRepository feedRepository) {
+    GetFavouriteArticlesUseCase provideGetFavouriteArticlesUseCase(final FeedRepository feedRepository) {
         return new GetFavouriteArticlesUseCase(feedRepository);
     }
 
@@ -123,7 +123,7 @@ public final class UseCaseModule {
 
         AddNewFeedUseCase addNewFeedUseCase();
 
-        GetArticlesUseCase getFeedItemsUseCase();
+        GetArticlesUseCase getArticlesUseCase();
 
         DeleteFeedUseCase deleteFeedUseCase();
 
@@ -131,15 +131,15 @@ public final class UseCaseModule {
 
         UpdateFeedUseCase updateFeedUseCase();
 
-        MarkArticleAsReadUseCase markFeedItemAsReadUseCase();
+        MarkArticleAsReadUseCase markArticleAsReadUseCase();
 
-        FavouriteArticleUseCase favouriteFeedItemUseCase();
+        FavouriteArticleUseCase favouriteArticleUseCase();
 
-        UnFavouriteArticleUseCase unFavouriteFeedItemUseCase();
+        UnFavouriteArticleUseCase unFavouriteArticleUseCase();
 
-        GetUnreadArticlesCountUseCase getUnreadFeedItemsCountUseCase();
+        GetUnreadArticlesCountUseCase getUnreadArticlesCountUseCase();
 
-        GetFavouriteArticlesUseCase getFavouriteFeedItemsUseCase();
+        GetFavouriteArticlesUseCase getFavouriteArticlesUseCase();
 
         ShouldUpdateFeedsInBackgroundUseCase shouldUpdateFeedsInBackgroundUseCase();
 

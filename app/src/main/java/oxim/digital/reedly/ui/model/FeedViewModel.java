@@ -1,4 +1,4 @@
-package oxim.digital.reedly.ui.feed.model;
+package oxim.digital.reedly.ui.model;
 
 public final class FeedViewModel {
 

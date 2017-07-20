@@ -24,7 +24,7 @@ import oxim.digital.reedly.R;
 import oxim.digital.reedly.base.BaseFragment;
 import oxim.digital.reedly.base.ScopedPresenter;
 import oxim.digital.reedly.dagger.fragment.FragmentComponent;
-import oxim.digital.reedly.ui.feed.model.FeedViewModel;
+import oxim.digital.reedly.ui.model.FeedViewModel;
 import oxim.digital.reedly.util.ImageLoader;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
@@ -106,7 +106,7 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
             setViewState(ADD_FEED);
             feedAdapter.clearSelection();
         } else {
-            presenter.showFeedItems(feedViewModel);
+            presenter.showArticles(feedViewModel);
         }
     }
 
@@ -190,13 +190,13 @@ public final class UserSubscriptionsFragment extends BaseFragment implements Use
             presenter.showAddNewFeed();
         } else {
             feedAdapter.clearSelection();
-            presenter.unsubscribeFromFeed(selectedFeedModel);
+            presenter.unSubscribeFromFeed(selectedFeedModel);
         }
     }
 
     @OnClick(R.id.show_favourites_button)
-    public void onShowFavouriteFeedItemsButtonClick() {
-        presenter.showFavouriteFeedItems();
+    public void onShowFavouriteArticlesButtonClick() {
+        presenter.showFavouriteArticles();
     }
 
     @OnClick(R.id.toggle_notifications_button)

@@ -14,8 +14,9 @@ import oxim.digital.reedly.domain.interactor.feed.GetUserFeedsUseCase;
 import oxim.digital.reedly.domain.interactor.feed.update.ShouldUpdateFeedsInBackgroundUseCase;
 import oxim.digital.reedly.domain.interactor.feed.update.UpdateFeedUseCase;
 import oxim.digital.reedly.domain.model.Feed;
-import oxim.digital.reedly.ui.feed.mapper.FeedViewModeMapper;
-import oxim.digital.reedly.ui.feed.model.FeedViewModel;
+import oxim.digital.reedly.ui.mapper.FeedViewModeMapper;
+import oxim.digital.reedly.ui.model.FeedViewModel;
+import rx.Completable;
 import rx.functions.Action1;
 
 public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscriptionsContract.View> implements UserSubscriptionsContract.Presenter {
@@ -58,8 +59,8 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
     }
 
     @Override
-    public void showFeedItems(final FeedViewModel feedViewModel) {
-        router.showFeedItemsScreen(feedViewModel.id, feedViewModel.title);
+    public void showArticles(final FeedViewModel feedViewModel) {
+        router.showArticlesScreen(feedViewModel.id, feedViewModel.title);
     }
 
     @Override
@@ -73,25 +74,25 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
     }
 
     @Override
-    public void unsubscribeFromFeed(final FeedViewModel selectedFeedModel) {
+    public void unSubscribeFromFeed(final FeedViewModel selectedFeedModel) {
         viewActionQueue.subscribeTo(deleteFeedUseCase.execute(selectedFeedModel.id)
                                                      .toSingleDefault(true)
                                                      .flatMap(b -> getUserFeedsUseCase.execute())
                                                      .map(feedViewModeMapper::mapFeedsToViewModels)
-                                                     .map(feeds -> (Action1<UserSubscriptionsContract.View>) view -> view.showFeedSubscriptions(feeds)),
-                                    Throwable::printStackTrace);
+                                                     .map(this::toViewAction),
+                                    this::logError);
     }
 
     @Override
-    public void showFavouriteFeedItems() {
-        router.showFavouriteFeedItemsScreen();
+    public void showFavouriteArticles() {
+        router.showFavouriteArticlesScreen();
     }
 
     @Override
     public void enableBackgroundFeedUpdates() {
         viewActionQueue.subscribeTo(enableBackgroundFeedUpdatesUseCase.execute(),
                                     view -> view.setIsBackgroundFeedUpdateEnabled(true),
-                                    Throwable::printStackTrace);
+                                    this::logError);
     }
 
     @Override
@@ -105,24 +106,32 @@ public final class UserSubscriptionsPresenter extends BasePresenter<UserSubscrip
         viewActionQueue.subscribeTo(getUserFeedsUseCase.execute()
                                                        .doOnSuccess(this::updateUserFeeds)
                                                        .map(feedViewModeMapper::mapFeedsToViewModels)
-                                                       .map(feeds -> (Action1<UserSubscriptionsContract.View>) view -> view.showFeedSubscriptions(feeds)),
-                                    Throwable::printStackTrace);
+                                                       .map(this::toViewAction),
+                                    this::logError);
+    }
+
+    private Action1<UserSubscriptionsContract.View> toViewAction(final List<FeedViewModel> feeds) {
+        return view -> view.showFeedSubscriptions(feeds);
     }
 
     private void updateUserFeeds(final List<Feed> feeds) {
         Stream.of(feeds)
               .map(feed -> updateFeedUseCase.execute(feed))
-              .forEach(completable -> addSubscription(completable.subscribe(() -> { }, this::onFeedUpdateError)));
+              .forEach(this::handleFeedUpdateCompletable);
     }
 
-    private void onFeedUpdateError(final Throwable throwable) {
-        logError(throwable);
+    private void handleFeedUpdateCompletable(final Completable feedUpdateCompletable) {
+        addSubscription(feedUpdateCompletable.subscribe(() -> { },
+                                                        this::logError));
     }
 
     private void checkBackgroundFeedUpdates() {
         viewActionQueue.subscribeTo(shouldUpdateFeedsInBackgroundUseCase.execute()
-                                                                        .map(shouldUpdate -> (Action1<UserSubscriptionsContract.View>) view -> view
-                                                                                .setIsBackgroundFeedUpdateEnabled(shouldUpdate)),
+                                                                        .map(this::toShouldUpdateFeedsViewAction),
                                     Throwable::printStackTrace);
+    }
+
+    private Action1<UserSubscriptionsContract.View> toShouldUpdateFeedsViewAction(final boolean shouldUpdate) {
+        return view -> view.setIsBackgroundFeedUpdateEnabled(shouldUpdate);
     }
 }

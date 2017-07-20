@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
-    android:id="@+id/feed_item_content_container"
+    android:id="@+id/article_content_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -24,7 +24,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/feed_item_title"
+                android:id="@+id/article_title"
                 style="@style/ContentText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,14 +39,14 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/feed_item_date"
+                    android:id="@+id/article_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     tools:text="Jul 29"/>
 
                 <TextView
-                    android:id="@+id/feed_item_new_indicator"
+                    android:id="@+id/article_new_indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/small_margin"
@@ -61,7 +61,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/feed_item_favourite_indicator"
+            android:id="@+id/article_favourite_indicator"
             android:layout_width="@dimen/favourite_button_size"
             android:layout_height="@dimen/favourite_button_size"
             android:background="?android:selectableItemBackgroundBorderless"

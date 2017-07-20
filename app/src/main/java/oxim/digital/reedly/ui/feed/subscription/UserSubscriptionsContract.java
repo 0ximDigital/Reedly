@@ -4,7 +4,7 @@ import java.util.List;
 
 import oxim.digital.reedly.base.BaseView;
 import oxim.digital.reedly.base.ScopedPresenter;
-import oxim.digital.reedly.ui.feed.model.FeedViewModel;
+import oxim.digital.reedly.ui.model.FeedViewModel;
 
 public interface UserSubscriptionsContract {
 
@@ -17,15 +17,15 @@ public interface UserSubscriptionsContract {
 
     interface Presenter extends ScopedPresenter {
 
-        void showFeedItems(FeedViewModel feedViewModel);
+        void showArticles(FeedViewModel feedViewModel);
 
         void showAddNewFeed();
 
         void updateUserSubscriptions();
 
-        void unsubscribeFromFeed(FeedViewModel selectedFeedModel);
+        void unSubscribeFromFeed(FeedViewModel selectedFeedModel);
 
-        void showFavouriteFeedItems();
+        void showFavouriteArticles();
 
         void enableBackgroundFeedUpdates();
 
