@@ -1,8 +1,8 @@
-package oxim.digital.reedly.background;
+package oxim.digital.reedly.device.job;
 
 import android.app.job.JobInfo;
 
-public interface JobSchedulerWrapper {
+public interface Jobs {
 
     int schedule(JobInfo jobInfo);
 

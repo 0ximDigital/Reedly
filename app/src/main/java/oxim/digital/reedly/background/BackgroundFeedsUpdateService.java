@@ -7,10 +7,10 @@ import android.app.job.JobService;
 import javax.inject.Inject;
 
 import oxim.digital.reedly.dagger.application.ReedlyApplication;
+import oxim.digital.reedly.device.notification.Notifications;
 import oxim.digital.reedly.domain.interactor.article.GetUnreadArticlesCountUseCase;
 import oxim.digital.reedly.domain.interactor.feed.GetUserFeedsUseCase;
 import oxim.digital.reedly.domain.interactor.feed.update.UpdateFeedUseCase;
-import oxim.digital.reedly.util.NotificationUtils;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -28,7 +28,7 @@ public final class BackgroundFeedsUpdateService extends JobService {
     GetUnreadArticlesCountUseCase getUnreadArticlesCountUseCase;
 
     @Inject
-    NotificationUtils notificationUtils;
+    Notifications notifications;
 
     @Inject
     NotificationFactory notificationFactory;
@@ -39,7 +39,7 @@ public final class BackgroundFeedsUpdateService extends JobService {
     @Override
     public void onCreate() {
         super.onCreate();
-        ((ReedlyApplication) getApplication().getApplicationContext()).getApplicationComponent().inject(this);
+        ReedlyApplication.from(getApplication()).getApplicationComponent().inject(this);
     }
 
     @Override
@@ -47,7 +47,7 @@ public final class BackgroundFeedsUpdateService extends JobService {
         getUnreadArticlesCountUseCase.execute()
                                      .subscribeOn(Schedulers.io())
                                      .subscribe(unreadCount -> onUnreadItemsCount(unreadCount, jobParameters),
-                                                 throwable -> handleError(throwable, jobParameters));
+                                                throwable -> handleError(throwable, jobParameters));
         return true;
     }
 
@@ -66,12 +66,12 @@ public final class BackgroundFeedsUpdateService extends JobService {
                                      .subscribeOn(Schedulers.io())
                                      .doOnSuccess(c -> jobFinished(jobParameters, false))
                                      .subscribe(newUnreadCount -> onNewUnreadCount(unreadItemsCount, newUnreadCount),
-                                                 throwable -> handleError(throwable, jobParameters));
+                                                throwable -> handleError(throwable, jobParameters));
     }
 
     private void onNewUnreadCount(final long oldCount, final long newCount) {
         if (newCount > oldCount) {
-            showNotification();
+            showNewArticlesNotification();
         }
     }
 
@@ -80,9 +80,9 @@ public final class BackgroundFeedsUpdateService extends JobService {
         jobFinished(jobParameters, false);
     }
 
-    private void showNotification() {
-        notificationUtils.showNotification(NEW_ARTICLES_NOTIFICATION_ID,
-                                           notificationFactory.createFeedUpdateNotification(getApplicationContext(), notificationPendingIntent));
+    private void showNewArticlesNotification() {
+        notifications.showNotification(NEW_ARTICLES_NOTIFICATION_ID,
+                                       notificationFactory.createNewArticlesNotification(notificationPendingIntent));
     }
 
     @Override

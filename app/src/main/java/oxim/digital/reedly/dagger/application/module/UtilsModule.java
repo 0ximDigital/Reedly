@@ -25,8 +25,8 @@ import oxim.digital.reedly.util.DateUtils;
 import oxim.digital.reedly.util.DateUtilsImpl;
 import oxim.digital.reedly.util.ImageLoader;
 import oxim.digital.reedly.util.ImageLoaderImpl;
-import oxim.digital.reedly.util.NotificationUtils;
-import oxim.digital.reedly.util.NotificationUtilsImpl;
+import oxim.digital.reedly.device.notification.Notifications;
+import oxim.digital.reedly.device.notification.NotificationsImpl;
 import rx.schedulers.Schedulers;
 
 @Module
@@ -76,8 +76,8 @@ public final class UtilsModule {
 
     @Provides
     @Singleton
-    NotificationUtils provideNotificationUtils(final @ForApplication Context context) {
-        return new NotificationUtilsImpl(context);
+    Notifications provideNotifications(final @ForApplication Context context) {
+        return new NotificationsImpl(context);
     }
 
     @Provides
@@ -104,7 +104,7 @@ public final class UtilsModule {
 
         ConnectivityReceiver connectivityReceiver();
 
-        NotificationUtils notificationUtils();
+        Notifications notificationUtils();
 
         ImageLoader imageLoader();
     }

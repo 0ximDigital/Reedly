@@ -1,16 +1,15 @@
-package oxim.digital.reedly.util;
+package oxim.digital.reedly.device.notification;
 
 import android.app.Notification;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
 
-public final class NotificationUtilsImpl implements NotificationUtils {
+public final class NotificationsImpl implements Notifications {
 
     private final NotificationManagerCompat notificationManagerCompat;
 
-    public NotificationUtilsImpl(@NonNull final Context context) {
+    public NotificationsImpl(@NonNull final Context context) {
         this.notificationManagerCompat = NotificationManagerCompat.from(context);
     }
 

@@ -1,8 +1,8 @@
-package oxim.digital.reedly.util;
+package oxim.digital.reedly.device.notification;
 
 import android.app.Notification;
 
-public interface NotificationUtils {
+public interface Notifications {
 
     void showNotification(int notificationId, Notification notification);
 

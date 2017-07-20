@@ -4,6 +4,7 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.util.Log;
 
+import oxim.digital.reedly.device.job.Jobs;
 import oxim.digital.reedly.domain.update.FeedsUpdateScheduler;
 
 public final class FeedsUpdateSchedulerImpl implements FeedsUpdateScheduler {
@@ -11,9 +12,9 @@ public final class FeedsUpdateSchedulerImpl implements FeedsUpdateScheduler {
     private static final String TAG = FeedsUpdateSchedulerImpl.class.getSimpleName();
 
     private final JobInfo feedsUpdateJobInfo;
-    private final JobSchedulerWrapper jobScheduler;
+    private final Jobs jobScheduler;
 
-    public FeedsUpdateSchedulerImpl(final JobInfo feedsUpdateJobInfo, final JobSchedulerWrapper jobScheduler) {
+    public FeedsUpdateSchedulerImpl(final JobInfo feedsUpdateJobInfo, final Jobs jobScheduler) {
         this.feedsUpdateJobInfo = feedsUpdateJobInfo;
         this.jobScheduler = jobScheduler;
     }
