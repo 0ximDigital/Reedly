@@ -27,6 +27,8 @@ public final class NewFeedSubscriptionFragment extends BaseFragment implements N
 
     public static final String TAG = NewFeedSubscriptionFragment.class.getSimpleName();
 
+    private static final String EMPTY = "";
+
     @Inject
     NewFeedSubscriptionContract.Presenter presenter;
 
@@ -66,8 +68,9 @@ public final class NewFeedSubscriptionFragment extends BaseFragment implements N
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        feedUrlInput.setText("https://www.reddit.com/r/androiddev/new.rss");
+//        Need inspiration?
 //        feedUrlInput.setText("https://xkcd.com/rss.xml");
+//        feedUrlInput.setText("https://www.reddit.com/r/androiddev/new.rss");
 //        feedUrlInput.setText("http://android-developers.blogspot.com/feeds/posts/default?alt=rss");
 
         feedUrlInput.addTextChangedListener(new ActionTextWatcher(text -> clearMessage()));
@@ -91,7 +94,7 @@ public final class NewFeedSubscriptionFragment extends BaseFragment implements N
 
     @Override
     public void clearMessage() {
-        messageTextView.setText("");
+        messageTextView.setText(EMPTY);
     }
 
     @Override

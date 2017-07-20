@@ -52,13 +52,11 @@ public final class ActionRouterImpl implements ActionRouter {
 
     @Override
     public void blockActions() {
-        System.out.println("Blocking actions");
         actionsBlocked = true;
     }
 
     @Override
     public void unblockActions() {
-        System.out.println("Unblocking actions");
         actionsBlocked = false;
     }
 
@@ -75,9 +73,7 @@ public final class ActionRouterImpl implements ActionRouter {
         if (router != null) {
             final OperatorVariableThrottleFirst<Action0> operatorVariableThrottleFirst = new OperatorVariableThrottleFirst<>(primaryWindowDuration, primaryTimeUnit);
             routerSubscription = router.lift(operatorVariableThrottleFirst)
-                                       .subscribe(
-                                               Action0::call
-                                       );
+                                       .subscribe(Action0::call);
             throttleController = operatorVariableThrottleFirst;
         }
     }

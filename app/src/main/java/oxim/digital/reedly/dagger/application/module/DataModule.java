@@ -1,5 +1,6 @@
 package oxim.digital.reedly.dagger.application.module;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -15,14 +16,16 @@ import oxim.digital.reedly.data.feed.service.parser.FeedParserImpl;
 import oxim.digital.reedly.data.util.CurrentTimeProvider;
 import oxim.digital.reedly.data.util.PreferenceUtils;
 import oxim.digital.reedly.domain.repository.FeedRepository;
+import rx.Scheduler;
 
 @Module
 public final class DataModule {
 
     @Provides
     @Singleton
-    FeedRepository provideFeedRepository(final FeedService feedService, final FeedDao feedDao, final PreferenceUtils preferenceUtils) {
-        return new FeedRepositoryImpl(feedService, feedDao, preferenceUtils);
+    FeedRepository provideFeedRepository(final FeedService feedService, final FeedDao feedDao, final PreferenceUtils preferenceUtils,
+                                         final @Named(ThreadingModule.BACKGROUND_SCHEDULER) Scheduler backgroundScheduler) {
+        return new FeedRepositoryImpl(feedService, feedDao, preferenceUtils, backgroundScheduler);
     }
 
     @Provides

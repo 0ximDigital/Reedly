@@ -1,11 +1,17 @@
 package oxim.digital.reedly.configuration;
 
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import rx.Scheduler;
+
 public final class ViewActionQueueProvider {
+
+    private final Scheduler mainScheduler;
+
+    public ViewActionQueueProvider(final Scheduler mainScheduler) {
+        this.mainScheduler = mainScheduler;
+    }
 
     private final Map<String, ViewActionQueue> viewActionQueueMap = new HashMap<>();
 
@@ -15,7 +21,7 @@ public final class ViewActionQueueProvider {
             return viewActionQueue;
         }
 
-        final ViewActionQueue newQueue = new ViewActionQueue();
+        final ViewActionQueue newQueue = new ViewActionQueue(mainScheduler);
         viewActionQueueMap.put(queueId, newQueue);
         return newQueue;
     }

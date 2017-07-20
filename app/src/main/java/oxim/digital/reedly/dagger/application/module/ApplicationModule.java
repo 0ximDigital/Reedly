@@ -3,6 +3,7 @@ package oxim.digital.reedly.dagger.application.module;
 import android.content.Context;
 import android.content.res.Resources;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -11,6 +12,7 @@ import oxim.digital.reedly.configuration.ViewActionQueueProvider;
 import oxim.digital.reedly.configuration.ViewIdGenerator;
 import oxim.digital.reedly.dagger.application.ForApplication;
 import oxim.digital.reedly.dagger.application.ReedlyApplication;
+import rx.Scheduler;
 
 @Module
 public final class ApplicationModule {
@@ -42,8 +44,8 @@ public final class ApplicationModule {
 
     @Provides
     @Singleton
-    ViewActionQueueProvider provideViewActionQueueProvider() {
-        return new ViewActionQueueProvider();
+    ViewActionQueueProvider provideViewActionQueueProvider(final @Named(ThreadingModule.MAIN_SCHEDULER) Scheduler mainScheduler) {
+        return new ViewActionQueueProvider(mainScheduler);
     }
 
     @Provides
