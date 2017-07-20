@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import oxim.digital.reedly.base.BaseActivity;
 import oxim.digital.reedly.base.ScopedPresenter;
 import oxim.digital.reedly.dagger.activity.ActivityComponent;
-import oxim.digital.reedly.dagger.activity.DaggerActivity;
 import oxim.digital.reedly.ui.MainPresenter;
 import oxim.digital.reedly.ui.feed.subscription.UserSubscriptionsFragment;
 import oxim.digital.reedly.util.ActivityUtils;
